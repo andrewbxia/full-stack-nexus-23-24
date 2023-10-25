@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta name="description" content="Full Stack Nexus calendar">
+        <script src="../scripts/userLogs.js" type="module"></script>
         <style>
             html {
                 background-color: aliceblue;
@@ -130,13 +132,14 @@
     </head>
 
     <body>
-        <h1>hi <%= locals.text || "poopy" %></h1>
+        <h1>hi <%= locals.text || "wanderer" %></h1>
         
         <p id="funny-text">ddddddd </p>
         <div id="funny-text">hover over/click on dates to see full info!
             <div class="funny-tooltip">
                 deorigjir
             </div>
+            Try submitting something below!
         </div>
         <form id="login-form">
             <input id="username" placeholder="Username: " type="text" name="username" required>
@@ -181,12 +184,12 @@
     </body>
     
     
-    <script type="module" src="../requestCalendarEvents.js" type="text/javascript"></script>
-    <script type="module" src="../submitCalendarEvents.js" type="text/javascript"></script>
-    <script type="module" src="../buildCalendar.js"></script>
+    <script type="module" src="../scripts/requestCalendarEvents.js" type="javascript"></script>
+    <script type="module" src="../scripts/submitCalendarEvents.js" type="javascript"></script>
+    <script type="module" src="../scripts/buildCalendar.js"></script>
     
-    <script type="module" src="../hoverTooltips.js" type="text/javascript"></script>
-    <script type="module" src="../handleButtons.js" type="text/javascript"></script>
+    <script type="module" src="../scripts/hoverTooltips.js" type="javascript"></script>
+    <script type="module" src="../scripts/handleButtons.js" type="javascript"></script>
     <script type="text/javascript">
         
     </script>
