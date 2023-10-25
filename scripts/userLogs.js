@@ -5,4 +5,5 @@ window.addEventListener("beforeunload", (event) => {
         url: "/logUser",
         type: "POST"
     });
+    
 });
