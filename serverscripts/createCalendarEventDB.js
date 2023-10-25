@@ -1,7 +1,7 @@
 const sqlite3 = require("sqlite3").verbose();
 
 
-const db = new sqlite3.Database("./testdb/calendarEvents.db", (err) => {
+const db = new sqlite3.Database("../files/calendarEvents.db", (err) => {
     if(err){
         return console.error(err.message);
     }
@@ -26,7 +26,7 @@ db.serialize(() => {
     //ex: 2008 12 35 07 30
 });
 
-//app.use(bodyParser.json());
+//app.use(bodyParser.json());S
 
 
 module.exports = db;
