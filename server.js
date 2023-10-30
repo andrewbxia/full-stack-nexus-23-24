@@ -1,59 +1,71 @@
 const express = require("express");
 const usersRouter = require("./routes/userRoutes.js");
 const submitRouter = require("./routes/submitRoutes.js");
+const assetsRouter = require("./routes/assetsRoutes.js");
 const dbwrite = require("./serverscripts/createCalendarEventDB.js");
 const dbread = require("./serverscripts/readCalendarEvents.js");
 const bodyParser = require("body-parser");
-const User = require("./serverscripts/userClass.js")
+const fs = require("fs");
+const path = require("path");
+
+
+
+
+
 //init express
-
-
-const userMap = new Map();
 const app = express();
 
 //set ejs
 app.set("view engine", "ejs");
+//app.use(express.static(path.join(__dirname, "styles")));//express quirk that messes up express files for some reason
+//send pages
 
-app.get('/', (request, response) => {
+app.get('/', (req, res) => {
     console.log("hi here");
-    console.log(request.ip);
-    userMap.set(response.ip, new User(request.ip, Date.now()));
-    //response.json({message: "error"});
-    //render home.ejs when it loads
-    response.render("home", {tdext: "yayyay"});
+    console.log(req.ip);
+    res.render("home");
     //console.log("successful");
 });
 
-
-//const postRouter = require("./routes/userRoutes.js");
-
-app.use("/users", usersRouter);
-app.use("/events", submitRouter);
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-
-app.get("/scripts/:id" + ".js", (req, res) => {
-    res.type("text/javascript");
-    res.sendFile(`${__dirname}/scripts/${req.params.id}.js`);
-});
 
 app.get("/favicon.ico", (req, res) => {
     res.sendFile(`${__dirname}/favicon.ico`);
 });
 
-app.post("/handleResponse", (req, res) => {
 
-    
+//const postRouter = require("./routes/userRoutes.js");
+
+//for reference
+app.use("/users", usersRouter);
+app.use("/events", submitRouter);
+app.use("/assets", assetsRouter);
+
+app.get("/:id", (req, res) => {
+    const id = req.params.id.split('.')[0]; // Extracts the route before the question mark
+    res.render(id);
+});
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
+
+
+
+
+
+//send files
+
+
+
+
+app.post("/handleResponse", (req, res) => {
     var {user, title, description, date, starttime, endtime} = (req.body);
 
     if(starttime > endtime){
         endtime = starttime;
     }
 
-    if(userMap.get(req.ip)){
-        userMap.get(req.ip).addToActions({description: "submitting" ,user, title, description, date, starttime, endtime})
-    }
     console.log("data recieved:");
     console.log("ip" + req.ip);
     console.log(user);
@@ -74,9 +86,6 @@ app.post("/handleResponse", (req, res) => {
 
 app.post("/readResponse", (req, res) => {
 
-    if(userMap.get(req.ip)){
-        userMap.get(req.ip).addToActions({description: "requesting", time: Date.now()})
-    }
 
     console.log("read response received");
     console.log(req.ip);
@@ -98,12 +107,14 @@ app.post("/logUser", (req, res) => {
 
     const date = new Date(Date.now()).toISOString();
     console.log("user " + req.ip + "has disconnected at " + date);
-    if(userMap.get(req.ip)){
-        userMap.setUnload(date);
-    }
+});
+
+app.post("/login", (req, res) => {
+
 });
 
 
 app.listen(3000, () => {
     console.log("successful start at http://localhost:3000");
 });
+

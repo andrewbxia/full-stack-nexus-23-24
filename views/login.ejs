@@ -1,10 +1,51 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="description" content="Full-Stack Nexus">
+        <meta name="description" content="The official login website of Full-Stack Nexus at CRHS, a web development club for beginners!">
+        <meta name="og:image" content="assets/icon">
+        <style>
+            html {
+                background-color: rgb(200, 232, 240);
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Verdana, sans-serif;
+            }
+            body {
+                padding:10px;
+            }
+            input[type=text] {
+                width: 100%;
+                padding: 12px 20px;
+                margin-bottom: 10px;
+                border: 1px solid rgb(200, 232, 240);
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+
+            button[type=submit] {
+                width: 50%;
+                background-color: #4CAF50;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+        </style>
+        <script src="../assets/scripts/login.js"></script>
     </head>
-    <body>
-        
+    <body id="">
+        <h1 style="text-align: center;">Login Page</h1>
+        <div>
+            <form id="login-form">
+                <div id="input-section">
+                    <input id="username" placeholder="Username: " type="text" name="username" required>
+                    <input id="password" placeholder="Password: " type="text" name="password" required>
+                </div>
+                <div id="submit-section">
+                    <button type="submit" id="submit">Login</button>
+                </div>
+            </form>
+        </div>
     </body>
 
 </html>
