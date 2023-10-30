@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="description" content="The official website of Full-Stack Nexus at CRHS, a web development club for beginners!">
-        <meta name="og:image" content="assets/icon">
+        <meta name="description" content="Calendar Website for FSN">
+        <meta property="og:image" content="assets/icon?type=png"><!--IMPLEMENTS THIS LATER--> 
         <script src="../assets/scripts/userLogs.js" type="module"></script>
         <style>
             html {
@@ -57,15 +57,6 @@
                 
             }
             
-
-            #funny-text .funny-tooltip{
-                color:black;
-                visibility: hidden;
-            }
-            #funny-text:hover .funny-tooltip{/*day-tooltip has to be child of funny-text*/
-                visibility: visible;
-                background-color: black;
-            }
             .eventContainer {
                 height: 90%;
                 width: fit-content;
@@ -108,6 +99,9 @@
                 visibility:hidden;
             }
             
+            .calendar-day-number:active .tooltip {
+                visibility: visible;
+            }
             .calendar-day-number:hover .tooltip {
                 visibility: visible;
             }
@@ -130,14 +124,11 @@
 
     <body>
         <h1>hi <%= locals.text || "wanderer" %></h1>
-        
-        <p id="funny-text">ddddddd </p>
-        <div id="funny-text">hover over/click on dates to see full info!
-            <div class="funny-tooltip">
-                deorigjir
-            </div>
-            Try submitting something below!
-        </div>
+
+        hover over/click on dates to see full info!
+        <br>
+        Try submitting something below!
+
         <form id="login-form">
             <input id="username" placeholder="Username: " type="text" name="username" required>
             <input id="title" placeholder="Title: " type="text" name="title" required>

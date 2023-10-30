@@ -1,7 +1,7 @@
 const sqlite3 = require("sqlite3").verbose();
 
 
-const db = new sqlite3.Database("../files/fsnDB/calendarEvents.db", (err) => {
+const db = new sqlite3.Database("../fsnDB/calendarEvents.db", (err) => {
     if(err){
         return console.error(err.message);
     }

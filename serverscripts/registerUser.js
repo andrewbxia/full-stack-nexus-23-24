@@ -35,7 +35,7 @@ module.exports = db; */
 const sqlite3 = require("sqlite3").verbose();
 
 
-const db = new sqlite3.Database("../files/fsnDB/users.db", (err) => {
+const db = new sqlite3.Database("../fsnDB/users.db", (err) => {
     if(err){
         return console.error(err.message);
     }
