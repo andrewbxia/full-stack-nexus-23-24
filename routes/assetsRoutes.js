@@ -22,18 +22,19 @@ router.get("/scripts/:id.js", (req, res) => {
 
 router.get("/icon:id?", (req, res) => {
     const randIcon = icons[Math.floor(Math.random() * icons.length)];
-    const fileName = `./icons${req.params.id || ""}/${randIcon}`;
+    var fileName = `./icons${req.params.id || ""}/${randIcon}`;
     //res.set("Content-Type", "image/png");
-
+    console.log(fileName);
+    if(req.query.type == "png"){
+        fileName += ".png";
+    }else{
+        fileName += ".svg";
+    }
     fs.readFile(fileName, (err, data) => {
         if(err){
             res.status(404).json({error: "eye-con file does not exist."});
         }else{
-            if(req.query.type = "png"){
-                res.sendFile(path.resolve(filename + ".png"));
-            }else{
-                res.sendFile(path.resolve(fileName + ".svg"));
-            }
+            res.sendFile(path.resolve(fileName));
         }
     });
 });
