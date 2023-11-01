@@ -47,6 +47,7 @@
                 bottom:0;
                 overflow: visible;
                 position:relative;
+                z-index: 1;
             }
             .calendar-day-number > p{
                 height: 20px;
@@ -54,7 +55,7 @@
                 font-size: 1rem;
                 margin-top: auto;
                 margin-bottom: auto;
-                
+                z-index: 2;
             }
             
             .eventContainer {
@@ -65,8 +66,6 @@
                 top:0px;
                 text-align: left;
                 overflow-y: scroll;
-
-                
             }/*
             .eventContainer:hover {
                 background-color: green;
@@ -97,15 +96,19 @@
                 bottom: 101%;
                 left: 0;
                 visibility:hidden;
+                z-index: 0;
             }
             
             .calendar-day-number:hover .tooltip {
+                z-index: 100;
                 visibility: visible;
             }
             .calendar-day-number:active .tooltip {
+                z-index: 100;
                 visibility: visible;
             }
             .calendar-day-number:focus .tooltip {
+                z-index: 100;
                 visibility: visible;
             }
 
