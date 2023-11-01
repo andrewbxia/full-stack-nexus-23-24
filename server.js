@@ -40,6 +40,11 @@ app.use("/users", usersRouter);
 app.use("/events", submitRouter);
 app.use("/assets", assetsRouter);
 
+app.get("/calendar.html", (req, res) => {
+    res.send("./views/calendar.html");
+})
+
+
 app.get("/:id", (req, res) => {
     const id = req.params.id.split('.')[0]; // Extracts the route before the question mark
     res.render(id);
