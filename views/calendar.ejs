@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="description" content="Calendar Website for FSN">
-        <meta property="og:image" content="assets/icon?type=png"><!--IMPLEMENTS THIS LATER--> 
-        <script src="../assets/scripts/userLogs.js" type="module"></script>
         <style>
             html {
                 background-color: aliceblue;
@@ -57,6 +54,14 @@
                 
             }
             
+            #funny-text .funny-tooltip{
+                color:black;
+                visibility: hidden;
+            }
+            #funny-text:hover .funny-tooltip{/*day-tooltip has to be child of funny-text*/
+                visibility: visible;
+                background-color: black;
+            }
             .eventContainer {
                 height: 90%;
                 width: fit-content;
@@ -65,7 +70,6 @@
                 top:0px;
                 text-align: left;
                 overflow-y: scroll;
-
                 
             }/*
             .eventContainer:hover {
@@ -88,20 +92,21 @@
                 visibility: hidden;
             }*/
             .tooltip {
+                
                 width: fit-content;
                 background-color: aquamarine;
                 border: 5px dashed salmon;
                 border-radius: 8px;
                 padding:0.5em;
                 position:absolute;
+                
                 bottom: 101%;
+                
                 left: 0;
+                
                 visibility:hidden;
             }
             
-            .calendar-day-number:active .tooltip {
-                visibility: visible;
-            }
             .calendar-day-number:hover .tooltip {
                 visibility: visible;
             }
@@ -123,20 +128,22 @@
     </head>
 
     <body>
-        <h1>hi <%= locals.text || "wanderer" %></h1>
+        <h1>hi <%= locals.text || "poopy" %></h1>
 
-        hover over/click on dates to see full info!
-        <br>
-        Try submitting something below!
-
-        <form id="login-form" autocomplete="off">
+        <p id="funny-text">ddddddd </p>
+        <div id="funny-text">hover over/click on dates to see full info!
+            <div class="funny-tooltip">
+                deorigjir
+            </div>
+        </div>
+        <form id="login-form">
             <input id="username" placeholder="Username: " type="text" name="username" required>
             <input id="title" placeholder="Title: " type="text" name="title" required>
             <input id="description" placeholder="Description: " type="text" name="description">
             <input id="date" type="date" name="date" required>
             <input id="timestart" type="time" name="time" required>
             <input id="timeend" type="time" name="timeend">
-            
+
             <button id="login-button" type="submit">Submit</button>
             <button id="reset-button" type="reset">Reset</button>
         </form>
@@ -150,7 +157,7 @@
         </div>
         <table id="calendar">
             <tr id="row-1">
-                
+
             </tr>
             <tr id="row-2">
 
@@ -165,10 +172,10 @@
 
             </tr>
             <tr id="row-6">
-                
+
             </tr>
         </table>
-        
+
     </body>
     
     
