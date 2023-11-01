@@ -14,14 +14,14 @@ export function createCalendarBlank(){
         //document.getElementById(`row-${row}`).style.removeProperty(height);
     }
     for(let row = 1; row <= rows; row++){
-        
+
         for(let day = 0; day < days; day++){
             const dayElement = document.createElement("td");
             dayElement.className = "calendar-day-number";
             dayElement.innerText = "";
 
             document.getElementById(`row-${row}`).appendChild(dayElement);
-            
+
         }
     }
 }
@@ -40,7 +40,7 @@ export function buildCalendar(offset){
     console.log(lastDay.getDate());
 
     const dateString = date.toISOString().slice(0, 10);
-    
+
 
     for(let day = firstDay.getDate(); day <= lastDay.getDate(); day++){
         const week = Math.floor((day + dayOffset) / 7) + 1;
@@ -57,9 +57,9 @@ export function buildCalendar(offset){
         const eventContainer = document.createElement("div");
         eventContainer.className = "eventContainer";
         eventContainer.id = `eventContainer-${day}`;
-        
+
         document.getElementById(`day-${day}`).prepend(eventContainer);
-        
+
     }
 
     const currMonthData = getMonthData(dateString);
@@ -108,8 +108,6 @@ export function buildCalendar(offset){
 doneRequestingDataListener.addEventListener("DoneRequestingData", () => {
     createCalendarBlank();
     buildCalendar(0);
-    
+
     console.log("calendar build finished");
 });
-
-
