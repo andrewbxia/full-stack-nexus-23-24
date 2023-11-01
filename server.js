@@ -41,7 +41,7 @@ app.use("/events", submitRouter);
 app.use("/assets", assetsRouter);
 
 app.get("/calendar.html", (req, res) => {
-    res.send(path.resolve("./views/calendar.html"));
+    res.sendFile(path.resolve("./views/calendar.html"));
 })
 
 
