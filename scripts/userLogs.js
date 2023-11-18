@@ -2,7 +2,7 @@ window.addEventListener("beforeunload", (event) => {
     event.preventDefault();
     event.returnValue = '';
     $.ajax({
-        url: "calendar/logUser",
+        url: "/logUser",
         type: "POST"
     });
     
