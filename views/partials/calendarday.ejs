@@ -12,9 +12,7 @@
         <%= locals.events.description !== "None" ? "  - " + locals.events.description : "-------------" %>
         <%= locals.events.starttime !== locals.events.endtime ? `from ${locals.events.starttime} to ${locals.events.endtime}` : `time: ${locals.events.starttime}`%>" property="og:description" inline="true"/>
         <meta content="<%= BASE_URL + "/calendar/event/" + id %>" property="og:url" />
-        <meta content="<%= BASE_URL %>/assets/icon?type=png" property="og:image" />
         <meta content="#b69cff" data-react-helmet="true" name="theme-color" />
-        <meta name="twitter:card" content="summary_large_image">
         <meta name="robots" content="noindex, nofollow">
 
         <style>
