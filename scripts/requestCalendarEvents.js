@@ -3,7 +3,6 @@ import { changeDayHighlight } from "./handleButtons.js";
 import { doneRequestingDataListener } from "./hoverTooltips.js";
 
 
-
 const loginButton = document.getElementById("login-button");
 const resetDisplayButton = document.getElementById("reset-displayed-data");
 const requestForm = document.getElementById("see-data");
@@ -39,7 +38,7 @@ function displayData(data) {
 export async function requestData(blockDisplay = true) {
   return new Promise((resolve, reject) => {
     $.ajax({
-      url: locals.BASE_URL + "/calendar/readResponse",
+      url: BASE_URL + "/calendar/readResponse",
       type: "POST",
       success: function(data) {
         if (blockDisplay) {

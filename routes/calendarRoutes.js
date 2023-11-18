@@ -1,5 +1,3 @@
-
-
 const express = require("express");
 const router = express.Router();
 const fs = require("fs");
@@ -25,7 +23,7 @@ router.get("/event/:id", async (req, res) => {
         if (err) {
             res.status(500).json({ error: err.message });
         } else {
-            res.render("./partials/calendarday" ,{ events: row , lastEventID: lastEventID});//DO PARTIALS LATER
+            res.render("./partials/calendarday" ,{ events: row , lastEventID: lastEventID, baseURL: process.env.BASE_URL});
         }
     });
     
@@ -35,7 +33,7 @@ router.get("/event/:id", async (req, res) => {
 
 
 
-router.post("/handleResponse", (req, res) => {//TODO: make this from an export function soon
+router.post("/handleResponse", (req, res) => {
     var {user, title, description, date, starttime, endtime} = (req.body);
 
     if(starttime > endtime){
