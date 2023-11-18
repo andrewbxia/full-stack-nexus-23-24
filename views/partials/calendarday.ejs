@@ -70,22 +70,21 @@
                 width: fit-content;
                 font-size: 1.5em;
                 background-color: rgb(226, 118, 136);
-                backdrop-filter: brightness(0.75);
             }
             .nav-button{
                 display:flex;
                 justify-content: center;
                 align-items: center; /* Add this line */
-            }
-            .nav-button{
+                backdrop-filter: brightness(0.75);
+                font-size: 1.5em;
                 color: rgb(60, 255, 70);
                 width: 10vw;
                 min-width:fit-content;
-
+                height: 100%;
             }
             .nav-button:hover{
                 cursor: pointer;
-                backdrop-filter:brightness(0.75);
+                backdrop-filter:brightness(0.5);
             }
         </style>
         <% } else { %>
@@ -101,7 +100,7 @@
     <div style="display: flex; justify-content: space-between; height:100%;">
         <% if(locals.events.id > 1){ %>
         <div style="font-weight: bold;">
-            <a class="nav-button" style="height:100%; border-radius: 0px 5px 5px 0px; float: inline-start;" href="./<%= locals.events.id - 1 %>">
+            <a class="nav-button" style="border-right: 5px dashed rgb(60, 73, 255); border-radius: 0px 5px 5px 0px; float: inline-start;" href="./<%= locals.events.id - 1 %>">
                 <- Previous (<%= locals.events.id - 1 %>)
             </a>
         </div>
@@ -124,7 +123,7 @@
         </div>
         <% if(locals.events.id < lastEventID){ %>
         <div>
-            <a class="nav-button" style="height:100%; font-weight: bold; border-radius: 5px 0px 0px 5px; float:inline-end;" href="./<%= locals.events.id + 1 %>">
+            <a class="nav-button" style="border-left: 5px dashed rgb(112, 60, 255); height:100%; font-weight: bold; border-radius: 5px 0px 0px 5px; float:inline-end;" href="./<%= locals.events.id + 1 %>">
                 Next (<%= locals.events.id + 1 %>) ->                
             </a>
         </div>
