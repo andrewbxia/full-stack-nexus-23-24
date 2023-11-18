@@ -61,7 +61,7 @@ app.use("/calendar", calendarRouter);
 
 app.get("/:id", (req, res) => {
     try{
-        res.render(req.params.id);
+        res.render(req.params.id, {BASE_URL: process.env.BASE_URL});
     }
     catch(err){
         res.send("page not found");

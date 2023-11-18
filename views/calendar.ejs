@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script>
+            const BASE_URL = "<%= locals.BASE_URL %>";
+        </script>
         <meta name="description" content="Calendar Website for FSN">
-        <meta property="og:image" content="assets/icon?type=png"><!--IMPLEMENTS THIS LATER--> 
-        <script src="../assets/scripts/userLogs.js" type="module"></script>
+        <meta property="og:image" content="<%= BASE_URL %>/assets/icon?type=png"><!--IMPLEMENTS THIS LATER--> 
+        <script src="<%= BASE_URL %>/assets/scripts/userLogs.js" type="module"></script>
+        <meta content="<%= BASE_URL %>/assets/icon-mini?type=png" property="og:image" />
+        <meta content="#b69cff" data-react-helmet="true" name="theme-color" />
+        <meta name="twitter:card" content="summary_large_image">
         <style>
             html {
                 background-color: aliceblue;
@@ -175,15 +181,13 @@
         
     </body>
     
-    <script>
-        const BASE_URL = "<%= locals.BASE_URL %>";
-    </script>
-    <script type="module" src="../assets/scripts/requestCalendarEvents.js" type="javascript"></script>
-    <script type="module" src="../assets/scripts/submitCalendarEvents.js" type="javascript"></script>
-    <script type="module" src="../assets/scripts/buildCalendar.js"></script>
     
-    <script type="module" src="../assets/scripts/hoverTooltips.js" type="javascript"></script>
-    <script type="module" src="../assets/scripts/handleButtons.js" type="javascript"></script>
+    <script type="module" src="<%= BASE_URL %>/assets/scripts/requestCalendarEvents.js" type="javascript"></script>
+    <script type="module" src="<%= BASE_URL %>/assets/scripts/submitCalendarEvents.js" type="javascript"></script>
+    <script type="module" src="<%= BASE_URL %>/assets/scripts/buildCalendar.js"></script>
+    
+    <script type="module" src="<%= BASE_URL %>/assets/scripts/hoverTooltips.js" type="javascript"></script>
+    <script type="module" src="<%= BASE_URL %>/assets/scripts/handleButtons.js" type="javascript"></script>
     <script type="text/javascript">
         
     </script>
