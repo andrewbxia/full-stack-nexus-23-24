@@ -12,7 +12,7 @@
         <meta content="https://fullstack.nexus/icon?type=png" property="og:image" />
         <meta content="#43B581" data-react-helmet="true" name="theme-color" />
         <meta name="twitter:card" content="summary_large_image">
-        
+
         <style>
             html{
                 height:100%;
@@ -103,7 +103,7 @@
             <p><%= locals.events.description %></p>
             <p>Date: <%= locals.events.date %></p>
             <div>
-                <% if(locals.events.endtime){ %>
+                <% if(locals.events.starttime !== locals.events.endtime){ %>
                     <p>Start time: <%= locals.events.starttime %></p>
                     <p>------------------------------------------</p>
                     <p>Ending time: <%= locals.events.endtime %></p>
