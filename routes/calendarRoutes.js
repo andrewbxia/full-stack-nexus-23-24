@@ -17,7 +17,7 @@ router.get("/event/:id", async (req, res) => {
             lastEventID = id.lastEvent;
         }
     });
-
+    console.log(lastEventID);
 
     await dbread.get("SELECT * FROM events WHERE id = ?", [id], (err, row) => {
         if (err) {
