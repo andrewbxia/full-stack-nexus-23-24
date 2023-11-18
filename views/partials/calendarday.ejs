@@ -7,7 +7,7 @@
         %>
         
         <title><%= locals.events.title %></title>
-        <meta content="<%= locals.events.title %> - <%= locals.events.date %>" property="og:title" />
+        <meta content="<%= locals.events.title %> ~~~ <%= locals.events.date %>" property="og:title" />
         <meta content="Created by: <%= locals.events.user %>
         <%= locals.events.description !== "None" ? "  - " + locals.events.description : "-------------" %>
         <%= locals.events.starttime !== locals.events.endtime ? `from ${locals.events.starttime} to ${locals.events.endtime}` : `time: ${locals.events.starttime}`%>" property="og:description" inline="true"/>
