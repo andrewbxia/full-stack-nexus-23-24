@@ -5,28 +5,35 @@ const path = require("path");
 const dbwrite = require("../serverscripts/createCalendarEventDB.js");
 const dbread = require("../serverscripts/readCalendarEvents.js");
 
-
 router.get("/event/:id", async (req, res) => {
     const id = req.params.id;
     let lastEventID;
-    await dbread.get("SELECT LAST_VALUE(id) OVER (ORDER BY id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS lastEvent FROM events ;", (err, id) => {
-        if (err) {
-            res.status(500).json({ error: err.message });
-            return;
-        } else {
-            lastEventID = id.lastEvent;
-        }
-    });
-    console.log(lastEventID);
 
-    await dbread.get("SELECT * FROM events WHERE id = ?", [id], (err, row) => {
-        if (err) {
-            res.status(500).json({ error: err.message });
-        } else {
-            res.render("./partials/calendarday" ,{ events: row , lastEventID: lastEventID, baseURL: process.env.BASE_URL});
-        }
-    });
-    
+    try {
+        lastEventID = await new Promise((resolve, reject) => {
+            dbread.get("SELECT LAST_VALUE(id) OVER (ORDER BY id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS lastEvent FROM events;", (err, id) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(id.lastEvent);
+                }
+            });
+        });
+
+        const row = await new Promise((resolve, reject) => {
+            dbread.get("SELECT * FROM events WHERE id = ?", [id], (err, row) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(row);
+                }
+            });
+        });
+
+        res.render("./partials/calendarday" ,{ events: row , lastEventID: lastEventID, baseURL: process.env.BASE_URL});
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 
