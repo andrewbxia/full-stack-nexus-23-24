@@ -83,10 +83,4 @@ router.post("/readResponse", (req, res) => {//TODO: make this from an export fun
     });
 });
 
-router.post("/logUser", (req, res) => {
-    const date = new Date(Date.now()).toISOString();
-    console.log("user " + req.ip + "has disconnected at " + date);
-});
-//wait why do i have this lmao
-
 module.exports = router;
