@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    <head>
+    <head lang="en">
         <meta name="description" content="The official website of Full-Stack Nexus at CRHS, a web development club for beginners!">
         <meta property="og:image" content="assets/icon?type=png">
 	    <meta property="og:image" content="assets/icon?type=png">
@@ -18,8 +18,8 @@
     </head>
     <body>
         <header>
-            <div id="nav-button-container">
-                <img id="header-icon" src="assets/icon-mini">
+            <div id="nav-button-container"><!--maybe make this its seperate file-->
+                <img id="header-icon" src="assets/icon-mini" draggable="false">
 
                 <span id="nav-menu-left">
                     <span id="calendar" class="nav-button" data-info="calendar">
@@ -32,7 +32,7 @@
 
                 <span id="nav-menu-right">
                     <span id="register-button" class="nav-button" data-info="register">
-                        Register
+                        <%= username || "register"%>
                     </span>
                     <span id="login-button" class="nav-button" data-info="login">
                         Login
@@ -52,10 +52,60 @@
             <h3 style="color:red">IF ANY BUTTONS GIVE YOU AN ERROR IT HAS LIKELY NOT BEEN IMPLEMENTED YET</h3>
             <p>this is a thing.</p>
         </div>
-        
+        <div>
+            d
+        </div>
+        <div>
+            d
+        </div>
+        <div>
+            d
+        </div>
+        <div>
+            d
+        </div>
+        <div>
+            d
+        </div>
+        <div>
+            d
+        </div>
+        <div>
+            d
+        </div>
+        <div>
+            d
+        </div>
+        <div>
+            d
+        </div>
+        <div>
+            d
+        </div>
+        <div>
+            d
+        </div>
+        <div>
+            d
+        </div>
         <footer>
+            <span id="server-start" data-starttime=<%= starttime.getTime() %>> <!-- too lazy rn for those peeking at the ejs file 00 -->
+            <% const colonIndex = starttime.toTimeString().indexOf(":"); %>
+                Running Since <%= 
+                starttime.toDateString() + ", " + 
+                starttime.toTimeString().substring(0, colonIndex + 3) + 
+                starttime.toTimeString().substring(colonIndex + 6, colonIndex + 15) + 
+                " (24-hour), up for " || "unknown" %>
+            </span>
+            <span id="server-time">
+                <%= ((Date.now() - starttime.getTime()) / 3600000).toFixed(3) %>
+            </span>
+            <span>
+                hours
+            </span>
         </footer>
 
     </body>
+    <!-- MAEK SHORE that home.js is put after body -->
     <script src="assets/scripts/home.js"></script>
 </html>

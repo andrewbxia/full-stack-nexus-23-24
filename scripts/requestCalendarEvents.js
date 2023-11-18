@@ -39,7 +39,7 @@ function displayData(data) {
 export async function requestData(blockDisplay = true) {
   return new Promise((resolve, reject) => {
     $.ajax({
-      url: "/readResponse",
+      url: "./readResponse",
       type: "POST",
       success: function(data) {
         if (blockDisplay) {

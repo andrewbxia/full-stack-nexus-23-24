@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="description" content="The official login website of Full-Stack Nexus at CRHS, a web development club for beginners!">
+        <meta property="og:image" content="assets/icon?type=png">
+        <style>
+            html {
+                background-color: rgb(200, 232, 240);
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Verdana, sans-serif;
+            }
+            
+            body {
+                padding:10px;
+            }
+
+            input[type=text] {
+                width: 100%;
+                padding: 12px 20px;
+                margin-bottom: 10px;
+                border: 1px solid rgb(200, 232, 240);
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+
+            button[type=submit] {
+                width: 50%;
+                background-color: #4c95af;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            #server-response {
+                text-align: center;
+                font-family: inherit;
+            }
+        </style>
+        <script src="../assets/scripts/register.js"></script>
+    </head>
+    <body id="">
+        <h1 style="text-align: center;">Register Page</h1>
+        <h3 style="text-align: center;">Hi!</h3>
+        <p id="server-response"></p>
+        <div>
+            <form id="register-form" autocomplete="off">
+                <div id="input-section">
+                    <input id="username" placeholder="Username: " type="text" name="username" required>
+                    <input id="password" placeholder="Password: " type="text" name="password" value="wompwomp" required>
+                </div>
+                <div id="submit-section">
+                    <button type="submit" id="submit">Register</button>
+                </div>
+            </form>
+        </div>
+    </body>
+
+</html>

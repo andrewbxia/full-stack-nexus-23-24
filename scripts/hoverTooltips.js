@@ -20,14 +20,7 @@ export function buildTooltips(){
         }
     });
 }
-function removeTooltips(){
-const events = document.querySelectorAll(".eventContainer");
-    events.forEach(cell => {
-        if(cell.innerHTML){
-            console.error("yay");
-        }
-    });
-}
+
 /*
 doneRequestingDataListener.addEventListener("DoneRequestingData", () => {
     console.error("dd");

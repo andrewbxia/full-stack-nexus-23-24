@@ -44,7 +44,7 @@ function logSubmit(event){
 
   
   $.ajax({
-    url: "/handleResponse",
+    url: "./handleResponse",
     type: "POST",
     
     data: eventPostData,  

@@ -6,8 +6,9 @@ html {
 
 body {
     margin-top:0;
-    display:flex;
     margin:0;
+    width: 100%;
+    padding:0;
 }
 
 header {
@@ -19,13 +20,11 @@ header {
     height: fit-content;
     background-color: rgba(108, 155, 255, 0.686);
     padding: 1%;
-    z-index: 1000;
 }
 
 #main-page{
     margin-top:5%;
 }
-
 
 #nav-button-container {
     width: 100%;
@@ -43,12 +42,12 @@ header {
 #nav-button-container::before{
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     
-    content:"FulL-StAcK NeXuS";
+    content:"FuLL-StAcK NeXuS";
     display: flex;
     
     border: 0.1em darkcyan dashed;
     margin-right: 0.58vw;
-    font-family: 'Major Mono Display', monospace;
+    font-family: 'Major Mono Display', "Wingdings 3",  monospace;
     letter-spacing: -0.05vw;
     padding: 0.04em;
     font-size: inherit;
@@ -90,8 +89,7 @@ header {
     justify-content: flex-end;
 }
 
-#register-button,
-#login-button{
+#register-button, #login-button{
     background-color:aquamarine;
 }
 
@@ -99,3 +97,15 @@ header {
     margin:auto 2vw auto 1vw;
 }
 
+footer{
+    position:fixed;
+    max-width: 100%;
+    width:calc(100% - 1vw);/*css is super sad smh*/
+    padding:0.5vh 0.5vw;
+    height:fit-content;
+    text-align: right;
+    bottom:0;
+    right:0;
+    left:0;
+    font-size:1vw;
+}

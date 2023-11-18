@@ -13,7 +13,7 @@
                 padding:10px;
             }
 
-            input[type=text] {
+            input {
                 width: 100%;
                 padding: 12px 20px;
                 margin-bottom: 10px;
@@ -32,16 +32,22 @@
                 border-radius: 4px;
                 cursor: pointer;
             }
+            #response-message {
+                text-align: center;
+            }
         </style>
-        <script src="../assets/scripts/login.js"></script>
+        
     </head>
     <body id="">
         <h1 style="text-align: center;">Login Page</h1>
+        <h3 style="text-align: center;">Welcome Back!</h3>
+        <p id="response-message"></p>
         <div>
             <form id="login-form">
+                
                 <div id="input-section">
-                    <input id="username" placeholder="Username: " type="text" name="username" required>
-                    <input id="password" placeholder="Password: " type="text" name="password" required>
+                    <input type="username" id="username" placeholder="Username: " type="text" name="username" required>
+                    <input type="password" id="password" placeholder="Password: " type="text" name="password" required>
                 </div>
                 <div id="submit-section">
                     <button type="submit" id="submit">Login</button>
@@ -49,5 +55,5 @@
             </form>
         </div>
     </body>
-
+    <script src="../assets/scripts/login.js"></script>
 </html>

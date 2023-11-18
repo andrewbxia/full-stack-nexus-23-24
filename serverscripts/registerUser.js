@@ -1,60 +1,91 @@
-/*const sqlite3 = require("sqlite3").verbose();
-
-
-const db = new sqlite3.Database("../files/fsnDB/calendarEvents.db", (err) => {
-    if(err){
-        return console.error(err.message);
-    }
-    else{
-        console.log("successful connection i think");
-    }
-});
-
-
-
-db.serialize(() => {
-    db.run(`CREATE TABLE IF NOT EXISTS events(
-        id INTEGER PRIMARY KEY,
-        user TEXT,
-        title TEXT,
-        description TEXT,
-        date TEXT,
-        starttime TEXT,
-        endtime TEXT
-    )`);//if start == end just display start
-    //YYYY MM DD HH MM
-    //ex: 2008 12 35 07 30
-});
-
-//app.use(bodyParser.json());S
-
-
-module.exports = db; */
-
-
 const sqlite3 = require("sqlite3").verbose();
+const argon2 = require("argon2");
+const { dblogin } = require("./loginUser"); //finding if user already exists
 
-
-const db = new sqlite3.Database("../fsnDB/users.db", (err) => {
+const dbregister = new sqlite3.Database("../fsnDB/userRegister.db", (err) => {
     if(err){
-        return console.error(err.message);
+        console.error(err.message);
     }
     else{
-        console.log("successful connection i think");
+        console.log("successful register connection i think");
     }
 });
 
-db.serialize(() => {
-    db.run(`CREATE TABLE IF NOT EXISTS users {
+dbregister.serialize(() => {
+    dbregister.run(`CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    usernameLower TEXT UNIQUE NOT NULL,
     username TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL
-    }`);
+    )`)
 });
 
-
-function insertUser(username, password){
-    
+async function checkExists(registerUser){
+    return await new Promise(async(resolve, reject) => {
+        await dblogin.get("SELECT * FROM users WHERE usernameLower = ?", [registerUser], (err, row) => {
+            if(err){
+                reject({message: "ERROR", error: err.message});
+            }
+            else{
+                if(row){
+                    resolve(row);
+                }
+            }
+        });
+        await dbregister.get("SELECT * FROM users WHERE usernameLower = ?", [registerUser], (err, row) => {
+            if(err){
+                reject({message: "ERROR", error: err.message});
+            }
+            else{
+                resolve(row);
+            }
+        });
+    });
 }
 
-module.exports = db;
+async function registerUserDB(req, res){
+    const {username, password} = req.body;
+    const usernameLower = username.toLowerCase();
+    let exists;
+    console.log("registering user " + username);
+
+    if(!username || !password){
+        return res.status(400).json({message: "UNDEFINEDCREDENTIALS"});
+    }
+
+    try{
+        exists = await checkExists(usernameLower);
+    } catch(err){
+        return res.status(500).json(err);
+    }
+
+    if(exists !== undefined){
+        if(exists.message === "ERROR"){//dont know how this would happen but just in case for redundancy
+            return res.status(500).json(exists);
+        }
+        return res.status(400).json({message: "USERALREADYEXISTS"});
+    }
+
+    const hashpassword = await argon2.hash(password, {
+        type: argon2.argon2i,
+        memoryCost: 2 ** 16,
+        hashLength: 75,
+    });
+
+    try{
+        dbregister.run("INSERT INTO users (usernameLower, username, password) VALUES (?, ?, ?)", [usernameLower, username, hashpassword], (err) => {
+            if (err){
+                return res.status(500).json({message: "USERREGISTERFAILED", error: err.message});
+            }
+            else{
+                console.log(hashpassword);
+                return res.status(201).json({message: "USERREGISTERED"});
+            }
+        });
+    }
+    catch(err){
+        return res.status(500).json({message: "ERROR", error: err.message});
+    }
+}
+
+module.exports = {registerUserDB, dbregister};
