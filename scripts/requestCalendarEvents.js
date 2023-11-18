@@ -39,7 +39,7 @@ function displayData(data) {
 export async function requestData(blockDisplay = true) {
   return new Promise((resolve, reject) => {
     $.ajax({
-      url: "calendar/readResponse",
+      url: process.env.BASE_URL + "/calendar/readResponse",
       type: "POST",
       success: function(data) {
         if (blockDisplay) {
