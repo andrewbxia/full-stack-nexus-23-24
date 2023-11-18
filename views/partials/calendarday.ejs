@@ -2,7 +2,8 @@
 <html>
     <head>
         <% if(locals.events){ 
-            const id = locals.events._id;
+            const id = locals.events.id;
+            const BASE_URL = locals.baseURL;
         %>
         
         <title><%= locals.events.title %></title>

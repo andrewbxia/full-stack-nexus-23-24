@@ -29,7 +29,6 @@ router.get("/event/:id", async (req, res) => {
                 }
             });
         });
-
         res.render("./partials/calendarday" ,{ events: row , lastEventID: lastEventID, baseURL: process.env.BASE_URL});
     } catch (err) {
         res.status(500).json({ error: err.message });
