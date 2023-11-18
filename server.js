@@ -37,7 +37,7 @@ app.set("trust proxy", 1);
 app.use((req, res, next) => {res.header('Access-Control-Allow-Methods', 'GET, POST'); next();});
 app.use(cookieParser());
 app.use(session(sess));
-
+app.locals.BASE_URL = process.env.BASE_URL;
 //send pages
 app.get('/', (req, res) => {
     console.log("hi here");
