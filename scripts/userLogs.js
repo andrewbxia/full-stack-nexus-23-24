@@ -7,3 +7,6 @@ window.addEventListener("beforeunload", (event) => {
     });
     
 });
+window.addEventListener("unload", (event) => {
+    event.preventDefault();
+});

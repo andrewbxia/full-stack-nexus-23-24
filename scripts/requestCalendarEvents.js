@@ -17,17 +17,18 @@ function displayData(data) {
   displayDataHtml.innerHTML = "";
 
   data.events.forEach(event => {
-    let displayElement = document.createElement("div");
+    let displayElement = document.createElement("a");
     displayElement.className = "displayed-data";
+    displayElement.href = `${BASE_URL}/calendar/event/${event.id}`;
     displayElement.innerText += " | ";
     for (const key in event) {
       if (event[key] === null) {
-        displayElement.innerHTML += `${key}: <strong>${event[key]}</strong> | `;
+        displayElement.innerText += `${key}: <strong>${event[key]}</strong> | `;
       } else {
         displayElement.innerText += `${key}: ${event[key]} | `;
       }
     }
-    
+    displayElement.innerText += "\n";
     displayDataHtml.appendChild(displayElement);
   });
 
