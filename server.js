@@ -37,6 +37,8 @@ app.set("trust proxy", 1);
 app.use((req, res, next) => {res.header('Access-Control-Allow-Methods', 'GET, POST'); next();});
 app.use(cookieParser());
 app.use(session(sess));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 //app.locals.BASE_URL = process.env.BASE_URL;
 //send pages
 app.get('/', (req, res) => {
@@ -68,15 +70,7 @@ app.get("/:id", (req, res) => {
     }
 });
 
-
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-
 //send files
-
-
 app.post("/registerUser", registerUserDB);
 app.post("/approveUser", approveUserDB);
 app.post("/loginUser", handleLogin);
@@ -85,4 +79,3 @@ app.post("/loginUser", handleLogin);
 app.listen(3000, () => {
     console.log("successful start at http://localhost:3000");
 });
-
