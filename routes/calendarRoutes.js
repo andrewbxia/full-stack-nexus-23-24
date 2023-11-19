@@ -5,6 +5,11 @@ const path = require("path");
 const dbwrite = require("../serverscripts/createCalendarEventDB.js");
 const dbread = require("../serverscripts/readCalendarEvents.js");
 
+
+router.get("/", (req, res) => {
+    res.render("canlendar");
+})
+
 router.get("/event/:id", async (req, res) => {
     const id = req.params.id;
     let lastEventID;

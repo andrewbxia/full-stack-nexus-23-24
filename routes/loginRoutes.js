@@ -8,6 +8,4 @@ router.get("/" , (req, res) => {
 
 router.post("/loginUser", handleLogin);
 
-console.log(process.env.BASE_URL )
-
 module.exports = router;
