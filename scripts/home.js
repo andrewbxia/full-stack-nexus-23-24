@@ -1,5 +1,5 @@
 let time;
-const serverTime = document.getElementById("server-time"), starttime = document.getElementById("server-start").dataset.starttime;
+const serverTime = document.getElementById("server-time"), starttimems = document.getElementById("server-start").dataset.starttimems;
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".nav-button").forEach((element) => {
         element.addEventListener("click", (event) => {
@@ -10,8 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     periodic();
 });
 
-
 function periodic(){
-    serverTime.innerText = ((Date.now() - starttime) / 3600000).toFixed(4);
+    serverTime.innerText = ((Date.now() - starttimems) / 3600000).toFixed(4);
     setTimeout(periodic, Math.random() * 1500);//hehehe
 }

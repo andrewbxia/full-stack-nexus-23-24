@@ -45,7 +45,7 @@ app.get('/', (req, res) => {
     console.log("hi here");
     console.log(req.ip);
     console.log("session: " + req.session.cookie.username);
-    res.render("home", {username: req.session.cookie.username, starttime: startDate, BASE_URL: process.env.BASE_URL});
+    res.render("home", {username: req.session.cookie.username, starttime: startDate, starttimems: startDate.getTime(), BASE_URL: process.env.BASE_URL});
     //console.log("successful");
 });
 

@@ -111,13 +111,7 @@
             d
         </div>
         <footer>
-            <span id="server-start" data-starttime=<%= starttime.getTime() %>> <!-- too lazy rn for those peeking at the ejs file 00 -->
-            <% const colonIndex = starttime.toTimeString().indexOf(":"); %>
-                Running Since <%= 
-                starttime.toDateString() + ", " + 
-                starttime.toTimeString().substring(0, colonIndex + 3) + 
-                starttime.toTimeString().substring(colonIndex + 6, colonIndex + 15) + 
-                " (24-hour), up for " || "unknown" %>
+            <span id="server-start" data-starttime="<%= locals.starttime %>" data-starttimems="<%= locals.starttimems %>"> <!-- too lazy rn for those peeking at the ejs file 00 -->
             </span>
             <span id="server-time">
                 <%= ((Date.now() - starttime.getTime()) / 3600000).toFixed(3) %>
@@ -125,6 +119,15 @@
             <span>
                 hours
             </span>
+            <script>
+                
+                const starttime = new Date(document.getElementById("server-start").dataset.starttime).toString();
+                console.log(starttime)
+                document.getElementById("server-start").innerText = 
+                "Running Since " + starttime.substring(0, 15) + ", " +
+                starttime.substring(16, starttime.indexOf(":") + 15) + 
+                " (~ 24-hour ~), up for ";
+            </script>
         </footer>
 
     </body>
