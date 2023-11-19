@@ -54,6 +54,10 @@ app.get("/favicon.ico", (req, res) => {
     res.sendFile(`${__dirname}/favicon.ico`);
 });
 
+app.get("/robots.txt", (req, res) => {
+    res.sendFile(`${__dirname}/robots.txt`);
+});
+
 //for reference
 app.use("/users", usersRouter);
 app.use("/events", submitRouter);
