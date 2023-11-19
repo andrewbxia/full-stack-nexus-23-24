@@ -12,7 +12,31 @@
         <meta content="#b69cff" data-react-helmet="true" name="theme-color"/>
         <meta name="twitter:card" content="summary_large_image">
         <meta name="robots" content="all">
-
+        <style>
+            @keyframes rainbow-text{
+                0% {
+                    color: red;
+                }
+                16.67% {
+                    color: orange;
+                }
+                33.33% {
+                    color: yellow;
+                }
+                50% {
+                    color: rgb(0, 255, 0);
+                }
+                66.67% {
+                    color: rgb(0, 60, 255);
+                }
+                83.33% {
+                    color: rgb(140, 0, 255);
+                }
+                100% {
+                    color: rgb(255, 0, 242);
+                }
+            }
+        </style>
     </head>
     <body>
         <header>
@@ -47,7 +71,7 @@
         <div id="main-page">
             <h1>hi Test tEst teSt tesT</h1>
 	        <h2>This page will be a placeholder for the club's main page until andrew finds enough time to finish this.</h2>
-            <h3 style="color:red">IF ANY BUTTONS GIVE YOU AN ERROR IT HAS LIKELY NOT BEEN IMPLEMENTED YET</h3>
+            <h3 style="color:red; animation: rainbow-text 2.5s linear infinite;">IF ANY BUTTONS GIVE YOU AN ERROR IT HAS LIKELY NOT BEEN IMPLEMENTED YET</h3>
             <p>this is a thing.</p>
         </div>
         <div>
