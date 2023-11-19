@@ -1,3 +1,4 @@
+<!-- TODO: CREATE EVENT SEARCH NAVIGATOR (USER ENTERS IN 1-MAX TO GO TO THAT EVENT) -->
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,6 +17,40 @@
         <meta name="robots" content="noindex, nofollow">
 
         <style>
+            @keyframes rainbow-text{
+                0% {
+                    color: red;
+                }
+                16.67% {
+                    color: orange;
+                }
+                33.33% {
+                    color: yellow;
+                }
+                50% {
+                    color: rgb(0, 255, 0);
+                }
+                66.67% {
+                    color: rgb(0, 60, 255);
+                }
+                83.33% {
+                    color: rgb(140, 0, 255);
+                }
+                100% {
+                    color: rgb(255, 0, 242);
+                }
+            }
+            @keyframes border-flash{
+                from{
+                    outline: aliceblue 2px dashed;
+                    outline-offset: 0px;
+                }
+                to {
+                    outline:aliceblue 4px dashed;
+                    outline-offset: -2px;
+                }
+            }
+
             html{
                 height:100%;
                 padding:0;
@@ -52,12 +87,14 @@
                 width:60%;
                 padding:inherit;
             }
+
             h2{
                 border-radius: 10px;
                 width: 50%;
                 font-size: 2em;
                 background-color: rgb(136, 174, 225);
             }
+
             #eventContainer > p{
                 border-radius: 10px;
                 width: fit-content;
@@ -76,15 +113,45 @@
                 justify-content: center;
                 align-items: center; /* Add this line */
                 backdrop-filter: brightness(0.75);
-                font-size: 1.5em;
+                font-size: 1.1vw;
                 color: rgb(60, 255, 70);
                 width: 10vw;
                 min-width:fit-content;
                 height: 100%;
+                font-weight: bold;
             }
             .nav-button:hover{
                 cursor: pointer;
                 backdrop-filter:brightness(0.5);
+            }
+            #nav-search{
+                font-family: inherit;
+                font-weight: bold;
+            }
+            #nav-search-input{
+                border-radius: 3px;
+                border: aliceblue solid 2px;
+                background-color: cadetblue;
+                color:rgb(44, 0, 202);
+                font-family:inherit;
+                font-weight:inherit;
+            }
+            #nav-search-input:focus{
+                animation: border-flash 0.5s infinite steps(2);
+            }
+            #nav-search-wee{
+                box-shadow: none;
+                border-radius: 3px;
+                border: aliceblue solid 2px;
+                background-color:indianred;
+                font-family:inherit;
+                font-weight:inherit;
+                animation: rainbow-text 2.5s linear infinite;
+                
+            }
+            #nav-search-wee:hover{
+                cursor:pointer;
+                animation: border-flash 0.5s infinite steps(2);
             }
         </style>
         <% } else { %>
@@ -92,21 +159,24 @@
         <meta content="Event Not Found" property="og:title" />
         <meta content="woopsy poopsy!" property="og:description" />
         <meta content="/favicon.ico" property="og:image" />
-        
         <% } %>
     </head>
     <body>
-    <% if(locals.events){ %>
+    <% if(locals.events){ 
+        const id = locals.events.id;
+        const BASE_URL = locals.baseURL;
+    %>
+
     <div style="display: flex; justify-content: space-between; height:100%;">
-        <% if(locals.events.id > 1){ %>
-        <div style="font-weight: bold;">
-            <a class="nav-button" style="border-right: 5px dashed rgb(60, 73, 255); border-radius: 0px 5px 5px 0px; float: inline-start;" href="./<%= locals.events.id - 1 %>">
-                <- Previous (<%= locals.events.id - 1 %>)
+        <% if(id > 1){ %>
+        <div>
+            <a class="nav-button" style="border-right: 5px dashed rgb(60, 73, 255); border-radius: 0px 5px 5px 0px; float: inline-start;" href="./<%= id - 1 %>">
+                <- Previous (<%= id - 1 %>)
             </a>
         </div>
         <% } %>
         <div id="eventContainer" display="flex">
-            <p style="font-weight: bold; margin-bottom: 5px; margin-top: 30px; text-decoration: underline;">Event: </p>
+            <p style="font-weight: bold; margin-bottom: 5px; margin-top: 30px; text-decoration: underline;">Event <%= id %>: </p>
             <h1><%= locals.events.title %></h1>
             <h2>Created by <%= locals.events.user %></h2>
             <p><%= locals.events.description %></p>
@@ -120,10 +190,26 @@
                     <p>Time: <%= locals.events.starttime %></p>
                 <% } %>
             </div>
+            <span id="nav-search" style="color:aliceblue">
+                GOTO EVENT 
+                <span style="font-weight: bold;">(1 -> <%= lastEventID %>)</span>
+                <input type="number" id="nav-search-input" min="1" max="<%= lastEventID %>" value="<%= id %>">
+                <button id="nav-search-wee" data-curr="<%= id %>" data-max="<%= lastEventID %>">go!</button>
+            </span>
+            <script>
+                document.getElementById("nav-search-wee").addEventListener("click", () => {
+                    let val = document.getElementById("nav-search-input").value;
+                    val = Math.max(1, val);
+                    val = Math.min(val, document.getElementById("nav-search-wee").dataset.max);
+                    if(val != document.getElementById("nav-search-wee").dataset.curr){
+                        window.location.href = "./" + val;
+                    }
+                })
+            </script>
         </div>
-        <% if(locals.events.id < lastEventID){ %>
+        <% if(id < lastEventID){ %>
         <div>
-            <a class="nav-button" style="border-left: 5px dashed rgb(112, 60, 255); height:100%; font-weight: bold; border-radius: 5px 0px 0px 5px; float:inline-end;" href="./<%= locals.events.id + 1 %>">
+            <a class="nav-button" style="border-left: 5px dashed rgb(112, 60, 255); border-radius: 5px 0px 0px 5px; float:inline-end;" href="./<%= id + 1 %>">
                 Next (<%= locals.events.id + 1 %>) ->                
             </a>
         </div>
