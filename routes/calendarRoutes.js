@@ -7,7 +7,7 @@ const dbread = require("../serverscripts/readCalendarEvents.js");
 
 
 router.get("/", (req, res) => {
-    res.render("canlendar");
+    res.render("calendar", {BASE_URL: process.env.BASE_URL});
 })
 
 router.get("/event/:id", async (req, res) => {
