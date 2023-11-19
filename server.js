@@ -64,17 +64,14 @@ app.use("/events", submitRouter);
 app.use("/assets", assetsRouter);
 app.use("/calendar", calendarRouter);
 
-
-app.get("/:id", (req, res) => {
-    res.status(404).json({error: "404: Page not found"});
-});
-
 //send files
 app.post("/registerUser", registerUserDB);
 app.post("/approveUser", approveUserDB);
 app.post("/loginUser", handleLogin);
 
-
+app.use((req, res, next) => {
+    res.status(404).send("Sorry can't find that!");
+});
 app.listen(3000, () => {
     console.log("successful start at http://localhost:3000");
 });
