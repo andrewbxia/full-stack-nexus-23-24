@@ -40,13 +40,36 @@
                     color: rgb(255, 0, 242);
                 }
             }
+            @keyframes rainbow-border{
+                0% {
+                    outline-color: red;
+                }
+                16.67% {
+                    outline-color: orange;
+                }
+                33.33% {
+                    outline-color: yellow;
+                }
+                51% {
+                    outline-color: rgb(0, 255, 0);
+                }
+                66.67% {
+                    outline-color: rgb(0, 60, 255);
+                }
+                83.33% {
+                    outline-color: rgb(140, 0, 255);
+                }
+                100% {
+                    outline-color: rgb(255, 0, 242);
+                }
+            }
             @keyframes border-flash{
                 from{
-                    outline: aliceblue 2px dashed;
+                    outline: 2px dashed;
                     outline-offset: 0px;
                 }
                 to {
-                    outline:aliceblue 4px dashed;
+                    outline: 4px dashed;
                     outline-offset: -2px;
                 }
             }
@@ -135,9 +158,11 @@
                 color:rgb(44, 0, 202);
                 font-family:inherit;
                 font-weight:inherit;
+                transition: outline 0.5s steps(2) ;
             }
             #nav-search-input:focus{
-                animation: border-flash 0.5s infinite steps(2);
+                animation: border-flash 0.5s infinite steps(2), rainbow-border 2.5s infinite linear;
+              
             }
             #nav-search-wee{
                 box-shadow: none;
