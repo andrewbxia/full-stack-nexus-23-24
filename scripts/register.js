@@ -11,7 +11,7 @@ async function loginUser(event){
     };
     data = JSON.stringify(data);
     
-    let response = await fetch("../registerUser", {
+    let response = await fetch("../register/registerUser", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",

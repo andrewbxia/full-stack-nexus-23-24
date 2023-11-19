@@ -1,14 +1,14 @@
 const express = require("express");
-const usersRouter = require("./routes/userRoutes.js");
-const submitRouter = require("./routes/submitRoutes.js");
+const loginRouter = require("./routes/loginRoutes.js");
+const registerRouter = require("./routes/registerRoutes.js");
 const assetsRouter = require("./routes/assetsRoutes.js");
 const calendarRouter = require("./routes/calendarRoutes.js");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const path = require("path");
 const dotenv = require("dotenv");
-const {handleLogin, dblogin} = require("./serverscripts/loginUser.js");
-const {registerUserDB, dbinsert} = require("./serverscripts/registerUser.js");
+
+
 const {approveUserDB} = require("./serverscripts/approveUser.js");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
@@ -58,16 +58,14 @@ app.get("/robots.txt", (req, res) => {
     res.sendFile(`${__dirname}/robots.txt`);
 });
 
-//for reference
-app.use("/users", usersRouter);
-app.use("/events", submitRouter);
+
+app.use("/login", loginRouter);
+app.use("/register", registerRouter);
 app.use("/assets", assetsRouter);
 app.use("/calendar", calendarRouter);
 
 //send files
-app.post("/registerUser", registerUserDB);
 app.post("/approveUser", approveUserDB);
-app.post("/loginUser", handleLogin);
 
 app.use((req, res, next) => {
     res.status(404).send("Sorry can't find that!");

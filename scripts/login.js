@@ -9,7 +9,7 @@ async function loginUser(event){
         password: password,
     };
     console.log(data);
-    let response = await fetch("../loginUser", {
+    let response = await fetch("../login/loginUser", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",

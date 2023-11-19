@@ -4,7 +4,7 @@
     <head>
         <% if(locals.events){ 
             const id = locals.events.id;
-            const BASE_URL = locals.baseURL;
+            const BASE_URL = locals.BASE_URL;
         %>
         
         <title><%= locals.events.title %></title>
@@ -190,7 +190,7 @@
     <body>
     <% if(locals.events){ 
         const id = locals.events.id;
-        const BASE_URL = locals.baseURL;
+        const BASE_URL = locals.BASE_URL;
     %>
 
     <div style="display: flex; justify-content: space-between; height:100%;">
