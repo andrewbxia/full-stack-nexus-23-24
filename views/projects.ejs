@@ -23,6 +23,13 @@
         <header>
             <h1>Projects</h1>
             <h3>A collection of our members' creations</h3>
+            <% if(locals.username){ %>
+                <span id="login-message">Logged in as <%= username %></span>
+                
+            <% } else { %>
+                <a id="login-message" style="text-decoration: underline;" href="../login">Log in to upload your projects!</a>
+            <% } %>
+            <p>nothing works rn lmao</p>
         </header>
 
         <div id="projects-container">

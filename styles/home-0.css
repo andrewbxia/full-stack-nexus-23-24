@@ -35,16 +35,12 @@ header {
     max-height: 2vh;
     margin:0.1em;
     font-size:1.5vw;
-   
-    
 }
 
 #nav-button-container::before{
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    
     content:"FuLL-StAcK NeXuS";
     display: flex;
-    
     border: 0.1em darkcyan dashed;
     margin-right: 0.58vw;
     font-family: 'Major Mono Display', "Wingdings 3",  monospace;
@@ -87,20 +83,25 @@ header {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    margin-right: 2vw;
+}
+
+#nav-menu-right:last-child {
+    margin: inherit 2vw auto 1vw;
 }
 
 #register-button, #login-button{
     background-color:aquamarine;
 }
 
-#join-button{
-    margin:auto 2vw auto 1vw;
+#approve-button{
+    background-color: rgb(0, 255, 140);
 }
 
 footer{
     position:fixed;
     max-width: 100%;
-    width:calc(100% - 1vw);/*css is super sad smh*/
+    width:calc(100% - 1vw);/*based on padding, css is super sad smh*/
     padding:0.5vh 0.5vw;
     height:fit-content;
     text-align: right;

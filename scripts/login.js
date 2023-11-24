@@ -29,30 +29,30 @@ async function loginUser(event){
     //oh boy
     console.log(responseMessage);
     switch(response.message){
-    case "SUCCESSFULLOGIN":
-        username.value = "";
-        password.value = "";
-        responseMessage.innerText = `successfully 🪵'd in as "${response.username}"! hang tight while you are being redirected.`;
-        break;
-    case "UNSUCCESSFULLOGIN":
-        password.value = "";
-        responseMessage.innerText = `incorrect password for "${username}"! if you feel like this is uhoh-spaghettios, contact andrew directly to change it (spaghettios included 🍝🍝🍝).`;
-        break;
-    case "USERNOTFOUND":
-        username.value = "";
-        responseMessage.innerText = `user "${username}" not found! either you have not registered or your registration is still pending or you miscapitalized something; this is case sensitive! meanwhile, want some spaghettios? 🍝🍝🍝`;
-        break;
-    case "UNDEFINEDCREDENTIALS":
-        responseMessage.innerText = "please enter a username and password! stop sending emptee requests to the server!! >:(";
-        break;
-    case "ERROR":
-        responseMessage.innerText = "something uhoh spaghettio occurred on the server! please try again and spam andrew to fix it if it does not resolve";
-        break;
-    case "UNKNOWNSERVERRESPONSE":
-        responseMessage.innerText = "an unknown server response was recieved from the server, so try again. in the meanwhile, have some spaghettios 🍝🍝🍝";
-        break;
-    default:
-        responseMessage.innerText = "an unknown error occurred. please contact andrew to fix it it does not resolve. in the meanwhile, have some spaghettios 🍝🍝🍝";
+        case "SUCCESSFULLOGIN":
+            username.value = "";
+            password.value = "";
+            responseMessage.innerText = `successfully 🪵'd in as "${response.username}"! hang tight while you are being redirected.`;
+            break;
+        case "UNSUCCESSFULLOGIN":
+            password.value = "";
+            responseMessage.innerText = `incorrect password for "${username}"! if you feel like this is uhoh-spaghettios, contact andrew directly to change it (spaghettios included 🍝🍝🍝).`;
+            break;
+        case "USERNOTFOUND":
+            username.value = "";
+            responseMessage.innerText = `user "${username}" not found! either you have not registered or your registration is still pending or you miscapitalized something; this is case sensitive! meanwhile, want some spaghettios? 🍝🍝🍝`;
+            break;
+        case "UNDEFINEDCREDENTIALS":
+            responseMessage.innerText = "please enter a username and password! stop sending emptee requests to the server!! >:(";
+            break;
+        case "ERROR":
+            responseMessage.innerText = "something uhoh spaghettio occurred on the server! please try again and spam andrew to fix it if it does not resolve";
+            break;
+        case "UNKNOWNSERVERRESPONSE":
+            responseMessage.innerText = "an unknown server response was recieved from the server, so try again. in the meanwhile, have some spaghettios 🍝🍝🍝";
+            break;
+        default:
+            responseMessage.innerText = "an unknown error occurred. please contact andrew to fix it it does not resolve. in the meanwhile, have some spaghettios 🍝🍝🍝";
     }
     
     responseMessage.innerText += `\nserver response: ${response.message}\n`;
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if(response.message === "SUCCESSFULLOGIN"){
                 setTimeout(() => {
                     window.location.replace("/");
-                }, 5000);
+                }, 1000);
             }
         });
     });

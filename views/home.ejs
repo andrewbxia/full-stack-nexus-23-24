@@ -37,6 +37,13 @@
                 }
             }
         </style>
+        <% if(locals.username){ %>
+            <style>
+                #profile-button{
+                    background-color: #b69cff;
+                }
+            </style>
+        <% } %>
     </head>
     <body>
         <header>
@@ -53,15 +60,30 @@
                 </span>
 
                 <span id="nav-menu-right">
-                    <span id="register-button" class="nav-button" data-info="register">
-                        <%= username || "register"%>
-                    </span>
-                    <span id="login-button" class="nav-button" data-info="login">
-                        Login
-                    </span>
-                    <span id="join-button" class="nav-button" data-info="join">
-                        Join The Club!
-                    </span>
+                    <%if(locals.permissions === "admin"){ %>
+                        <span id="approve-button" class="nav-button" data-info="approve">
+                            Approve
+                        </span>
+                    <% } %>
+                    <% if(locals.username){ %>
+                        <span id="members-button" class="nav-button" data-info="members">
+                            Members
+                        </span>
+                        <span id="profile-button" class="nav-button" data-info="profile">
+                            <%= username %>
+                        </span>
+                        
+                    <%} else { %>
+                        <span id="register-button" class="nav-button" data-info="register">
+                            Register
+                        </span>
+                        <span id="login-button" class="nav-button" data-info="login">
+                            Login
+                        </span>
+                        <span id="join-button" class="nav-button" data-info="join">
+                            Join The Club!
+                        </span>
+                    <% } %>
                 </span>
             </div>
         </header>

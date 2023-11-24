@@ -2,7 +2,6 @@
 const fs = require("fs");
 const sqlite3 = require("sqlite3").verbose();
 const argon2 = require("argon2");
-const admins = ["andrew xia"];
 const dblogin = new sqlite3.Database("../fsnDB/users.db", (err) => { 
     if(err){
         return console.error(err.message);
@@ -15,16 +14,15 @@ const dblogin = new sqlite3.Database("../fsnDB/users.db", (err) => {
 
 dblogin.serialize(async() => {
     dblogin.run(`CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    usernameLower TEXT UNIQUE NOT NULL,
-    username TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL,
-    permissions TEXT,
-    joined INTEGER
-    )`
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        mode TEXT NOT NULL,
+        usernameLower TEXT UNIQUE NOT NULL,
+        username TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        permissions TEXT,
+        joined INTEGER
+        )`
     );
-
-    //let adminArr;
 
     fs.readFile("../fsnDB/admins.json", "utf8", async (err, data) => {
         if (err) {
@@ -36,20 +34,20 @@ dblogin.serialize(async() => {
         
         console.log(adminArr);
         
-        for (const admin in adminArr.admins) {
-            const { usernameLower, username, password, permissions, joined } = adminArr.admins[admin];//adminArr.admins[admin] grabs the values of the objects
-            console.log(usernameLower, username, password, permissions, joined);
-            await dblogin.run("INSERT OR IGNORE INTO users (usernameLower, username, password, permissions, joined) VALUES (?, ?, ?, ?, ?)", [usernameLower, username, password, permissions, joined], (err) => {
+        for (const admin in adminArr.members) {
+            const { mode, usernameLower, username, password, permissions, joined } = adminArr.members[admin];//adminArr.admins[admin] grabs the values of the objects
+            console.log(mode, usernameLower, username, password, permissions, joined);
+            await dblogin.run("INSERT OR IGNORE INTO users (mode, usernameLower, username, password, permissions, joined) VALUES (?, ?, ?, ?, ?, ?)", [mode, usernameLower, username, password, permissions, joined], (err) => {
                 if (err) {
                     console.error("wuh oh" + err.message);
                 } else {
-                    console.log("admin inserted or already exists :D good day to you!");
+                    console.log(permissions + " " + username + " inserted or already exists :D good day to you!");
                 }
             });
         }
     });
-
 });
+
 async function readUserDB(username, password){
     return await new Promise(async(resolve, reject) =>{
         console.log("logging in user " + username);
@@ -73,7 +71,7 @@ async function readUserDB(username, password){
                     console.log(row.password, password)
                     if(await argon2.verify(row.password, password)){
                         console.log("login successful " + username);
-                        resolve({message: "SUCCESSFULLOGIN", username: username});
+                        resolve({message: "SUCCESSFULLOGIN", username: username, permissions: row.permissions});
                     }
                     else{
                         resolve({message: "UNSUCCESSFULLOGIN"});
@@ -91,20 +89,20 @@ async function handleLogin(req, res){
     const {username, password} = req.body;
     try{
         const response = await readUserDB(username, password);
-        
 
         if(response.message === "SUCCESSFULLOGIN"){
-            console.log(response.username)
-            req.session.cookie.username = response.username;
-            req.session.cookie.loggedIn = true;
-            //res.cookie("username", response.username);
-           
-            res.status(200).json({message: response.message, username: response.username});
-            //do i 
-            
-            /**return setTimeout(() => {
-                res.redirect("/");
-            }, 5000);*/
+            console.log(response.permissions);
+            req.session.user = response.username;
+            req.session.permissions = response.permissions;
+            await req.session.save((err) => { // Save session with callback
+                if(err){
+                    console.log('Session save error:', err);
+                    return;
+                }
+                // Session saved successfully
+                res.status(200).json({message: response.message, username: response.username});
+            });
+        
         }else if(response.message === "UNSUCCESSFULLOGIN"){
             res.status(400).json({message: response.message, username: response.username});
         }else if(response.message === "UNDEFINEDCREDENTIALS" || response.message === "USERNOTFOUND"){
@@ -115,7 +113,9 @@ async function handleLogin(req, res){
         }else{
             res.status(500).json({message: "UNKNOWNSERVERRESPONSE"});
         }
-    }catch(err){}
+    }catch(err){
+        //no idea
+    }
 }
 
 

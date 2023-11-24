@@ -75,15 +75,12 @@ router.post("/readResponse", (req, res) => {//TODO: make this from an export fun
     console.log(req.ip);
     const rows = [];
 
-    dbread.each("SELECT * FROM events", (err, row) => {
-        if (err) {
-            res.status(500).json({ error: "failed to read database." });
-        } else {
-            rows.push(row);
+    dbread.all("SELECT * FROM events", (err, rows) => {
+        if(err){
+            console.error(err.message);
+            return res.status(500).json({error: err.message});
         }
-    }, () => {
-        //after all rows have been processed
-        res.status(200).json({ events: rows });
+        return res.status(200).json({ events: rows });
     });
 });
 

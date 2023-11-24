@@ -25,28 +25,35 @@ async function loginUser(event){
     });
     response = await response.json();
     console.log(response);
-    
-    
-    if(response.message === "USERREGISTERED"){
-        responseText.innerText = `Registration for ${username.value} successful! Please give andrew some time to stop procrastinating and approve your account. (he wont stop)`;
-        username.value = "";
-        password.value = "";
+           
+    switch(response.message){
+        case "USERREGISTERED":
+            responseText.innerText = `Registration for ${username.value} successful! Please give andrew some time to stop procrastinating and approve your account. (he wont stop)`;
+            username.value = "";
+            password.value = "";
+            break;
+        case "USERALREADYEXISTS":
+            responseText.innerText = "This person has already registered. If this is not you, please contact andrew for this uh-oh momento.";
+            break;
+        case "USERALREADYAPPROVED":
+            responseText.innerHTML = "This person has already registered and has been approved. Please log in <a href='../login'>here</a>!";
+            break;
+        case "USERREJECTED":
+            responseText.innerText = "This person has already registered and has been rejected from approval. If this is not you or you thinkies this is an error, please contact andrew for this REALLY uh-oh momento.";
+            break;
+        case "USERREGISTERFAILED":
+            responseText.innerText = "registration failed for some reason: " + response.error;
+            break;
+        case "UNDEFINEDCREDENTIALS":
+            responseText.innerText = "Please enter a username and password! Stop sending empty requests >:((";
+            break;
+        case "ERROR":
+            responseText.innerText = "Error ocurred. Error memento: " + response.error;
+            break;
+        default: 
+            responseText.innerText = "unknown server response😅. Try again!";
     }
-    else if(response.message === "USERALREADYEXISTS"){
-        responseText.innerText = "This person has already registered. If this is not you, please contact andrew for this uh-oh momento.";
-    }
-    else if(response.message === "USERREGISTERFAILED"){
-        responseText.innerText = "registration failed for some reason: " + response.error;
-    }
-    else if(response.message === "UNDEFINEDCREDENTIALS"){
-        responseText.innerText = "Please enter a username and password! Stop sending empty requests >:((";
-    }
-    else if(response.message === "ERROR"){
-        responseText.innerText = "Error ocurred. Error memento: " + response.error;
-    }
-    else{
-        responseText.innerText = "unknown server response😅. Try again!";
-    }
+        
     
     alert(response.message);
     return response;

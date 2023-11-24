@@ -14,10 +14,12 @@ const dbregister = new sqlite3.Database("../fsnDB/userRegister.db", (err) => {
 dbregister.serialize(() => {
     dbregister.run(`CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    mode TEXT NOT NULL,
     usernameLower TEXT UNIQUE NOT NULL,
     username TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL
-    )`)
+    password TEXT NOT NULL,
+    rejected INTEGER
+    )`);//rejected is 0 if not rejected, 1 if rejected
 });
 
 async function checkExists(registerUser){
@@ -36,8 +38,11 @@ async function checkExists(registerUser){
             if(err){
                 reject({message: "ERROR", error: err.message});
             }
+            else if(row === undefined){
+                resolve(undefined);
+            }
             else{
-                resolve(row);
+                reject({message: "USERALREADYAPPROVED"});
             }
         });
     });
@@ -46,6 +51,7 @@ async function checkExists(registerUser){
 async function registerUserDB(req, res){
     const {username, password} = req.body;
     const usernameLower = username.toLowerCase();
+    const mode = "password";
     let exists;
     console.log("registering user " + username);
 
@@ -56,14 +62,21 @@ async function registerUserDB(req, res){
     try{
         exists = await checkExists(usernameLower);
     } catch(err){
-        return res.status(500).json(err);
+        if(err.message === "USERALREADYAPPROVED"){
+            return res.status(400).json({message: err.message});
+        }
+        return res.status(500).json({message: "ERROR", error: err.message});
     }
 
     if(exists !== undefined){
         if(exists.message === "ERROR"){//dont know how this would happen but just in case for redundancy
             return res.status(500).json(exists);
         }
-        return res.status(400).json({message: "USERALREADYEXISTS"});
+        if(exists.rejected === 1){
+            return res.status(400).json({message: "USERREJECTED"});
+        }else{
+            return res.status(400).json({message: "USERALREADYEXISTS"});
+        }
     }
 
     const hashpassword = await argon2.hash(password, {
@@ -73,7 +86,7 @@ async function registerUserDB(req, res){
     });
 
     try{
-        dbregister.run("INSERT INTO users (usernameLower, username, password) VALUES (?, ?, ?)", [usernameLower, username, hashpassword], (err) => {
+        dbregister.run("INSERT INTO users (mode, usernameLower, username, password, rejected) VALUES (?, ?, ?, ?, ?)", [mode, usernameLower, username, hashpassword, 0], (err) => {
             if (err){
                 return res.status(500).json({message: "USERREGISTERFAILED", error: err.message});
             }

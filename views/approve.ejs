@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body{
+                background-color: rgb(160, 255, 223);
+                font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            }
+            .user-interface{
+                border: 1px solid black;
+                padding: 10px;
+                margin: 10px;
+                background-color: rgb(149, 160, 255);
+            }
+            .user-interface > *{
+                margin: 10px;
+            }
+            button{
+                cursor: pointer;
+                font-family: inherit;
+            }
+            
+        </style>
+    </head>
+    <body>
+        <h1>approve the darn peepol</h1>
+        <div id="user-container"></div>
+        <div id="response-messages"></div>
+    </body>
+    <script>
+        const responseMessages = document.getElementById("response-messages");
+        function createUserInterface(user){
+            const userDiv = document.createElement("div");
+            userDiv.className = "user-interface";
+            userDiv.dataset.username = user.username;
+
+            const username = document.createElement("span");
+            username.className = "user-interface-username";
+            username.innerText = "Username: " + user.username;
+
+            const mode = document.createElement("span");
+            mode.className = "user-interface-mode";
+            mode.innerText = "Mode of login: " + user.mode;
+
+
+            const approveButton = document.createElement("button");
+            approveButton.dataset.mode = "approve";
+            approveButton.className = "user-interface-approve-button";
+            approveButton.innerText = "Approve";
+
+            const rejectButton = document.createElement("button");
+            rejectButton.dataset.mode = "reject";
+            rejectButton.className = "user-interface-reject-button";
+            rejectButton.innerText = "Reject";
+
+            const deleteButton = document.createElement("button");
+            deleteButton.dataset.mode = "delete";
+            deleteButton.className = "user-interface-delete-button";
+            deleteButton.innerText = "Delete";
+            //yawn
+
+            for(const element of [username, mode, approveButton, rejectButton, deleteButton]){
+                userDiv.appendChild(element);
+            }
+
+            return userDiv;
+        }
+        document.addEventListener("DOMContentLoaded", async () => {
+            const users = document.getElementById("user-container");
+
+            await fetch("../approve/getUsers", {
+                method: "GET",
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                redirect: "follow",
+                referrerPolicy: "no-referrer",
+            }).then((response) => {
+                return response.json();
+            }).then((response) => {
+                for(const user of response.events){
+                    if(user.rejected !== 1){
+                        const userDiv = createUserInterface(user);
+                        users.appendChild(userDiv);
+                    }
+                }
+            });
+            const buttons = [];
+            buttons.push(document.querySelectorAll(".user-interface-approve-button"));
+            buttons.push(document.querySelectorAll(".user-interface-reject-button"));
+            buttons.push(document.querySelectorAll(".user-interface-delete-button"));
+            buttons.forEach((buttonType) => {
+                buttonType.forEach((button) => {
+                    button.addEventListener("click", async (event) => {
+                        const username = event.target.parentElement.dataset.username;
+                        await fetch(`../approve/${button.dataset.mode}User`, {
+                            method: "POST",
+                            mode: "cors",
+                            cache: "no-cache",
+                            credentials: "include",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            redirect: "follow",
+                            referrerPolicy: "no-referrer",
+                            body: JSON.stringify({
+                                username: username,
+                            }),
+                        }).then((response) => {
+                            return response.json();
+                        }).then((response) => {
+                            let remove = true;
+                            for(message in response){
+                                remove = remove && response[message].message !== "ERROR";
+                            };
+
+                            if(remove){
+                                event.target.parentElement.remove();
+                            }
+
+                            for(message in response){
+                                const messageElement = document.createElement("p");
+                                messageElement.innerText = response[message].message;
+                                responseMessages.appendChild(messageElement);
+                            }
+                            responseMessages.appendChild(document.createElement("br"));
+                        });
+                    });
+                });
+            });
+        });
+        
+        
+        
+    </script>
+</html>

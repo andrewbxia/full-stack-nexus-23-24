@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500&amp;family=Major+Mono+Display&amp;display=swap" rel="stylesheet"> 
+        <style>
+            @keyframes rainbow-text{
+                0% {
+                    color: red;
+                }
+                16.67% {
+                    color: orange;
+                }
+                33.33% {
+                    color: yellow;
+                }
+                50% {
+                    color: rgb(0, 255, 0);
+                }
+                66.67% {
+                    color: rgb(0, 60, 255);
+                }
+                83.33% {
+                    color: rgb(140, 0, 255);
+                }
+                100% {
+                    color: rgb(255, 0, 242);
+                }
+            }
+            body{
+                text-align: center;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Verdana, sans-serif;
+                background-color: #8e8eff;
+            }
+            #members-container{
+                margin-left: auto;
+                margin-right: auto;
+                padding: 20px;
+                background-color: #7575ff;
+                border-radius: 5px;
+                width: fit-content;
+            }
+            .user-obj-element{
+                margin: 6px 3px;
+                padding: 5px;
+                border-radius: 5px;
+            }
+            .OMGTHATSME{
+                background-color: #ff7575;
+                animation: rainbow-text 1s infinite;
+                font-family: "Major Mono Display", monospace;
+            }
+            .OMGTHATSME::before{
+                font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+                content: "YOU FRFR ----> ";
+            }
+            .OMGTHATSME::after{
+                font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+                content: " <---- SO COOL OMG";
+            }
+            
+        </style>
+    </head>
+    <body>
+        <h1>Members</h1>
+        <div id="members-container" data-user="<%= locals.username %>">
+
+        </div>
+        
+    </body>
+    <script>
+        document.addEventListener("DOMContentLoaded", async function(){
+            const membersContainer = document.getElementById("members-container");
+            const username = membersContainer.dataset.user;
+            await fetch("../members/get", {
+                method: "GET",
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                redirect: "follow",
+                referrerPolicy: "no-referrer",
+            }).then((response) => {
+                return response.json();
+            }).then((response) => {
+                for(const category in response){
+                    for(const user of response[category]){
+                        const userDiv = document.createElement("div");
+                        console.log(user.username, username )
+                        if(user.username === username){
+                            userDiv.className += " OMGTHATSME";
+                        }
+                        for(const element in user){
+                            const userElement = document.createElement("span");
+                            userElement.className = "user-obj-element";
+                            userElement.innerText = element + ": " + user[element];
+                            userDiv.appendChild(userElement);
+                        }
+                        membersContainer.appendChild(userDiv);
+                    }
+                }
+            });
+        });
+    </script>
+</html>

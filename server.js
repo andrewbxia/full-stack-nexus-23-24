@@ -1,31 +1,39 @@
 const express = require("express");
+
 const loginRouter = require("./routes/loginRoutes.js");
 const registerRouter = require("./routes/registerRoutes.js");
 const assetsRouter = require("./routes/assetsRoutes.js");
 const calendarRouter = require("./routes/calendarRoutes.js");
+const projectsRouter = require("./routes/projectsRoutes.js");
+const joinRouter = require("./routes/joinRoutes.js");
+const profileRouter = require("./routes/profileRoutes.js");
+const approveRouter = require("./routes/approveRoutes.js");
+const membersRouter = require("./routes/membersRoutes.js");
+
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const path = require("path");
 const dotenv = require("dotenv");
 
-
-const {approveUserDB} = require("./serverscripts/approveUser.js");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const startDate = new Date();
 dotenv.config({ path: path.resolve(__dirname, "../files/.env")});
 let sess = {
     secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    expires:false,
+    resave: false,//resets every page load
+    saveUninitialized: false,//saves empty sessions
     cookie: { 
-        secure: true,
+        name: "session",
         maxAge: 3600000,
+        httpOnly: true,
+        sameSite: "Strict",
+        expires: false,
+        signed: true,
+        secure: process.env.HTTP_S === "true" ? true : false,
     }
 };
 
-//configure secrets
 
 
 //init express
@@ -35,20 +43,23 @@ const app = express();
 app.set("view engine", "ejs");
 app.set("trust proxy", 1);
 app.use((req, res, next) => {res.header('Access-Control-Allow-Methods', 'GET, POST'); next();});
-app.use(cookieParser());
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session(sess));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 //app.locals.BASE_URL = process.env.BASE_URL;
 //send pages
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
     console.log("hi here");
     console.log(req.ip);
-    console.log("session: " + req.session.cookie.username);
-    res.render("home", {username: req.session.cookie.username, starttime: startDate, starttimems: startDate.getTime(), BASE_URL: process.env.BASE_URL});
-    //console.log("successful");
+    console.log(req.session.user);
+    res.render("home", {
+        username: req.session.user, 
+        starttime: startDate, 
+        starttimems: startDate.getTime(), 
+        BASE_URL: process.env.BASE_URL, 
+        permissions: req.session.permissions});
 });
-
 
 app.get("/favicon.ico", (req, res) => {
     res.sendFile(`${__dirname}/favicon.ico`);
@@ -63,11 +74,15 @@ app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use("/assets", assetsRouter);
 app.use("/calendar", calendarRouter);
-
+app.use("/projects", projectsRouter);
+app.use("/join", joinRouter);
+app.use("/profile", profileRouter);
+app.use("/approve", approveRouter);
+app.use("/members", membersRouter);
 //send files
-app.post("/approveUser", approveUserDB);
 
-app.use((req, res, next) => {
+
+app.use((req, res) => {
     res.status(404).send("Sorry can't find that!");
 });
 app.listen(3000, () => {
