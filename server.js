@@ -58,7 +58,8 @@ app.get('/', async (req, res) => {
         starttime: startDate, 
         starttimems: startDate.getTime(), 
         BASE_URL: process.env.BASE_URL, 
-        permissions: req.session.permissions});
+        permissions: req.session.permissions
+    });
 });
 
 app.get("/favicon.ico", (req, res) => {
@@ -84,6 +85,7 @@ app.use("/members", membersRouter);
 
 app.use((req, res) => {
     res.status(404).send("Sorry can't find that!");
+    console.log("404");
 });
 app.listen(3000, () => {
     console.log("successful start at http://localhost:3000");
