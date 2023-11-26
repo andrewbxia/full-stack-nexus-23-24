@@ -51,38 +51,38 @@
                 <img id="header-icon" src="assets/icon-mini" draggable="false">
 
                 <span id="nav-menu-left">
-                    <span id="calendar" class="nav-button" data-info="calendar">
+                    <a id="calendar" class="nav-button" data-info="calendar" href="/calendar">
                         Calendar(placeholder)
-                    </span>
-                    <span id="student-projects" class="nav-button" data-info="projects">
+                    </a>
+                    <a id="student-projects" class="nav-button" data-info="projects" href="/projects">
                         Student-Made Projects
-                    </span>
+                    </a>
                 </span>
 
                 <span id="nav-menu-right">
                     <%if(locals.permissions === "admin"){ %>
-                        <span id="approve-button" class="nav-button" data-info="approve">
+                        <a id="approve-button" class="nav-button" data-info="approve" href="/approve">
                             Approve
-                        </span>
+                        </a>
                     <% } %>
                     <% if(locals.username){ %>
-                        <span id="members-button" class="nav-button" data-info="members">
+                        <a id="members-button" class="nav-button" data-info="members" href="/members">
                             Members
-                        </span>
-                        <span id="profile-button" class="nav-button" data-info="profile">
+                        </a>
+                        <a id="profile-button" class="nav-button" data-info="profile" href="/profile">
                             <%= username %>
-                        </span>
+                        </a>
                         
                     <%} else { %>
-                        <span id="register-button" class="nav-button" data-info="register">
+                        <a id="register-button" class="nav-button" data-info="register" href="/register">
                             Register
-                        </span>
-                        <span id="login-button" class="nav-button" data-info="login">
+                        </a>
+                        <a id="login-button" class="nav-button" data-info="login" href="/login">
                             Login
-                        </span>
-                        <span id="join-button" class="nav-button" data-info="join">
+                        </a>
+                        <a id="join-button" class="nav-button" data-info="join" href="/profile">
                             Join The Club!
-                        </span>
+                        </a>
                     <% } %>
                 </span>
             </div>

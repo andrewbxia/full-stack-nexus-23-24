@@ -1,12 +1,12 @@
 let time;
 const serverTime = document.getElementById("server-time"), starttimems = document.getElementById("server-start").dataset.starttimems;
 document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".nav-button").forEach((element) => {
-        element.addEventListener("click", (event) => {
-            console.log("clikc");
-            window.location.href = `${element.dataset.info}/`
-        });
-    });
+    // document.querySelectorAll(".nav-button").forEach((element) => {
+    //     element.addEventListener("click", (event) => {
+    //         console.log("clikc");
+    //         window.location.href = `${element.dataset.info}/`
+    //     });
+    // });
     periodic();
 });
 
