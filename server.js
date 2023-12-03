@@ -19,6 +19,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const startDate = new Date();
 dotenv.config({ path: path.resolve(__dirname, "../files/.env")});
+const BASE_URL = require("./BASE_URL.js");
 let sess = {
     secret: process.env.SESSION_SECRET,
     resave: false,//resets every page load
@@ -57,7 +58,7 @@ app.get('/', async (req, res) => {
         username: req.session.user, 
         starttime: startDate, 
         starttimems: startDate.getTime(), 
-        BASE_URL: process.env.BASE_URL, 
+        BASE_URL: BASE_URL, 
         permissions: req.session.permissions
     });
 });

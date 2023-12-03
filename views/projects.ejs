@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!-- <script>const BASE_URL =  </script> -->
+        <script>const BASE_URL = "<%= locals.BASE_URL %>"; const username = "<%= locals.username %>"; const permissions = "<%= locals.permissions %>";</script>
         <style>
             html {
                 background-color: rgb(200, 232, 240);
@@ -9,11 +11,93 @@
             
             body {
                 padding:10px;
+                font-size:1.5em;
             }
 
             header {
                 text-align: center;
             }
+
+            .user-projects-container{
+                display:flex;
+                user-select: none;
+                justify-content:unset;
+                width: 100%;
+                border:5px black solid;
+                overflow-x: hidden;
+                margin:5px;
+            }
+
+            .frame-container{
+                display:flex;
+            }
+            .project-frame{
+                /* margin:50px;*/
+                display:flex;
+                position:relative;
+                margin:30px 10px;
+                max-width: fit-content;
+                max-width:-moz-fit-content;
+                max-height:fit-content;
+                text-decoration: none;
+            }
+            
+            .project-frame > span {
+                position:absolute;
+                top:-11px;
+                left:0;
+                border:5px solid rgb(200,200,200);
+                padding: 3px 10px 3px 0;
+                z-index: 998;
+            }
+
+            .project-frame > img{
+                display:flex;
+                margin-top: 1em;
+                border:5px solid rgb(200,200,200);
+                user-select: none;
+                z-index:999;
+            }
+            .user-title{
+                margin:unset;
+                padding-left:3px;
+                padding-right:3px;
+                display:flex;
+                z-index:1000;
+                background-color:rgb(200, 232, 240);
+                border-right:5px black solid;
+            }
+            </style>
+            <% if(locals.username){ %>
+                <style>
+                    #upload-container {
+                        text-align: center;
+                        font-family: inherit;
+                    }
+                    #upload-form {
+                        display: inline-block;
+                    }
+                    #upload-form::before{
+                        font-size:1rem;
+                        content: "Upload a zip file of the whole project :D ->";
+                    }
+                    #file {
+                        width: 200px;
+                    }
+                    #user-project{
+                        background-color: royalblue;
+                    }
+                    .warning-text {
+                        color: red;
+                        font-size: inherit;
+                        
+                    }
+                    .delete-form {
+                        font-family:inherit;
+                        font-size: medium;
+                    }
+                </style>
+            <% } %>
         </style>
         <meta name="description" content="Student-Made Projects from FSN">
         <meta property="og:image" content="assets/icon?type=png">
@@ -29,11 +113,53 @@
             <% } else { %>
                 <a id="login-message" style="text-decoration: underline;" href="../login">Log in to upload your projects!</a>
             <% } %>
-            <p>nothing works rn lmao</p>
+            <p id="message-text">i hope this works lmao</p>
         </header>
+        <% if(locals.username){ %>
+            <div id="upload-container">
+                <p></p>
+                <form id="upload-form">
+                    <input type="file" name="file" id="file" accept=".zip" required>
+                    <p class="warning-text">please also input the homepage of your project (index.html, home.html, etc.) without spaces or slashes :)</p>
+                    <p class="warning-text">if the filename is not correct, the existing save of your project might go poof D:</p>
+                    <div id="homepage-input-container">
+                        <span>homepage filename:</span><input type="text" name="homePath" id="home-input" placeholder="index.html" required>
+                        <input type="submit" value="Upload">
+                    </div>
+                </form>
 
+            </div>
+        
+
+            <form id="delete-form" name="delete-form">
+                Delete a project:
+                <span>
+                    user:
+                    <select name="user" id="delete-form-user" required>
+                        
+                    </select>
+                    project:
+                    <select name="project" id="delete-form-project" required>
+                        
+                    </select>
+
+                    <button type="reset">Reset Selection</button>
+                    <button type="submit">Delete</button>
+                </span>
+
+            </form>
+
+        <% } %>
+        
         <div id="projects-container">
-
+            
+            loading...
         </div>
+        <br>
+        <br>
     </body>
+    <% if(locals.username){ %>
+        <script src="<%= locals.BASE_URL %>/assets/scripts/uploadProject.js" type="module"></script>
+    <% } %>
+    <script src="<%= locals.BASE_URL %>/assets/scripts/projects.js" type="module"></script>
 </html>
