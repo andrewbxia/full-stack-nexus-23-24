@@ -150,6 +150,7 @@ export function deleteFormUserChange(event){
     const deleteFormProject = document.getElementById("delete-form-project");
     deleteFormProject.innerHTML = "";
     const user = event ? event.target.value : username;
+    console.log(user);
     for(const project of userProjectMap.get(user)){
         console.log(project);
         const projectOption = document.createElement("option");
