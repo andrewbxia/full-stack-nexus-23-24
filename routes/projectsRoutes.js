@@ -60,14 +60,20 @@ router.get("/", (req, res) => {
     console.log("projects");
 });
 
+router.get("/getProjects", async (req, res) => {
+    return res.json({projects: getDirectoryHierarchy(path.resolve(__dirname + "../../../projects"))});
+});
+
+router.get("/manual", (req, res) => {
+    res.render("partials/projectManual", {BASE_URL: BASE_URL});
+});
+
 router.get("/:id/*", (req, res) => {
     res.sendFile(path.resolve(__dirname + "../../../projects/" + req.params.id + "/" + req.params[0]));
     console.log("projects/" + req.params.id);
 });
 
-router.get("/getProjects", async (req, res) => {
-    return res.json({projects: getDirectoryHierarchy(path.resolve(__dirname + "../../../projects"))});
-});
+
 
 router.post("/upload", upload.single("file"), async (req, res) => {
     const homePath = req.body.homePath;
