@@ -1,4 +1,5 @@
 console.log(BASE_URL);
+console.log(username);
 let files;
 
 let projTrack, projectList, userTitleWidth;
@@ -128,6 +129,7 @@ function populateDeleteForms(){
     const deleteFormUser = document.getElementById("delete-form-user");
     deleteFormUser.innerHTML = "";
     let users;
+
     if(permissions !== "admin"){
         users = [username];
     }
