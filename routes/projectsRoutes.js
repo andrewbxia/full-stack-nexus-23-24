@@ -7,6 +7,7 @@ const path = require("path");
 const BASE_URL = require("../BASE_URL.js");
 // console.log(BASE_URL)
 const puppeteer = require("puppeteer");
+const url = require("url");
 const multer = require("multer");
 const extract = require("extract-zip");
 const storage = multer.diskStorage({
@@ -117,7 +118,7 @@ router.post("/upload", upload.single("file"), async (req, res) => {
             console.log("file: " + homePath);
             fs.writeFileSync(path.join(exPath, "homePath.txt"), homePath);
             console.log(path.join(exPath, homePath))
-            await screenshot(path.join(exPath, homePath), path.join(exPath, "preview.png")).then(() => {
+            await screenshot(url.pathToFileURL(path.join(exPath, homePath)).href, path.join(exPath, "preview.png")).then(() => {
                 return res.status(200).json({ message: "Project uploaded successfully!" });
             });
             
