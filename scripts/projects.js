@@ -237,6 +237,9 @@ async function buildProjects(event){
             projectContainer.appendChild(userProjectContainer); 
         }
     }
+    if(!userProjectMap.has(username)){
+        userProjectMap.set(username, ["no projects yet!"]);
+    }
     projectList = document.querySelectorAll(".user-projects-container");
     projTrack = document.querySelectorAll(".frame-container");
     projectList.forEach((element) => {
