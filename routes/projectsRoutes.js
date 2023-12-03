@@ -161,7 +161,7 @@ router.post("/delete", async(req, res) => {
     if(req.session.permissions !== "admin" && req.session.user !== user) {
         return res.status(401).json({message: "ERROR", error: "You do not have permission to delete this project"});
     }
-
+    const dirPath = path.resolve(__dirname + "../../../projects/" + user);
     const projectPath = path.resolve(__dirname + "../../../projects/" + user + "/" + project);
     console.log("deleting " + projectPath + "for" + user);
     console.log(req.session.user + ": " + req.session.permissions);
@@ -172,6 +172,11 @@ router.post("/delete", async(req, res) => {
 
     fsExtra.emptyDirSync(projectPath);
     fsExtra.rmdirSync(projectPath);
+
+    if(fs.readdirSync(dirPath).length === 0) {
+        fsExtra.rmdirSync(dirPath);
+    }
+
     res.status(200).json({message: "Project deleted successfully!"});
 });
 
