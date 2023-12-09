@@ -204,7 +204,7 @@ router.post("/upload", upload.single("file"), async (req, res) => {
         return res.status(400).json({message: "ERROR", error: "file type not allowed! please upload a zip file"});
     }
     //extra preemptive size check
-    if(req.file.size > uploadLimit) {
+    if(req.file.size > uploadLimit && req.session.permissions !== "admin") {
         return res.status(400).json({message: "ERROR", error: "file is too biggies for 7 dollar/month server. tip: upload images to image hosting site and link them on your page instead!"});
     }
 
@@ -257,7 +257,7 @@ router.post("/upload", upload.single("file"), async (req, res) => {
         console.log("uncompressed size: " + fileSize);
         console.log("file/folder name: " + fileName);
 
-        if(fileSize > uploadLimit) {
+        if(fileSize > uploadLimit && req.session.permissions !== "admin") {
             fsExtra.removeSync(tempUserDir);
             return res.status(400).json({message: "ERROR", error: "file is too biggies for 7 dollar/month server. tip: upload images to image hosting site and link them on your page instead!"});
         }
