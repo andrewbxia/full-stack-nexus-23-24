@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.log(response.password);
             if(response.message === "SUCCESSFULLOGIN"){
                 setTimeout(() => {
-                    window.location.replace("/projects");
+                    window.location.replace("/");
                 }, 1000);
             }
         });
