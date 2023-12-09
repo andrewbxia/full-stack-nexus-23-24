@@ -11,7 +11,6 @@ const puppeteer = require("puppeteer");
 const url = require("url");
 const multer = require("multer");
 const extract = require("extract-zip");
-const { type } = require("os");
 const storage = multer.diskStorage({
     // destination: function(req, file, cb) {
     //     cb(null, path.resolve(__dirname + "../../../projects"));
@@ -141,7 +140,7 @@ router.get("/getProjects", async (req, res) => {
 });
 
 router.get("/manual", (req, res) => {
-    res.render("partials/projectManual", {BASE_URL: BASE_URL});
+    res.render("partials/projectGuide", {BASE_URL: BASE_URL});
 });
 
 router.get("/download", (req, res) => {
@@ -190,19 +189,19 @@ router.post("/upload", upload.single("file"), async (req, res) => {
     
     //validate file
     if(!req.file){
-        return res.status(400).json({message: "ERROR", error: "No file uploaded!"});
+        return res.status(400).json({message: "ERROR", error: "no file uploaded!"});
     }
 
     //check for extended file types and if it is zip
     const fileExtArr = req.file.originalname.split(".");
     console.log(fileExtArr);
     if(fileExtArr.length > 2) {
-        return res.status(400).json({message: "ERROR", error: "File type not allowed!"});
+        return res.status(400).json({message: "ERROR", error: "file type not allowed!"});
     }
     let fileName = fileExtArr[0], fileExt = fileExtArr[1];
     console.log(!allowedFiles.includes(fileExt));
     if(!allowedFiles.includes(fileExt)) {
-        return res.status(400).json({message: "ERROR", error: "File type not allowed!"});
+        return res.status(400).json({message: "ERROR", error: "file type not allowed! please upload a zip file"});
     }
 
     //logg useless stats
@@ -331,13 +330,13 @@ router.post("/delete", async(req, res) => {
 
     //check deletion ok or nono
     if(!user || !project) {
-        return res.status(400).json({message: "ERROR", error: "Missing user or project"});
+        return res.status(400).json({message: "ERROR", error: "missing user or project"});
     }
     if(project === "no projects yet!"){
         return res.status(400).json({message: "ERROR", error: "no projects yet!"});
     }
     if(req.session.permissions !== "admin" && req.session.user !== user) {
-        return res.status(401).json({message: "ERROR", error: "You do not have permission to delete this project"});
+        return res.status(401).json({message: "ERROR", error: "you do not have permission to delete this project"});
     }
     if(project.split(".").length > 2) {
         return res.status(400).json({message: "ERROR", error: "invalid deletion name"});
