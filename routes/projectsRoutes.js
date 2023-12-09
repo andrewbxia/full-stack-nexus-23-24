@@ -203,6 +203,10 @@ router.post("/upload", upload.single("file"), async (req, res) => {
     if(!allowedFiles.includes(fileExt)) {
         return res.status(400).json({message: "ERROR", error: "file type not allowed! please upload a zip file"});
     }
+    //extra preemptive size check
+    if(req.file.size > uploadLimit) {
+        return res.status(400).json({message: "ERROR", error: "file is too biggies for 7 dollar/month server. tip: upload images to image hosting site and link them on your page instead!"});
+    }
 
     //logg useless stats
     console.log("compressed size: " + req.file.size);
