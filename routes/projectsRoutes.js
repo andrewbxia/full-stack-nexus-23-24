@@ -198,7 +198,7 @@ router.post("/upload", upload.single("file"), async (req, res) => {//rewriting t
     if(fileExtArr.length > 2) {
         return res.status(400).json({message: "ERROR", error: "File type not allowed!"});
     }
-    const fileName = fileExtArr[0], fileExt = fileExtArr[1];
+    let fileName = fileExtArr[0], fileExt = fileExtArr[1];
     console.log(!allowedFiles.includes(fileExt));
     if(!allowedFiles.includes(fileExt)) {
         return res.status(400).json({message: "ERROR", error: "File type not allowed!"});
@@ -236,9 +236,13 @@ router.post("/upload", upload.single("file"), async (req, res) => {//rewriting t
         //create and extract into temp dir
         createDirs([tempRootDir, tempUserDir, tempUserProjectDir]);
         await extract(zipPath, {dir: tempUserProjectDir});
+
+        //update fileName to be correct with dir
+        fileName = path.basename(fs.readdirSync(tempUserProjectDir)[0]);
+
         console.log(zipPath)
         //set tempProjectLoc to correct nesting whether dir or file
-        console.log(fs.existsSync(path.join(tempUserProjectDir, fileName)))
+        console.log(fs.existsSync(path.join(tempUserProjectDir, fileName)));
         const tempProjectLoc = fs.existsSync(path.join(tempUserProjectDir, fileName)) ? path.join(tempUserProjectDir, fileName) : path.join(tempUserProjectDir, fs.readdirSync(tempUserProjectDir)[0]);
         const tempProjectStats = fs.statSync(tempProjectLoc);
 

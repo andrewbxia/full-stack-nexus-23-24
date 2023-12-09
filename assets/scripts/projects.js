@@ -215,14 +215,13 @@ async function buildProjects(event){
             projectFrameText.innerText = project;
             projectFrame.appendChild(projectFrameText);
 
-            projectFrame.setAttribute("ondragstartr", `console.log("drae")`);
             projectFrame.classList.add("project-frame");
             projectFrame.setAttribute("draggable", "false");
-            projectFrame.setAttribute("data-url", `${BASE_URL}/projects/${user}/${project}/` + await fetch(`${BASE_URL}/projects/${user}/${project}/homePath.txt`, {method: "GET"}).then((response) => {
+            projectFrame.href = `${BASE_URL}/projects/${user}/${project}/` + await fetch(`${BASE_URL}/projects/${user}/${project}/homePath.txt`, {method: "GET"}).then((response) => {
                 return response.text();
-            }));
+            });
 
-            downloadButton.innerHTML = `<img src="assets/buttons/download.svg" draggable="false">`;
+            downloadButton.innerHTML = `<img src="${BASE_URL}/assets/buttons/download.svg" draggable="false">`;
             downloadButton.classList.add("download-project-button");
             downloadButton.href = `${BASE_URL}/projects/download/?user=${user}&project=${project}/`;
             downloadButton.download = `${BASE_URL}/projects/download/?user=${user}&project=${project}/`;
