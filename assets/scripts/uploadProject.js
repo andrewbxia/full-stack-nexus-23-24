@@ -21,44 +21,49 @@ async function submitProject(event){
     //
     console.log(formData);
     //console.log(data);
-    const response = await fetch(BASE_URL + "/projects/upload", {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "include",
-        // headers: {
-        //     "Content-Type": "multipart/form-data",
-        // },
-        redirect: "follow",
-        referrerPolicy: "no-referrer",
-        body: formData,
-    }).then((response) => {
-        return response.json();
-    //     const reader = response.body.getReader();
-    //     return new ReadableStream({
-    //         start(controller) {
-    //             return pump();
-    //             function pump(){
-    //                 return reader.read().then(({done, value}) => {
-    //                     if(done){
-    //                         controller.close();
-    //                         return;
-    //                     }
-    //                     controller.enqueue(value);
-    //                     return pump();
-    //                 });
-    //             }
-    //         }
-    //     });
-    // }).then(stream => new Response(stream).blob()).then(async (dataStream) => {
-    //     setUploadStatus(await dataStream.json());
-    });
+    try{
+        const response = await fetch(BASE_URL + "/projects/upload", {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "include",
+            // headers: {
+            //     "Content-Type": "multipart/form-data",
+            // },
+            redirect: "follow",
+            referrerPolicy: "no-referrer",
+            body: formData,
+        }).then((response) => {
+            return response.json();
+        //     const reader = response.body.getReader();
+        //     return new ReadableStream({
+        //         start(controller) {
+        //             return pump();
+        //             function pump(){
+        //                 return reader.read().then(({done, value}) => {
+        //                     if(done){
+        //                         controller.close();
+        //                         return;
+        //                     }
+        //                     controller.enqueue(value);
+        //                     return pump();
+        //                 });
+        //             }
+        //         }
+        //     });
+        // }).then(stream => new Response(stream).blob()).then(async (dataStream) => {
+        //     setUploadStatus(await dataStream.json());
+        });
 
-    setUploadStatus(response);
-    await updateProjects(true).then( () => {
-        submitForm.style.visibility = "visible";
-    });
-    
+        setUploadStatus(response);
+        await updateProjects(true).then( () => {
+            submitForm.style.visibility = "visible";
+        });
+    }
+    catch(err){
+        setUploadStatus({message: "ERROR", error: err.message});
+    }
+        
 }
 
 async function deleteProject(event){
