@@ -5,6 +5,19 @@
         <title>Project Gallery</title>
         <meta name="description" content="A place to view what people have created, or for members to upload their own.">
         <script>const BASE_URL = "<%= locals.BASE_URL %>"; const username = "<%= locals.username %>"; const permissions = "<%= locals.permissions %>";</script>
+        <script>
+            async function downloadProject(event){
+                event.preventDefault();
+            
+                const projectElement = event.currentTarget;
+                const {project, user} = projectElement.dataset;
+                const fetchUrl = `${BASE_URL}/projects/download?project=${project}&user=${user}`;
+            
+                await fetch(fetchUrl, {
+                    method: "GET",
+                });
+            }
+        </script>
         <style>
             html {
                 background-color: rgb(200, 232, 240);
@@ -42,6 +55,7 @@
                 max-width:-moz-fit-content;
                 max-height:fit-content;
                 text-decoration: none;
+                user-select: none;
             }
             
             .project-frame > span {
@@ -65,9 +79,21 @@
                 padding-left:3px;
                 padding-right:3px;
                 display:flex;
-                z-index:1000;
+                z-index:1001;
                 background-color:rgb(200, 232, 240);
                 border-right:5px black solid;
+            }
+            .download-project-button{
+                position:absolute;
+                top:34.5px;/*10.5px + height(24px)*/
+                right:10.5px;
+                z-index:1000;
+            }
+            .download-project-button > img{
+                background-color: rgb(220, 239, 255);
+                padding:4px;
+                border: 2.5px solid rgb(0, 180, 72);
+                border-radius: 10px;
             }
             </style>
             <% if(locals.username){ %>
@@ -146,21 +172,19 @@
                     <select name="project" id="delete-form-project" required>
                         
                     </select>
-
                     <button type="reset">Reset Selection</button>
                     <button type="submit">Delete</button>
                 </span>
-
             </form>
-
         <% } %>
         
         <div id="projects-container">
-            
             loading...
         </div>
+
         <br>
         <br>
+
     </body>
     <% if(locals.username){ %>
         <script src="<%= locals.BASE_URL %>/assets/scripts/uploadProject.js" type="module"></script>

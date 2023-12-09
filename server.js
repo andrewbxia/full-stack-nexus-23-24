@@ -1,5 +1,6 @@
 const express = require("express");
 
+//routers
 const loginRouter = require("./routes/loginRoutes.js");
 const registerRouter = require("./routes/registerRoutes.js");
 const assetsRouter = require("./routes/assetsRoutes.js");
@@ -10,11 +11,11 @@ const profileRouter = require("./routes/profileRoutes.js");
 const approveRouter = require("./routes/approveRoutes.js");
 const membersRouter = require("./routes/membersRoutes.js");
 
+//modules
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const path = require("path");
 const dotenv = require("dotenv");
-
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const startDate = new Date();
@@ -36,7 +37,6 @@ let sess = {
 };
 
 
-
 //init express
 const app = express();
 
@@ -48,7 +48,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session(sess));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-//app.locals.BASE_URL = process.env.BASE_URL;
+
 //send pages
 app.get('/', async (req, res) => {
     console.log("hi here");
@@ -81,8 +81,6 @@ app.use("/join", joinRouter);
 app.use("/profile", profileRouter);
 app.use("/approve", approveRouter);
 app.use("/members", membersRouter);
-//send files
-
 
 app.use((req, res) => {
     res.status(404).send("Sorry can't find that!");

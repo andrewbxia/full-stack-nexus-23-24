@@ -73,6 +73,7 @@ function handleMouseClick(event){
 function handleMouseMove(event){
     projTrack.forEach((element) => {
         if(element.dataset.prevX === "0" || Date.now() - (element.dataset.pressed) < 90){return;}
+        // element.href = "";
         document.body.style.cursor = "grabbing";
         console.log(event.type);
         element.dataset.pressed = Date.now();
@@ -91,6 +92,7 @@ function handleMouseMove(event){
 
 function handleMouseOut(event){
     projTrack.forEach((element) => {
+        // element.href = element.dataset.url;
         if(element.dataset.prevX === "0"){return;}
         if(event.type !== "touchend"){
             element.dataset.posX = event.clientX;
@@ -208,20 +210,29 @@ async function buildProjects(event){
             numberProjects++;
             const projectFrame = document.createElement("a");
             const projectFrameText = document.createElement("span");
+            const downloadButton = document.createElement("a");
 
             projectFrameText.innerText = project;
             projectFrame.appendChild(projectFrameText);
 
+            projectFrame.setAttribute("ondragstartr", `console.log("drae")`);
             projectFrame.classList.add("project-frame");
             projectFrame.setAttribute("draggable", "false");
-            projectFrame.href = `${BASE_URL}/projects/${user}/${project}/` + await fetch(`${BASE_URL}/projects/${user}/${project}/homePath.txt`, {method: "GET"}).then((response) => {
+            projectFrame.setAttribute("data-url", `${BASE_URL}/projects/${user}/${project}/` + await fetch(`${BASE_URL}/projects/${user}/${project}/homePath.txt`, {method: "GET"}).then((response) => {
                 return response.text();
-            });
+            }));
+
+            downloadButton.innerHTML = `<img src="assets/buttons/download.svg" draggable="false">`;
+            downloadButton.classList.add("download-project-button");
+            downloadButton.href = `${BASE_URL}/projects/download/?user=${user}&project=${project}/`;
+            downloadButton.download = `${BASE_URL}/projects/download/?user=${user}&project=${project}/`;
+
             const projectFrameImg = document.createElement("img");
 
             projectFrameImg.src = `${BASE_URL}/projects/${user}/${project}/preview.png`;
             projectFrameImg.setAttribute("draggable", "false");
             
+            projectFrame.appendChild(downloadButton);
             projectFrame.appendChild(projectFrameImg);
             frameContainer.appendChild(projectFrame);
 

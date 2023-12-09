@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="description" content="The official login website of Full-Stack Nexus at CRHS, a web development club for beginners!">
+        <meta property="og:image" content="assets/icon?type=png">
+        <link rel="stylesheet" type="text/css" href="./style.css">
+    </head>
+    <body>
+        <div id="titles">
+            <h1>Login Page</h1>
+            <h3>Welcome Back!</h3>
+            <!-- <% if(locals.redirect){ %>
+                <h2>Sent from redirect from /<%= locals.redirect %></h2>
+            <% } %>
+            <% if(locals.error){ %>
+                <h2 style="color:red;">error ocurred: <%= locals.error %></h2>
+            <% } %>
+            <% if(locals.message){ %>
+                <h2>reason: <%= locals.message %></h2>
+            <% } %> -->
+        </div>
+        <p id="response-message"></p>
+        <div>
+            <form id="login-form">
+                <div id="input-section">
+                    <input type="username" id="username" placeholder="Username: " type="text" name="username" required>
+                    <input type="password" id="password" placeholder="Password: " type="text" name="password" required>
+                </div>
+                <div id="submit-section">
+                    <button type="submit" id="submit">Login</button>
+                </div>
+            </form>
+        </div>
+    </body>
+    <script src="./login.js"></script>
+</html>
