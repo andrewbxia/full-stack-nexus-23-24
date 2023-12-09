@@ -294,6 +294,7 @@ router.post("/upload", upload.single("file"), async (req, res) => {
         // fsExtra.moveSync(zipPath, path.join(projectDest, path.basename(zipPath)));
         // fs.unlinkSync(zipPath);
         //yay
+        console.log("complete");
         return res.status(200).json({message: "project uploaded successfully!"});
     }
     catch(err){
