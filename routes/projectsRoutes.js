@@ -217,9 +217,8 @@ router.post("/upload", upload.single("file"), async (req, res) => {
     const homePath = req.body.homePath;
 
     //path to zip file
-    console.log(req.file.path);
     const zipPath = req.file.path;
-
+    console.log(zipPath);
     //TEMP PROJECTS DIR
     //tempProjects tempProjects
     const tempRootDir = path.join(__dirname, "../../tempProjects");
@@ -244,7 +243,6 @@ router.post("/upload", upload.single("file"), async (req, res) => {
         //update fileName to be correct with dir
         fileName = path.basename(fs.readdirSync(tempUserProjectDir)[0]);
 
-        console.log(zipPath)
         //set tempProjectLoc to correct nesting whether dir or file
         console.log(fs.existsSync(path.join(tempUserProjectDir, fileName)));
         const tempProjectLoc = fs.existsSync(path.join(tempUserProjectDir, fileName)) ? path.join(tempUserProjectDir, fileName) : path.join(tempUserProjectDir, fs.readdirSync(tempUserProjectDir)[0]);
