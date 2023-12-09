@@ -1,12 +1,15 @@
 import { updateProjects, deleteFormUserChange } from "./projects.js";
 let messageText, submitForm, deleteForm;
 
-function setUploadStatus(status){
+async function setUploadStatus(status){
     const {message, error} = status;
     messageText.innerText = message;
     if(message === "ERROR"){
         messageText.innerHTML += `<p class="warning-text">${error}</p>`;
     }
+    await updateProjects(true).then( () => {
+        submitForm.style.visibility = "visible";
+    });
 }
 
 async function submitProject(event){
@@ -55,13 +58,11 @@ async function submitProject(event){
         //     setUploadStatus(await dataStream.json());
         });
 
-        setUploadStatus(response);
-        await updateProjects(true).then( () => {
-            submitForm.style.visibility = "visible";
-        });
+        await setUploadStatus(response);
+        
     }
     catch(err){
-        setUploadStatus({message: "ERROR", error: err.message});
+        await setUploadStatus({message: "ERROR", error: err.message});
     }
         
 }
