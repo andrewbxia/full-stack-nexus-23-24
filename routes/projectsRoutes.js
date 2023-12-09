@@ -180,7 +180,8 @@ router.get("/:id/*", (req, res, next) => {
 
 
 
-router.post("/upload", upload.single("file"), async (req, res) => {//rewriting this api from scratch part 3
+router.post("/upload", upload.single("file"), async (req, res) => {
+    //🎉🎉🎉 rewriting this api from scratch part 3 🎉🎉🎉
 
     //validate user
     if(!req.session.user) {
