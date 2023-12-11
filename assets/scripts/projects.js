@@ -107,7 +107,7 @@ function handleMouseOut(event){
 
 function handleScrollEvent(event){
     //event.preventDefault();
-    if(mode === "touch"){document.querySelector("body").innerHTML = "";}
+    if(mode === "touch"){document.getElementById("test").innerHTML = "lkajlsfjlasj;fsjlsfkjasf;jkl";}
     if(Date.now() - pastScroll < 90){event.preventDefault();return;}
     
     if(event.deltaX !== 0){
