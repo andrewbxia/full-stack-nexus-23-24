@@ -98,7 +98,7 @@ function handleMouseOut(event){
         // element.href = element.dataset.url;
         if(element.dataset.prevX === "0"){return;}
         if(event.type !== "touchend"){
-            document.getElementById("test").innerText = "not touch"; 
+            document.getElementById("test").innerText = event.type; 
             element.dataset.posX = event.clientX;
             const offset = calcOffset(element);
             element.animate({
