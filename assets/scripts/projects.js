@@ -28,7 +28,7 @@ function calcOffset(element, scroll = false){
     if(upper - lower < width){/*in case someone has a lot of projects*/
         upper = lower + width;
     }
-     let offset = scrollMultiplier * deltaX * multi * (1/*event.type === "touchmove" ? 0.55 : 1*/) + existingMargin;
+     let offset = scrollMultiplier * deltaX * multi * (-1/*event.type === "touchmove" ? 0.55 : 1*/) + existingMargin;
     offset = Math.max(offset, userTitleWidth - width);
     offset = Math.min(offset, upper);
     return offset;
