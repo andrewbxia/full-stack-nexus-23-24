@@ -78,9 +78,12 @@ function handleMouseMove(event){
         element.dataset.pressed = Date.now();
         if(event.type !== "touchmove"){
             element.dataset.posX = event.clientX;
+            document.getElementById("test").innerText = element.dataset.posX;
+            console.log(element.dataset.posX);
         }
         else{
             element.dataset.posX = event.touches[0].clientX;
+            document.getElementById("test").innerText = element.dataset.posX;
             console.log(element.dataset.posX);
         }
         const offset = calcOffset(element);
@@ -218,7 +221,7 @@ async function buildProjects(event){
         element.removeEventListener("mousedown", handleMouseClick); 
         element.removeEventListener("touchstart", handleMouseClick);
         element.removeEventListener("wheel", handleScrollEvent);
-        //element.removeEventListener("scrollend", handleScrollOn);
+        element.removeEventListener("scrollend", handleScrollOn);
     });
 
     const projectContainer = document.getElementById("projects-container");
@@ -309,7 +312,7 @@ async function buildProjects(event){
         element.addEventListener("mousedown", handleMouseClick); 
         element.addEventListener("touchstart", handleMouseClick);
         element.addEventListener("wheel", handleScrollEvent);
-        //element.addEventListener("scrollend", handleScrollOn);
+        element.addEventListener("scrollend", handleScrollOn);
     });
 
     if(username){deleteFormUserChange();}
