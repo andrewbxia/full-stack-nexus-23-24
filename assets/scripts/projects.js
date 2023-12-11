@@ -83,7 +83,7 @@ function handleMouseMove(event){
         }
         else{
             element.dataset.posX = event.touches[0].clientX;
-            document.getElementById("test").innerText = event.type;
+            document.getElementById("test").innerText = event.touches[0].clientX;
             console.log(element.dataset.posX);
         }
         const offset = calcOffset(element);
