@@ -108,7 +108,7 @@ function handleMouseOut(event){
 
 function handleScrollEvent(event){
     //event.preventDefault();
-    if()
+    
     if(Date.now() - pastScroll < 90){event.preventDefault();return;}
     
     if(event.deltaX !== 0){
