@@ -83,7 +83,7 @@ function handleMouseMove(event){
         }
         else{
             element.dataset.posX = event.touches[0].clientX;
-            document.getElementById("test").innerText = element.dataset.posX;
+            document.getElementById("test").innerText = calcOffset(element);
             console.log(element.dataset.posX);
         }
         const offset = calcOffset(element);
@@ -98,6 +98,7 @@ function handleMouseOut(event){
         // element.href = element.dataset.url;
         if(element.dataset.prevX === "0"){return;}
         if(event.type !== "touchend"){
+            document.getElementById("test").innerText = "not touch"; 
             element.dataset.posX = event.clientX;
             const offset = calcOffset(element);
             element.animate({
