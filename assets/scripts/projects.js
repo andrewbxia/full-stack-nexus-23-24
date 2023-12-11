@@ -68,6 +68,7 @@ function handleMouseClick(event){
 }
 
 function handleMouseMove(event){
+    event.preventDefault();
     projTrack.forEach((element) => {
         if(element.dataset.prevX === "0" || Date.now() - (element.dataset.pressed) < 90){return;}
         // element.href = "";
