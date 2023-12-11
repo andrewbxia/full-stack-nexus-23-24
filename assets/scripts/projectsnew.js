@@ -2,28 +2,39 @@ console.log(BASE_URL);
 console.log(username);
 let files;
 
-let projTrack, projectList, userTitleWidth;
+let projTrack, projectList, userTitleWidth, pastScroll = Date.now(), pastScrollStart = Date.now();
 const userProjectMap = new Map();
 //deleteForm given by uploadProject.js
 
-function calcOffset(element){
-    const posX = element.dataset.posX;
-    const prevX = element.dataset.prevX;
+function calcOffset(element, scroll = false){
+    let posX, prevX, deltaX, existingMargin, scrollMultiplier;
+    if(!scroll){
+        posX = element.dataset.posX;
+        prevX = element.dataset.prevX;
+        deltaX = posX - prevX;
+        existingMargin = parseFloat(element.dataset.prevMargin);
+        scrollMultiplier = 1;
+    }
+    else{
+        deltaX = -event.deltaX;
+        existingMargin = parseFloat(window.getComputedStyle(element).marginLeft);
+        scrollMultiplier = 3;
+    }
+
     const multi = element.dataset.multi;
-    const existingMargin = parseFloat(element.dataset.prevMargin);
     const width = parseFloat(window.getComputedStyle(element).width);
     let upper = window.innerWidth - 300;
     const lower = userTitleWidth - width;
     if(upper - lower < width){/*in case someone has a lot of projects*/
         upper = lower + width;
     }
-    let offset = (posX - prevX) * multi + existingMargin;
+    let offset = scrollMultiplier * deltaX * multi * (1/*event.type === "touchmove" ? 0.55 : 1*/) + existingMargin;
     offset = Math.max(offset, userTitleWidth - width);
     offset = Math.min(offset, upper);
     return offset;
 }
 
-function setMaxWidthTitle(){
+function setMaxWidthTitle(event){
     console.log("change");
     let maxWidthTitle = 0;
     document.querySelectorAll(".user-title").forEach((element) => {
@@ -35,38 +46,25 @@ function setMaxWidthTitle(){
         element.style.maxWidth = maxWidthTitle + "px";//needed as gets affected by panning
     });
     
-    
+    userTitleWidth = parseInt(window.getComputedStyle(document.querySelector(".user-title")).width);
+
     projTrack.forEach((element) => {
         element.dataset.pressed = Date.now();
-        let existingMargin = parseInt(window.getComputedStyle(element).marginLeft);
-        const width = parseInt(window.getComputedStyle(element).width);
-        const lower = userTitleWidth - width;
-        let upper = window.innerWidth - 300;
-        if(upper - lower < width){/*in case someone has a lot of projects*/
-            upper = lower + width;
-        }
-        existingMargin = Math.max(existingMargin, lower);
-        existingMargin = Math.min(existingMargin, upper);
-        //offset = Math.min(offset, Math.max(upper, )/*in case someone has a lot of projects*/);
+        const offset = calcOffset(element);
         element.animate({
-            marginLeft: `${existingMargin}px`,
+            marginLeft: `${offset}px`,
         }, {duration: 500, fill: "forwards"});
     });
 }
 
 function handleMouseClick(event){
-    console.log(event.type)
+    console.log(event.type);
     projTrack.forEach((element) => {
-        if(event.type !== "touchstart"){
-            element.dataset.posX = event.clientX;
-            element.dataset.prevX = element.dataset.posX;
-        }
-        else{
-            element.dataset.posX = event.touches[0].clientX;
-            element.dataset.prevX = element.dataset.posX;
-        }
+        element.dataset.posX = event.type !== "touchstart" ? event.clientX : event.touches[0].clientX;
+
+        element.dataset.prevX = element.dataset.posX;
         element.dataset.prevMargin = window.getComputedStyle(element).marginLeft;
-        element.dataset.multi = Math.random() + 1;
+        element.dataset.multi = Math.random() + 1.0;
     });
 }
 
@@ -79,14 +77,18 @@ function handleMouseMove(event){
         element.dataset.pressed = Date.now();
         if(event.type !== "touchmove"){
             element.dataset.posX = event.clientX;
+            document.getElementById("test").innerText = element.dataset.posX;
+            console.log(element.dataset.posX);
         }
         else{
             element.dataset.posX = event.touches[0].clientX;
+            document.getElementById("test").innerText = event.touches[0].clientX;
+            console.log(element.dataset.posX);
         }
         const offset = calcOffset(element);
         element.animate({
             marginLeft: `${offset}px`,
-        }, {duration: 1000, fill: "forwards", easing: "ease"});
+        }, {duration: 500, fill: "forwards", easing: "ease"});
     });
 }
 
@@ -95,15 +97,67 @@ function handleMouseOut(event){
         // element.href = element.dataset.url;
         if(element.dataset.prevX === "0"){return;}
         if(event.type !== "touchend"){
-            element.dataset.posX = event.clientX;
+            document.getElementById("test").innerText = event.type; 
+            // element.dataset.posX = event.clientX || event.touches[0].clientX;
             const offset = calcOffset(element);
             element.animate({
                 marginLeft: `${offset}px`,
-            }, {duration: 1500, fill: "forwards", easing: "ease-in-out"});
+            }, {duration: 1000, fill: "forwards", easing: "ease"});
         }
         document.body.style.cursor = "default";
         console.log(event.type);
         element.dataset.prevX = 0;
+    });
+}
+
+function handleScrollEvent(event){
+    //event.preventDefault();
+    if(Date.now() - pastScroll < 90){event.preventDefault();return;}
+    
+    if(event.deltaX !== 0){
+        event.preventDefault();
+        if(Date.now() - pastScrollStart > 400 || (projTrack[0].dataset.prevDelta > 0 !== event.deltaX > 0)){
+            handleScrollOn(event);
+        }
+        pastScrollStart = Date.now();
+        
+    }
+    else{//scroll up/down
+        projTrack.forEach((element) => {
+            element.dataset.prevMargin = window.getComputedStyle(element).marginLeft;
+            element.dataset.multi = Math.random() + 1.0;
+        });
+        return;
+    }
+
+
+    console.log("scroll");
+    pastScroll = Date.now();
+
+    projTrack.forEach((element) => {
+        const offset = calcOffset(element, true);
+        element.dataset.prevDelta = event.deltaX;
+        element.animate({
+            marginLeft: `${offset}px`,
+        }, {duration: 90, fill: "forwards", easing: "linear"});
+    });
+}
+
+function handleScrollOn(event){
+    console.log("scrollon");
+    projTrack.forEach((element) => {
+        element.dataset.prevMargin = window.getComputedStyle(element).marginLeft;
+        element.dataset.multi = Math.random() + 1.0;
+    });
+}
+
+function handleScrollOff(event){
+    console.log("scrollend");
+    projTrack.forEach((element) => {
+        element.dataset.multi = Math.random() + 1.0;
+        element.animate({
+            marginLeft: `${2 * calcOffset(element)}px`,
+        }, {duration: 200, fill: "forwards", easing: "ease-out"});
     });
 }
 
@@ -165,6 +219,8 @@ async function buildProjects(event){
     projectList.forEach((element) => {
         element.removeEventListener("mousedown", handleMouseClick); 
         element.removeEventListener("touchstart", handleMouseClick);
+        element.removeEventListener("wheel", handleScrollEvent);
+        element.removeEventListener("scrollend", handleScrollOn);
     });
 
     const projectContainer = document.getElementById("projects-container");
@@ -184,8 +240,9 @@ async function buildProjects(event){
         frameContainer.dataset.prevX = 0;
         frameContainer.dataset.posX = 0;
         frameContainer.dataset.prevMargin = 0;
-        frameContainer.dataset.multi = 1.0;
+        frameContainer.dataset.multi = Math.random() + 1.0;
         frameContainer.dataset.pressed = Date.now();
+        frameContainer.dataset.prevDelta = 0;
 
         if(user === username){
             userTitle.setAttribute("id", "user-project");
@@ -215,14 +272,13 @@ async function buildProjects(event){
             projectFrameText.innerText = project;
             projectFrame.appendChild(projectFrameText);
 
-            projectFrame.setAttribute("ondragstartr", `console.log("drae")`);
             projectFrame.classList.add("project-frame");
             projectFrame.setAttribute("draggable", "false");
-            projectFrame.setAttribute("data-url", `${BASE_URL}/projects/${user}/${project}/` + await fetch(`${BASE_URL}/projects/${user}/${project}/homePath.txt`, {method: "GET"}).then((response) => {
+            projectFrame.href = `${BASE_URL}/projects/${user}/${project}/` + await fetch(`${BASE_URL}/projects/${user}/${project}/homePath.txt`, {method: "GET"}).then((response) => {
                 return response.text();
-            }));
+            });
 
-            downloadButton.innerHTML = `<img src="assets/buttons/download.svg" draggable="false">`;
+            downloadButton.innerHTML = `<img src="${BASE_URL}/assets/buttons/download.svg" alt="download" draggable="false">`;
             downloadButton.classList.add("download-project-button");
             downloadButton.href = `${BASE_URL}/projects/download/?user=${user}&project=${project}/`;
             downloadButton.download = `${BASE_URL}/projects/download/?user=${user}&project=${project}/`;
@@ -254,11 +310,13 @@ async function buildProjects(event){
     projectList.forEach((element) => {
         element.addEventListener("mousedown", handleMouseClick); 
         element.addEventListener("touchstart", handleMouseClick);
+        element.addEventListener("wheel", handleScrollEvent);
+        element.addEventListener("scrollend", handleScrollOn);
     });
 
-    if(username)deleteFormUserChange();
-    setMaxWidthTitle();
+    if(username){deleteFormUserChange();}
     userTitleWidth = parseInt(window.getComputedStyle(document.querySelector(".user-title")).width);
+    setMaxWidthTitle(event);
     console.log("build finish");
 }
 function handleResize(event){
@@ -286,13 +344,16 @@ document.addEventListener("DOMContentLoaded", async() => {
 
     window.addEventListener("resize", handleResize);
 
-    projectList.forEach((element) => {
-        element.addEventListener("mousedown", handleMouseClick);
-        element.addEventListener("touchstart", handleMouseClick);
-    });
+    // projectList.forEach((element) => {
+    //     element.addEventListener("mousedown", handleMouseClick);
+    //     element.addEventListener("touchstart", handleMouseClick);
+    //     element.addEventListener("scroll", handleScrollEvent);
+    //     element.addEventListener("scrolloff", handleScrollOff);
+    // });
 
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("touchmove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseOut);
     window.addEventListener("touchend", handleMouseOut);
+
 });
