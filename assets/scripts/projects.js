@@ -28,7 +28,7 @@ function calcOffset(element, scroll = false){
     if(upper - lower < width){/*in case someone has a lot of projects*/
         upper = lower + width;
     }
-     let offset = scrollMultiplier * deltaX * multi * (1/*event.type === "touchmove" ? 0.55 : 1*/) + existingMargin;
+    let offset = scrollMultiplier * deltaX * multi * (1/*event.type === "touchmove" ? 0.55 : 1*/) + existingMargin;
     offset = Math.max(offset, userTitleWidth - width);
     offset = Math.min(offset, upper);
     return offset;
@@ -46,7 +46,8 @@ function setMaxWidthTitle(event){
         element.style.maxWidth = maxWidthTitle + "px";//needed as gets affected by panning
     });
     
-    
+    userTitleWidth = parseInt(window.getComputedStyle(document.querySelector(".user-title")).width);
+
     projTrack.forEach((element) => {
         element.dataset.pressed = Date.now();
         const offset = calcOffset(element);
@@ -80,6 +81,7 @@ function handleMouseMove(event){
         }
         else{
             element.dataset.posX = event.touches[0].clientX;
+            console.log(element.dataset.posX);
         }
         const offset = calcOffset(element);
         element.animate({
@@ -216,7 +218,7 @@ async function buildProjects(event){
         element.removeEventListener("mousedown", handleMouseClick); 
         element.removeEventListener("touchstart", handleMouseClick);
         element.removeEventListener("wheel", handleScrollEvent);
-        element.removeEventListener("scrollend", handleScrollOn);
+        //element.removeEventListener("scrollend", handleScrollOn);
     });
 
     const projectContainer = document.getElementById("projects-container");
@@ -307,7 +309,7 @@ async function buildProjects(event){
         element.addEventListener("mousedown", handleMouseClick); 
         element.addEventListener("touchstart", handleMouseClick);
         element.addEventListener("wheel", handleScrollEvent);
-        element.addEventListener("scrollend", handleScrollOn);
+        //element.addEventListener("scrollend", handleScrollOn);
     });
 
     if(username){deleteFormUserChange();}
