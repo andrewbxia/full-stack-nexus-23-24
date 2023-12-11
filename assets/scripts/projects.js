@@ -2,22 +2,34 @@ console.log(BASE_URL);
 console.log(username);
 let files;
 
-let projTrack, projectList, userTitleWidth;
+let projTrack, projectList, userTitleWidth, pastScrollTime = Date.now(), pastScrollStart = Date.now();
 const userProjectMap = new Map();
 //deleteForm given by uploadProject.js
 
-function calcOffset(element){
-    const posX = element.dataset.posX;
-    const prevX = element.dataset.prevX;
+function calcOffset(element, scroll = false){
+
+    let posX, prevX, deltaX, existingMargin, scrollMultiplier;
+    if(!scroll){
+        posX = element.dataset.posX;
+        prevX = element.dataset.prevX;
+        deltaX = posX - prevX;
+        existingMargin = parseFloat(element.dataset.prevMargin);
+        scrollMultiplier = 1;
+    }
+    else{
+        deltaX = -event.deltaX;
+        existingMargin = parseFloat(window.getComputedStyle(element).marginLeft);
+        scrollMultiplier = 3;
+    }
+
     const multi = element.dataset.multi;
-    const existingMargin = parseFloat(element.dataset.prevMargin);
     const width = parseFloat(window.getComputedStyle(element).width);
     let upper = window.innerWidth - 300;
     const lower = userTitleWidth - width;
     if(upper - lower < width){/*in case someone has a lot of projects*/
         upper = lower + width;
     }
-    let offset = (posX - prevX) * multi + existingMargin;
+    let offset = scrollMultiplier * deltaX * multi + existingMargin;
     offset = Math.max(offset, userTitleWidth - width);
     offset = Math.min(offset, upper);
     return offset;
@@ -107,6 +119,46 @@ function handleMouseOut(event){
     });
 }
 
+function handleScrollOn(event){
+    console.log("scrollon");
+    projTrack.forEach((element) => {
+        element.dataset.prevMargin = window.getComputedStyle(element).marginLeft;
+        element.dataset.multi = Math.random() + 1.0;
+    });
+}
+
+function handleScrollEvent(event){
+    if(Date.now() - pastScrollTime < 100){event.preventDefault(); return;}
+    if(event.deltaX === 0){
+        projTrack.forEach((element) => {
+            element.dataset.prevMargin = window.getComputedStyle(element).marginLeft;
+            element.dataset.multi = Math.random() + 1.0;
+        });
+        return;
+    }
+    else{
+        event.preventDefault();
+        if(Date.now() - pastScrollStart > 400 || projTrack[0].dataset.prevDelta > 0 !== event.deltaX > 0){
+            handleScrollOn(event);
+        }
+        pastScrollStart = Date.now();
+    }
+
+    pastScrollTime = Date.now();
+    console.log("scroll");
+
+    projTrack.forEach((element) => {
+        const offset = calcOffset(element, true);
+        element.dataset.prevDelta = event.deltaX;
+        element.animate({
+            marginLeft: `${offset}px`,
+        }, {duration: 100, fill: "forwards", easing: "linear"});
+    });
+
+}
+
+
+
 export async function updateProjects(reloadProjects){
     console.log("requesting...");
     files = await fetch("../projects/getProjects", {
@@ -165,6 +217,7 @@ async function buildProjects(event){
     projectList.forEach((element) => {
         element.removeEventListener("mousedown", handleMouseClick); 
         element.removeEventListener("touchstart", handleMouseClick);
+        element.removeEventListener("wheel", handleScrollEvent);
     });
 
     const projectContainer = document.getElementById("projects-container");
@@ -186,6 +239,7 @@ async function buildProjects(event){
         frameContainer.dataset.prevMargin = 0;
         frameContainer.dataset.multi = 1.0;
         frameContainer.dataset.pressed = Date.now();
+        frameContainer.dataset.prevDelta = 0;
 
         if(user === username){
             userTitle.setAttribute("id", "user-project");
@@ -254,6 +308,7 @@ async function buildProjects(event){
     projectList.forEach((element) => {
         element.addEventListener("mousedown", handleMouseClick); 
         element.addEventListener("touchstart", handleMouseClick);
+        element.addEventListener("wheel", handleScrollEvent);
     });
 
     if(username)deleteFormUserChange();
@@ -285,11 +340,6 @@ document.addEventListener("DOMContentLoaded", async() => {
     }
 
     window.addEventListener("resize", handleResize);
-
-    projectList.forEach((element) => {
-        element.addEventListener("mousedown", handleMouseClick);
-        element.addEventListener("touchstart", handleMouseClick);
-    });
 
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("touchmove", handleMouseMove);
