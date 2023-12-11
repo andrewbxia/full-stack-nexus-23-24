@@ -1,6 +1,6 @@
 console.log(BASE_URL);
 console.log(username);
-let files, mode;
+let files;
 
 let projTrack, projectList, userTitleWidth, pastScroll = Date.now(), pastScrollStart = Date.now();
 const userProjectMap = new Map();
@@ -78,8 +78,6 @@ function handleMouseMove(event){
             element.dataset.posX = event.clientX;
         }
         else{
-            mode = "touch";
-            document.getElementById("test").innerText = "touch";
             element.dataset.posX = event.touches[0].clientX;
         }
         const offset = calcOffset(element);
@@ -108,7 +106,6 @@ function handleMouseOut(event){
 
 function handleScrollEvent(event){
     //event.preventDefault();
-    
     if(Date.now() - pastScroll < 90){event.preventDefault();return;}
     
     if(event.deltaX !== 0){
