@@ -1,6 +1,6 @@
 console.log(BASE_URL);
 console.log(username);
-let files;
+let files, mode;
 
 let projTrack, projectList, userTitleWidth, pastScroll = Date.now(), pastScrollStart = Date.now();
 const userProjectMap = new Map();
@@ -28,7 +28,7 @@ function calcOffset(element, scroll = false){
     if(upper - lower < width){/*in case someone has a lot of projects*/
         upper = lower + width;
     }
-     let offset = scrollMultiplier * deltaX * multi * (-1/*event.type === "touchmove" ? 0.55 : 1*/) + existingMargin;
+     let offset = scrollMultiplier * deltaX * multi * (1/*event.type === "touchmove" ? 0.55 : 1*/) + existingMargin;
     offset = Math.max(offset, userTitleWidth - width);
     offset = Math.min(offset, upper);
     return offset;
@@ -59,14 +59,9 @@ function setMaxWidthTitle(event){
 function handleMouseClick(event){
     console.log(event.type);
     projTrack.forEach((element) => {
-        if(event.type !== "touchstart"){
-            element.dataset.posX = event.clientX;
-            element.dataset.prevX = element.dataset.posX;
-        }
-        else{
-            element.dataset.posX = event.touches[0].clientX;
-            element.dataset.prevX = element.dataset.posX;
-        }
+        element.dataset.posX = event.type !== "touchstart" ? event.clientX : event.touches[0].clientX;
+
+        element.dataset.prevX = element.dataset.posX;
         element.dataset.prevMargin = window.getComputedStyle(element).marginLeft;
         element.dataset.multi = Math.random() + 1.0;
     });
@@ -83,6 +78,7 @@ function handleMouseMove(event){
             element.dataset.posX = event.clientX;
         }
         else{
+            mode = "touch";
             element.dataset.posX = event.touches[0].clientX;
         }
         const offset = calcOffset(element);
@@ -111,6 +107,7 @@ function handleMouseOut(event){
 
 function handleScrollEvent(event){
     //event.preventDefault();
+    if(mode === "touch"){document.querySelector("body").innerHTML = "";}
     if(Date.now() - pastScroll < 90){event.preventDefault();return;}
     
     if(event.deltaX !== 0){
