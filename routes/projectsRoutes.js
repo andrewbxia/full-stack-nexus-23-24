@@ -139,7 +139,7 @@ router.get("/getProjects", async (req, res) => {
     return res.json({projects: getDirectoryHierarchy(path.resolve(__dirname + "../../../projects"))});
 });
 
-router.get("/manual", (req, res) => {
+router.get("/guide", (req, res) => {
     res.render("partials/projectGuide", {BASE_URL: BASE_URL});
 });
 
