@@ -79,6 +79,7 @@ function handleMouseMove(event){
         }
         else{
             mode = "touch";
+            document.getElementById("test").innerText = "touch";
             element.dataset.posX = event.touches[0].clientX;
         }
         const offset = calcOffset(element);
@@ -107,7 +108,7 @@ function handleMouseOut(event){
 
 function handleScrollEvent(event){
     //event.preventDefault();
-    if(mode === "touch"){document.getElementById("test").innerHTML = "lkajlsfjlasj;fsjlsfkjasf;jkl";}
+    if()
     if(Date.now() - pastScroll < 90){event.preventDefault();return;}
     
     if(event.deltaX !== 0){
