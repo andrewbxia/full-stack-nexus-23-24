@@ -268,12 +268,11 @@ async function buildProjects(event){
 
             projectFrameText.innerText = project;
             projectFrame.appendChild(projectFrameText);
-            projectFrame.href = `${BASE_URL}/projects/${user}/${project}/`;
             projectFrame.classList.add("project-frame");
             projectFrame.setAttribute("draggable", "false");
-            projectFrame.setAttribute("data-url", `${BASE_URL}/projects/${user}/${project}/` + await fetch(`${BASE_URL}/projects/${user}/${project}/homePath.txt`, {method: "GET"}).then((response) => {
+            projectFrame.href = `${BASE_URL}/projects/${user}/${project}/` + await fetch(`${BASE_URL}/projects/${user}/${project}/homePath.txt`, {method: "GET"}).then((response) => {
                 return response.text();
-            }));
+            });
 
             downloadButton.innerHTML = `<img src="assets/buttons/download.svg" draggable="false">`;
             downloadButton.classList.add("download-project-button");
