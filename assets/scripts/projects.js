@@ -268,8 +268,7 @@ async function buildProjects(event){
 
             projectFrameText.innerText = project;
             projectFrame.appendChild(projectFrameText);
-
-            projectFrame.setAttribute("ondragstartr", `console.log("drae")`);
+            projectFrame.href = `${BASE_URL}/projects/${user}/${project}/`;
             projectFrame.classList.add("project-frame");
             projectFrame.setAttribute("draggable", "false");
             projectFrame.setAttribute("data-url", `${BASE_URL}/projects/${user}/${project}/` + await fetch(`${BASE_URL}/projects/${user}/${project}/homePath.txt`, {method: "GET"}).then((response) => {
