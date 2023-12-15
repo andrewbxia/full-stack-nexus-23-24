@@ -274,7 +274,7 @@ async function buildProjects(event){
                 return response.text();
             });
 
-            downloadButton.innerHTML = `<img src="assets/buttons/download.svg" draggable="false">`;
+            downloadButton.innerHTML = `<img src="../assets/buttons/download.svg" draggable="false">`;
             downloadButton.classList.add("download-project-button");
             downloadButton.href = `${BASE_URL}/projects/download/?user=${user}&project=${project}/`;
             downloadButton.download = `${BASE_URL}/projects/download/?user=${user}&project=${project}/`;
