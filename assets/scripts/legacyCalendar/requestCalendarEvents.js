@@ -19,7 +19,7 @@ function displayData(data) {
   data.events.forEach(event => {
     let displayElement = document.createElement("a");
     displayElement.className = "displayed-data";
-    displayElement.href = `${BASE_URL}/calendar/event/${event.id}`;
+    displayElement.href = `${BASE_URL}/legacy-calendar/event/${event.id}`;
     displayElement.innerText += " | ";
     for (const key in event) {
       if (event[key] === null) {
@@ -39,7 +39,7 @@ function displayData(data) {
 export async function requestData(blockDisplay = true) {
   return new Promise((resolve, reject) => {
     $.ajax({
-      url: BASE_URL + "/calendar/readResponse",
+      url: BASE_URL + "/legacy-calendar/readResponse",
       type: "POST",
       success: function(data) {
         if (blockDisplay) {
@@ -59,7 +59,7 @@ export function getMonthData(dateString) {
   try {
     //const arr = eventData;
 
-      const monthData = $.grep(eventData.events, function (item) {
+    const monthData = $.grep(eventData.events, function (item) {
       const yearMonth = item.date.slice(0, 7);
       const yearMonthWanted = dateString.slice(0, 7);
 

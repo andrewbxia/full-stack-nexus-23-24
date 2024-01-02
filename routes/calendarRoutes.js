@@ -2,21 +2,40 @@ const express = require("express");
 const router = express.Router();
 const fs = require("fs");
 const path = require("path");
-const dbwrite = require("../serverscripts/createCalendarEventDB.js");
-const dbread = require("../serverscripts/readCalendarEvents.js");
+const dbWriteEvent = require("../serverscripts/calendar/writeCalendarEvent.js");
+const dbReadEvent = require("../serverscripts/calendar/readCalendarEvent.js");
+const BASE_URL = require("../BASE_URL.js");
+const { Console } = require("console");
 
+router.get("/", (req, res) => {//homepage
+    res.render("calendar", {BASE_URL: BASE_URL, username: req.session.user, permissions: req.session.permissions});
+});
 
-router.get("/", (req, res) => {
-    res.render("calendar", {BASE_URL: process.env.BASE_URL});
-})
+router.get("/events", async (req, res) => {//returns json of events
+    console.log("read events")
+    const events = await new Promise((resolve, reject) => {
+        dbReadEvent.all("SELECT * FROM events", (err, rows) => {
+            if (err) {
+                console.log(3434343);
+                reject(err);
+            } else {
+                resolve(rows);
+            }
+        });
+    });
+    res.status(200).json(events);
+
+});
+
 
 router.get("/event/:id", async (req, res) => {
+    //copypasted from legacyCalendar bc its GOOD
     const id = req.params.id;
     let lastEventID;
 
     try {
         lastEventID = await new Promise((resolve, reject) => {
-            dbread.get("SELECT LAST_VALUE(id) OVER (ORDER BY id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS lastEvent FROM events;", (err, id) => {
+            dbReadEvent.get("SELECT LAST_VALUE(id) OVER (ORDER BY id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS lastEvent FROM events;", (err, id) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -26,7 +45,7 @@ router.get("/event/:id", async (req, res) => {
         });
 
         const row = await new Promise((resolve, reject) => {
-            dbread.get("SELECT * FROM events WHERE id = ?", [id], (err, row) => {
+            dbReadEvent.get("SELECT * FROM events WHERE id = ?", [id], (err, row) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -34,7 +53,7 @@ router.get("/event/:id", async (req, res) => {
                 }
             });
         });
-        res.render("./partials/calendarday" ,{ events: row , lastEventID: lastEventID, BASE_URL: process.env.BASE_URL});
+        res.render("./calendar/calendarday" ,{ events: row , lastEventID: lastEventID, BASE_URL: process.env.BASE_URL});
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -43,45 +62,54 @@ router.get("/event/:id", async (req, res) => {
 
 
 
+router.post("/submitEvent", async (req, res) => {
+    if(req.session.permissions === "admin"){
+        console.log(req.body);
+        const user = req.session.user;
+        let {title, location, description, date, starttime, endtime} = req.body;
 
-router.post("/handleResponse", (req, res) => {
-    var {user, title, description, date, starttime, endtime} = (req.body);
+        description = description || "None";
+        endtime = endtime ? (starttime > endtime ? starttime : endtime) : starttime;
 
-    if(starttime > endtime){
-        endtime = starttime;
+        dbWriteEvent.run("INSERT INTO events(user, title, location, description, date, starttime, endtime) VALUES(?, ?, ?, ?, ?, ?, ?)", [user, title, location, description, date, starttime, endtime], (err) => {
+            if(err){
+                console.log(err);
+                res.status(500).json({ message: "ERROR", error: err.message });
+            }
+            else{
+                console.log(title + " event creation success");
+                res.status(200).json({ message: title + " event creation success" });
+            }
+        });
+    }
+    else{
+        res.status(403).json({message: "ERROR", error: "nonononono"});
+    }
+});
+
+router.post("/deleteEvent", async (req, res) => {
+    if(req.session.permissions === "admin"){
+        const id = req.body.id;
+        dbWriteEvent.run("DELETE FROM events WHERE id = ?", [id], (err) => {
+            if(err){
+                console.log(err);
+                res.status(500).json({ error: err.message });
+            }
+            else{
+                console.log("deletion success");
+                res.status(200).json({message: "deletion success"});
+            }
+        });
+    }
+    else{
+        console.log("non-admin deletion attempt");
+        res.status(403).json({message: "ERROR", error: "NNONONOONONONONOONONOONONNONNO"});
     }
 
-    console.log("data recieved:");
-    console.log("ip" + req.ip);
-    console.log(user);
-    console.log(title);
-    console.log(description);
-    console.log(date);
-    console.log(starttime);
-    console.log(endtime);
-
-    dbwrite.run("INSERT INTO events (user, title, description, date, starttime, endtime) VALUES (?, ?, ?, ?, ?, ?)", [user, title, description, date, starttime, endtime], (err) => {
-        if (err){
-            return res.status(500).json({error: "Failed to create the event. Try again!"});
-        }
-        
-        res.status(201).json({message: "event created."});
-    });
 });
 
-router.post("/readResponse", (req, res) => {//TODO: make this from an export function soon
 
-    console.log("read response received");
-    console.log(req.ip);
-    const rows = [];
 
-    dbread.all("SELECT * FROM events", (err, rows) => {
-        if(err){
-            console.error(err.message);
-            return res.status(500).json({error: err.message});
-        }
-        return res.status(200).json({ events: rows });
-    });
-});
+
 
 module.exports = router;

@@ -44,7 +44,7 @@ function logSubmit(event){
 
   
   $.ajax({
-    url: BASE_URL + "/calendar/handleResponse",
+    url: BASE_URL + "/legacy-calendar/handleResponse",
     type: "POST",
     
     data: eventPostData,  

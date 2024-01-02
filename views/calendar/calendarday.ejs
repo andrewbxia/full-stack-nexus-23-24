@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <% if(locals.events){ 
+            const id = locals.events.id;
+            const BASE_URL = locals.BASE_URL;
+        %>
+        
+        <title><%= locals.events.title %></title>
+        <meta content="<%= locals.events.title %> --- <%= locals.events.date %>" property="og:title" />
+        <meta content="Created by: <%= locals.events.user %>
+        <%= locals.events.description !== "None" ? "  - " + locals.events.description : "-------------" %>
+        <%= locals.events.starttime !== locals.events.endtime ? `from ${locals.events.starttime} to ${locals.events.endtime}` : `time: ${locals.events.starttime}`%>" property="og:description" inline="true"/>
+        <meta content="<%= BASE_URL + "/calendar/event/" + id %>" property="og:url" />
+        <meta content="#b69cff" data-react-helmet="true" name="theme-color" />
+        <meta name="robots" content="noindex, nofollow">
+
+        <style>
+            @keyframes rainbow-text{
+                0% {
+                    color: red;
+                }
+                16.67% {
+                    color: orange;
+                }
+                33.33% {
+                    color: yellow;
+                }
+                50% {
+                    color: rgb(0, 255, 0);
+                }
+                66.67% {
+                    color: rgb(0, 60, 255);
+                }
+                83.33% {
+                    color: rgb(140, 0, 255);
+                }
+                100% {
+                    color: rgb(255, 0, 242);
+                }
+            }
+            @keyframes rainbow-border{
+                0% {
+                    outline-color: red;
+                }
+                16.67% {
+                    outline-color: orange;
+                }
+                33.33% {
+                    outline-color: yellow;
+                }
+                51% {
+                    outline-color: rgb(0, 255, 0);
+                }
+                66.67% {
+                    outline-color: rgb(0, 60, 255);
+                }
+                83.33% {
+                    outline-color: rgb(140, 0, 255);
+                }
+                100% {
+                    outline-color: rgb(255, 0, 242);
+                }
+            }
+            @keyframes border-flash{
+                from{
+                    outline: 2px dashed;
+                    outline-offset: 0px;
+                }
+                to {
+                    outline: 4px dashed;
+                    outline-offset: -2px;
+                }
+            }
+
+            html{
+                height:100%;
+                padding:0;
+                margin:0;
+            }
+            body {
+                background-color: rgb(182, 156, 255);
+                color: #ffffff;
+                text-align: center;
+                font-family: "Cambria", "Cochin", "Georgia";
+                height:100%;
+                padding:0;
+                margin:0;
+            }
+            #eventContainer {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            #eventContainer > * {
+                margin: 3px 0px 15px 0px;
+                padding: 5px 25px;
+                text-align: center;
+                min-width: fit-content;
+            }
+
+            h1{
+                border-radius: 10px;
+                font-size: 3em;
+                background-color: rgb(152, 136, 225);
+                width:60%;
+                padding:inherit;
+            }
+
+            h2{
+                border-radius: 10px;
+                width: 50%;
+                font-size: 2em;
+                background-color: rgb(136, 174, 225);
+            }
+
+            #eventContainer > p{
+                border-radius: 10px;
+                width: fit-content;
+                font-size: 1.5em;
+                background-color: rgb(56, 121, 241);
+                margin: 5px;
+            }
+            #eventContainer > div{
+                border-radius: 10px;
+                width: fit-content;
+                font-size: 1.5em;
+                background-color: rgb(226, 118, 136);
+            }
+            .nav-button{
+                display:flex;
+                justify-content: center;
+                align-items: center; /* Add this line */
+                backdrop-filter: brightness(0.75);
+                font-size: 1.1vw;
+                color: rgb(60, 255, 70);
+                width: 10vw;
+                min-width:fit-content;
+                height: 100%;
+                font-weight: bold;
+            }
+            .nav-button:hover{
+                cursor: pointer;
+                backdrop-filter:brightness(0.5);
+            }
+            #nav-search{
+                font-family: inherit;
+                font-weight: bold;
+            }
+            #nav-search-input{
+                border-radius: 3px;
+                border: aliceblue solid 2px;
+                background-color: cadetblue;
+                color:rgb(44, 0, 202);
+                font-family:inherit;
+                font-weight:inherit;
+                transition: outline 0.5s steps(2) ;
+            }
+            #nav-search-input:focus{
+                animation: border-flash 0.5s infinite steps(2), rainbow-border 2.5s infinite linear;
+              
+            }
+            #nav-search-wee{
+                box-shadow: none;
+                border-radius: 3px;
+                border: aliceblue solid 2px;
+                background-color:indianred;
+                font-family:inherit;
+                font-weight:inherit;
+                animation: rainbow-text 2.5s linear infinite;
+                
+            }
+            #nav-search-wee:hover{
+                cursor:pointer;
+                outline-color:white !important;
+                animation: border-flash 0.37s infinite steps(2);
+            }
+        </style>
+        <% } else { %>
+        <title>Event Not Found</title>
+        <meta content="Event Not Found" property="og:title" />
+        <meta content="woopsy poopsy!" property="og:description" />
+        <meta content="/favicon.ico" property="og:image" />
+        <% } %>
+    </head>
+    <body>
+    <% if(locals.events){ 
+        const id = locals.events.id;
+        const BASE_URL = locals.BASE_URL;
+    %>
+
+    <div style="display: flex; justify-content: space-between; height:100%;">
+        <% if(id > 1){ %>
+        <div>
+            <a class="nav-button" style="border-right: 5px dashed rgb(60, 73, 255); border-radius: 0px 5px 5px 0px; float: inline-start;" href="./<%= id - 1 %>">
+                <- Previous (<%= id - 1 %>)
+            </a>
+        </div>
+        <% } %>
+        <div id="eventContainer" display="flex">
+            <p style="font-weight: bold; margin-bottom: 5px; margin-top: 30px; text-decoration: underline;">Event <%= id %>: </p>
+            <h1><%= locals.events.title %></h1>
+            <h2>Located at at <%= locals.events.location %></h2>
+            <p><%= locals.events.description %></p>
+            <p>Date: <%= locals.events.date %></p>
+            <div>
+                <% if(locals.events.starttime !== locals.events.endtime){ %>
+                    <p>Start time: <%= locals.events.starttime %></p>
+                    <p>------------------------------------------</p>
+                    <p>Ending time: <%= locals.events.endtime %></p>
+                <% } else { %>
+                    <p>Time: <%= locals.events.starttime %></p>
+                <% } %>
+            </div>
+            <span id="nav-search" style="color:aliceblue">
+                GOTO EVENT 
+                <span style="font-weight: bold;">(1 -> <%= lastEventID %>)</span>
+                <input type="number" id="nav-search-input" min="1" max="<%= lastEventID %>" value="<%= id %>">
+                <button id="nav-search-wee" data-curr="<%= id %>" data-max="<%= lastEventID %>">go!</button>
+            </span>
+            <script>
+                document.getElementById("nav-search-wee").addEventListener("click", () => {
+                    let val = document.getElementById("nav-search-input").value;
+                    val = Math.max(1, val);
+                    val = Math.min(val, document.getElementById("nav-search-wee").dataset.max);
+                    if(val != document.getElementById("nav-search-wee").dataset.curr){
+                        window.location.href = "./" + val;
+                    }
+                })
+            </script>
+        </div>
+        <% if(id < lastEventID){ %>
+        <div>
+            <a class="nav-button" style="border-left: 5px dashed rgb(112, 60, 255); border-radius: 5px 0px 0px 5px; float:inline-end;" href="./<%= id + 1 %>">
+                Next (<%= locals.events.id + 1 %>) ->                
+            </a>
+        </div>
+        <% } %>
+    </div>
+    
+
+    <% } else { %>
+        <p>Event not found!</p>
+
+    <% } %>
+    </body>
+</html>

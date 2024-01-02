@@ -31,7 +31,6 @@ export function buildCalendar(offset){
     const date = new Date();
     console.log("offset" + offset);
     date.setMonth(date.getMonth() + offset);
-
     const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
     const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     const dayOffset = firstDay.getDay() - 1;//i starts at one
@@ -40,7 +39,6 @@ export function buildCalendar(offset){
     console.log(lastDay.getDate());
 
     const dateString = date.toISOString().slice(0, 10);
-
 
     for(let day = firstDay.getDate(); day <= lastDay.getDate(); day++){
         const week = Math.floor((day + dayOffset) / 7) + 1;

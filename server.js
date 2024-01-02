@@ -5,6 +5,7 @@ const loginRouter = require("./routes/loginRoutes.js");
 const registerRouter = require("./routes/registerRoutes.js");
 const assetsRouter = require("./routes/assetsRoutes.js");
 const calendarRouter = require("./routes/calendarRoutes.js");
+const legacyCalendarRouter = require("./routes/legacyCalendarRoutes.js");
 const projectsRouter = require("./routes/projectsRoutes.js");
 const joinRouter = require("./routes/joinRoutes.js");
 const profileRouter = require("./routes/profileRoutes.js");
@@ -80,15 +81,17 @@ app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use("/assets", assetsRouter);
 app.use("/calendar", calendarRouter);
+app.use("/legacy-calendar", legacyCalendarRouter);
 app.use("/projects", projectsRouter);
 app.use("/join", joinRouter);
 app.use("/profile", profileRouter);
 app.use("/approve", approveRouter);
 app.use("/members", membersRouter);
 
+
 app.use((req, res) => {
     res.status(404).send("Sorry can't find that!");
-    console.log("404");
+    console.log("404 -> " + req.url);
 });
 app.listen(3000, () => {
     console.log("successful start at http://localhost:3000");

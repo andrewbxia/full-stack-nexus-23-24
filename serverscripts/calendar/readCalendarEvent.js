@@ -9,6 +9,4 @@ const db = new sqlite3.Database("../fsnDB/calendarEvents.db", sqlite3.OPEN_READO
     }
 });
 
-
-
 module.exports = db;
