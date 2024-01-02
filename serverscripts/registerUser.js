@@ -2,7 +2,7 @@ const sqlite3 = require("sqlite3").verbose();
 const argon2 = require("argon2");
 const { dblogin } = require("./loginUser"); //finding if user already exists
 
-const dbregister = new sqlite3.Database("../fsnDB/userRegister.db", (err) => {
+const dbregister = new sqlite3.Database("../fsnDB/userRegister.db", sqlite3.OPEN_READWRITE, (err) => {
     if(err){
         console.error(err.message);
     }
