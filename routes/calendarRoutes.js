@@ -5,7 +5,6 @@ const path = require("path");
 const dbWriteEvent = require("../serverscripts/calendar/writeCalendarEvent.js");
 const dbReadEvent = require("../serverscripts/calendar/readCalendarEvent.js");
 const BASE_URL = require("../BASE_URL.js");
-const { Console } = require("console");
 
 router.get("/", (req, res) => {//homepage
     res.render("calendar", {BASE_URL: BASE_URL, username: req.session.user, permissions: req.session.permissions});
@@ -16,7 +15,6 @@ router.get("/events", async (req, res) => {//returns json of events
     const events = await new Promise((resolve, reject) => {
         dbReadEvent.all("SELECT * FROM events", (err, rows) => {
             if (err) {
-                console.log(3434343);
                 reject(err);
             } else {
                 resolve(rows);
