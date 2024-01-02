@@ -2,7 +2,7 @@
 const fs = require("fs");
 const sqlite3 = require("sqlite3").verbose();
 const argon2 = require("argon2");
-const dblogin = new sqlite3.Database("../fsnDB/users.db", (err) => { 
+const dblogin = new sqlite3.Database("../fsnDB/users.db", sqlite3.OPEN_READWRITE, (err) => { 
     if(err){
         return console.error(err.message);
     }
