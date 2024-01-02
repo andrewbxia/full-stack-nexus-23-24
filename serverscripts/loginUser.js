@@ -13,6 +13,7 @@ const dblogin = new sqlite3.Database("../fsnDB/users.db", sqlite3.OPEN_READWRITE
 });
 
 dblogin.serialize(async() => {
+    console.log(";lskdjf;lskdfj;lskdfj")
     dblogin.run(`CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         mode TEXT NOT NULL,
