@@ -35,7 +35,7 @@
 
                 
 
-                while(currDate > eventData[eventDate].date && eventDate < eventData.length){
+                while(eventDate < eventData.length && currDate > eventData[eventDate].date){
                     console.log(eventData.length + " " + eventDate);
                     eventDate++;
                 }
