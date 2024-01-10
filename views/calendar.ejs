@@ -19,6 +19,9 @@
         <script defer type="module">
             import { getEventData } from "<%= BASE_URL %>/assets/scripts/calendar/calendar.js";
             const eventData = getEventData();
+
+
+
             if(eventData.length === 0){
                 document.getElementById('next-meeting-date').innerHTML = "Next Meeting/Event: N/A";
             }
@@ -29,7 +32,10 @@
 
                 let eventDate = 0//first query in eventData
 
-                while(currDate > eventData[eventDate].date){
+
+                
+
+                while(currDate > eventData[eventDate].date && eventDate < eventData.length){
                     eventDate++;
                 }
 
