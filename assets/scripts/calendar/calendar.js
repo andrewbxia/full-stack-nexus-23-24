@@ -128,10 +128,56 @@ function changeDisplayedDate(){
     displayedDate.innerText = `${month}/${year}`;
 }
 
-dateField.value = new Date().toISOString().split('T')[0];
+function nextMeeting(){
+    const eventDataCopy = getEventData();
 
+
+
+    if(eventDataCopy.length === 0){
+        document.getElementById('next-meeting-date').innerHTML = "Next Meeting/Event: N/A";
+    }
+    else{
+        eventDataCopy.sort((a, b) => (a.date > b.date) ? 1 : -1);
+        const currDate = new Date().toISOString().split('T')[0];
+        console.log(currDate);
+
+        let eventDate = 0//first query in eventData
+
+
+        
+
+        while(eventDate < eventDataCopy.length - 1 && currDate > eventDataCopy[eventDate].date){
+            eventDate++;
+        }
+
+        let warningText;
+
+        if(currDate === eventDataCopy[eventDate].date){
+            warningText = "Today's Meeting/Event: " + eventDataCopy[eventDate].date + " ( TODAY!! )";
+        }
+        else if(currDate < eventDataCopy[eventDate].date){
+            warningText = "Next Meeting/Event: " + eventDataCopy[eventDate].date;
+        }
+        else{
+            warningText = "Next Meeting/Event: N/A";
+        }
+
+        if(currDate <= eventDataCopy[eventDate].date){
+            document.getElementById('next-meeting-date').innerHTML = warningText;
+
+            const eventLink = document.createElement('a');
+            eventLink.href = BASE_URL + "/calendar/event/" + eventDataCopy[eventDate].id;
+            eventLink.innerText = "Click here to view event details!!";
+            document.getElementById('next-meeting-date').parentElement.appendChild(eventLink);
+        }
+    }
+}
+
+dateField.value = new Date().toISOString().split('T')[0];
 dateField.addEventListener("change", changeDayHighlight);
 dateField.addEventListener("change", changeDisplayedDate);
+
+nextMeeting();
 buildCalendar(0);
 changeDayHighlight();
 changeDisplayedDate();

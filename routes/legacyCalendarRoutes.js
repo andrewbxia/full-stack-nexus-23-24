@@ -4,29 +4,25 @@ const fs = require("fs");
 const path = require("path");
 const dbwrite = require("../serverscripts/legacyCalendar/createCalendarEventDB.js");
 const dbread = require("../serverscripts/legacyCalendar/readCalendarEvents.js");
-
+let lastEventID;
+dbread.get("SELECT LAST_VALUE(id) OVER (ORDER BY id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS lastEvent FROM events;", (err, id) => {
+    if (err) {
+        console.error(err.message);
+        throw err;
+    } else {
+        console.log("last legacy calendar event: " + id.lastEvent);
+        lastEventID = id.lastEvent;
+    }
+});
 
 router.get("/", (req, res) => {
-    res.render("legacy-calendar", {BASE_URL: process.env.BASE_URL});
+    res.render("legacy-calendar", {BASE_URL: BASE_URL});
 })
 
 router.get("/event/:id", async (req, res) => {
-    const id = req.params.id;
-    let lastEventID;
-
     try {
-        lastEventID = await new Promise((resolve, reject) => {
-            dbread.get("SELECT LAST_VALUE(id) OVER (ORDER BY id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS lastEvent FROM events;", (err, id) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(id.lastEvent);
-                }
-            });
-        });
-
         const row = await new Promise((resolve, reject) => {
-            dbread.get("SELECT * FROM events WHERE id = ?", [id], (err, row) => {
+            dbread.get("SELECT * FROM events WHERE id = ?", [req.params.id], (err, row) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -34,7 +30,7 @@ router.get("/event/:id", async (req, res) => {
                 }
             });
         });
-        res.render("./legacyCalendar/calendarday" ,{ events: row , lastEventID: lastEventID, BASE_URL: process.env.BASE_URL});
+        res.render("./legacyCalendar/calendarday" ,{ events: row , lastEventID: lastEventID, BASE_URL: BASE_URL});
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -64,8 +60,12 @@ router.post("/handleResponse", (req, res) => {
         if (err){
             return res.status(500).json({error: "Failed to create the event. Try again!"});
         }
-        
-        res.status(201).json({message: "event created."});
+        else{
+            console.log("event created");
+            lastEventID++;
+            console.log("new last legacy calendar event id: " + lastEventID);
+            res.status(201).json({message: "event created."});
+        }
     });
 });
 
@@ -73,7 +73,6 @@ router.post("/readResponse", (req, res) => {//TODO: make this from an export fun
 
     console.log("read response received");
     console.log(req.ip);
-    const rows = [];
 
     dbread.all("SELECT * FROM events", (err, rows) => {
         if(err){

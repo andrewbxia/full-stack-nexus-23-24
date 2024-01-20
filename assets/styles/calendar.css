@@ -1,3 +1,4 @@
+/* really bad css */
 html {
     width: 100%;
     height: 100%;
@@ -13,7 +14,7 @@ header {
     margin: auto;
     margin-top: 3vw !important;
     width: 50%;
-    padding: 0.5% 2%;
+    padding: 0.5% 0 0 0;
     background-color:rgb(138, 146, 255);
     border: 0.5vw white solid;
 }
@@ -22,6 +23,12 @@ a {
     color: white;
     font-size: 2em;
 }
+
+
+form > * {
+    height: 10%;
+}
+
 #date {
     margin-bottom: 0.75vw;
     font-size: 2vw;
@@ -40,9 +47,21 @@ a {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-.calendar-row {
-    
+#header-bottom-half {
+    background-color: aquamarine;
+    max-width: 100%;
+    margin: 2% 0 0 0;
+    padding: 2%;
+    border-top: 5px solid black;
+    * { /*WAIT WHAT YOU CAN DO THIS NO WAY*/
+        margin: 0;
+    }
 }
+
+/* #header-bottom-half > * {
+    margin: 0;
+    padding: 0;
+} */
 
 .calendar-row > td {
     position: relative;
@@ -64,15 +83,14 @@ a {
     font-size: calc(75vw / 36);
 }
 
-form > * {
-    height: 10%;
-}
 
 .eventText {
     font-size: 2em;
     max-height: calc(75vw / 6);
     overflow: scroll;
 }
+
+
 
 /* 
 #selected-day .eventText {

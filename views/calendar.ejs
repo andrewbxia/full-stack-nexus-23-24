@@ -17,64 +17,24 @@
         <link rel="stylesheet" href="<%= BASE_URL %>/assets/styles/calendar.css">
         <script src="<%= BASE_URL %>/assets/scripts/calendar/calendar.js" type="module" defer></script>
         <script defer type="module" crossorigin="use-credentials">
-            import { getEventData } from "<%= BASE_URL %>/assets/scripts/calendar/calendar.js";
-            const eventData = getEventData();
-
-
-
-            if(eventData.length === 0){
-                document.getElementById('next-meeting-date').innerHTML = "Next Meeting/Event: N/A";
-            }
-            else{
-                eventData.sort((a, b) => (a.date > b.date) ? 1 : -1);
-                const currDate = new Date().toISOString().split('T')[0];
-                console.log(currDate);
-
-                let eventDate = 0//first query in eventData
-
-
-                
-
-                while(eventDate < eventData.length - 1 && currDate > eventData[eventDate].date){
-                    eventDate++;
-                }
-
-                let warningText;
-
-                if(currDate === eventData[eventDate].date){
-                    warningText = "Today's Meeting/Event: " + eventData[eventDate].date + " ( TODAY!! )";
-                }
-                else if(currDate < eventData[eventDate].date){
-                    warningText = "Next Meeting/Event: " + eventData[eventDate].date;
-                }
-                else{
-                    warningText = "Next Meeting/Event: N/A";
-                }
-
-                document.getElementById('next-meeting-date').innerHTML = warningText;
-
-                const eventLink = document.createElement('a');
-                eventLink.href = "<%= BASE_URL %>/calendar/event/" + eventData[eventDate].id;
-                eventLink.innerText = "Click here to view event details!!";
-                document.getElementById('next-meeting-date').parentElement.appendChild(eventLink);
-            }
+            
         </script>
 
     </head>
     <body>
 
         <header>
-            <span>
-                <h1>NOTE: QoL things partially broken for mobile devices but will fix later </h1>
-                <h2>dont worry all the calendar events are working!</h2>
+            <h1>NOTE: QoL things partially broken for mobile devices but will fix later </h1>
+            <h2>dont worry all the calendar events are working!</h2>
+            <div id="header-bottom-half">
                 <h1>meeting schedule for</h1>
                 <h1 id="input-month-year">
                 
                 </h1>
-            </span>
-            <h1 id="next-meeting-date">
+                <h1 id="next-meeting-date">
 
-            </h1>
+                </h1>
+            </div>
         </header>
         <% if(locals.permissions === "admin" /*true*/){ %>
             <form id="submit-form" autocomplete="off">
@@ -90,6 +50,10 @@
                 
                 <button id="login-button" type="submit">Submit</button>
                 <button id="reset-button" type="reset">Reset</button>
+            </form>
+            <form id="delete-form" autocomplete="off">
+                <input id="delete-id" type="number" name="id" placeholder="ID: " value="1" required>
+                <button id="delete-button" type="submit">Delete</button>
             </form>
             <script defer>
                 document.getElementById('date').value = new Date().toISOString().split('T')[0];
