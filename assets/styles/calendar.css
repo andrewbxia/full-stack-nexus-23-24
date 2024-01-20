@@ -55,7 +55,10 @@ form > * {
     border-top: 5px solid black;
     * { /*WAIT WHAT YOU CAN DO THIS NO WAY*/
         margin: 0;
-        color: rgb(32, 0, 121)
+    }
+    a {
+        color: rgb(32, 0, 121);
+    
     }
 }
 
