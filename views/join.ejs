@@ -3,19 +3,144 @@
     <head>
         <title>Join FSN!</title>
     </head>
-    <body>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500&family=Major+Mono+Display&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Sanchez&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: rgb(226, 245, 255);
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 33px;
+            padding: 0;
+            margin: 0;
+            position: relative;
+        }
 
+        * {
+            position: inherit;
+        }
+        a {
+            color: rgb(43, 128, 103);
+            text-decoration: none;
+            text-decoration: underline;
+            transition: color 0.5s;
+        }
+
+        a:hover {
+            color:rgb(0, 210, 147);
+        }
+
+        hr {
+            margin: 0;
+        }
+
+        ul, ol {
+            margin: 20px 0px;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+
+        header {
+            margin: 0;
+            background-color: rgb(216, 240, 237);
+            min-height:2em;
+            max-height: 2em;
+            z-index: 0;
+            color: aliceblue;
+            width: 100%;
+            display: flex;
+            justify-content:space-between;
+        }
+
+        #title {
+            font-size: 1em;
+            color: black;
+            height: 100%;
+        }
+    
+        #info {
+            background-color: rgb(226, 245, 255);
+            z-index: 2;
+            position: inherit;
+        }
+
+        #icon {
+            min-height: 2em;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            transition: transform 0.5s;
+            transform: translateY(0em);
+            margin-right: 5px;
+
+            * {
+                max-height: 2em;
+                margin-bottom: 1em;
+            }
+
+            #icon-text {
+                padding: 0;
+                min-height: 4em;
+                margin: auto inherit 0 inherit !important;
+                color: white;
+                /* transition: color 0.5s cubic-bezier(1,.04,.6,.14); */
+                transition-property: color, border-left;
+                transition-duration: 0.5s;
+                transition-timing-function: cubic-bezier(1,.04,.6,.14);
+                display: flex;
+                align-items: center;
+            }
+
+        }
+
+        #icon-text {
+            font-size: 0.5em;
+            text-align: right;
+        }
+
+        #icon:hover {
+            transform: translateY(-3em);
+
+
+            #icon-text{
+                color: black;
+                border-left: 3px black solid;
+
+            }
+        }
+
+
+    </style>
+    <body>
+        <hr>
+        <header>
+            <h1 id="title">About FSN</h1>
+            <div id="icon">
+                <img src="../assets/icon-mini" id="icon-img" alt="fsn logo">
+                <div id="icon-text">
+                    <p style="vertical-align: middle;">Home Page</p>
+                </div>
+                
+            </div>
+        </header>
         <div id="info">
-            Information
+            <hr>
             <ul>
                 <li>
-                    meetings are every tuesday after school at room 2224
+                    learn how to code webpages! (HTML, CSS, JS)
+                </li>
+                <li>
+                    meetings every tuesday after school at room 2224 or 2225
                     <ul>
                         <li>
                             check out the <a href="../calendar">calendar</a> for more specific info!
                         </li>
                         <li>
-                            if you can't make it to the meetings, i will post the slides and projects made for that week and can even hold a personal session provided we decide on a day and time
+                            if you can't make it to the meetings, i will post the slides and projects made for that week and can even hold a personal session provided a day and time
                         </li>
                     </ul>
                 </li>
@@ -23,10 +148,13 @@
                     meetings usually last 30min-1hr after school depending on the plans for that day
                 </li>
                 <li>
-                    upload your finished projects ot the website so you can see them at any time!
+                    upload your finished projects to the website so you can see them at any time!
                     <ul>
                         <li>
                             link to the <a href="../projects">projects</a> page
+                        </li>
+                        <li>
+                            <a href="../register">register</a> to the website in order to upload!
                         </li>
                     </ul>
                 </li>
@@ -34,13 +162,15 @@
         </div>
 
         Requirements
-        <ol>
-            <li></li>
-        </ol>
+        <ul>
+            <li>
+                None!
+            </li>
+        </ul>
 
         <br>
         Optional
-        <ol>
+        <ul>
             <li>cost: 200$/month
                 <ul>
                     <li>servers are very expensive!!!!!</li>
@@ -50,6 +180,6 @@
             <li>
 
             </li>
-        </ol>
+        </ul>
     </body>
 </html>
