@@ -7,10 +7,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500&family=Major+Mono+Display&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Sanchez&display=swap" rel="stylesheet">
     <style>
+        /* REALLY BAD CSS */
         body {
-            background-color: rgb(226, 245, 255);
+            background-color: rgb(200, 237, 255);
             font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-            font-size: 33px;
+            font-size: 20px;
             padding: 0;
             margin: 0;
             position: relative;
@@ -19,6 +20,7 @@
         * {
             position: inherit;
         }
+
         a {
             color: rgb(43, 128, 103);
             text-decoration: none;
@@ -42,12 +44,12 @@
             margin: 10px 0;
         }
 
-
         header {
             margin: 0;
-            background-color: rgb(216, 240, 237);
-            min-height:2em;
-            max-height: 2em;
+            background-color: rgb(198, 255, 248);
+            min-height: 3em;
+            height: 3em;
+            max-height: 3em;
             z-index: 0;
             color: aliceblue;
             width: 100%;
@@ -56,19 +58,22 @@
         }
 
         #title {
-            font-size: 1em;
+            display: flex;
+            font-size: 1.5em;
             color: black;
-            height: 100%;
+            height: inherit;
+            margin: 0 0 0 5px;
+            align-items: center;
         }
     
         #info {
-            background-color: rgb(226, 245, 255);
+            background-color: inherit;
             z-index: 2;
             position: inherit;
         }
 
         #icon {
-            min-height: 2em;
+            min-height: inherit;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -77,34 +82,33 @@
             transform: translateY(0em);
             margin-right: 5px;
 
-            * {
-                max-height: 2em;
-                margin-bottom: 1em;
+            img {
+                min-height: inherit;
+                margin-bottom: calc(inherit / 2);
             }
-
-            #icon-text {
-                padding: 0;
-                min-height: 4em;
-                margin: auto inherit 0 inherit !important;
-                color: white;
-                /* transition: color 0.5s cubic-bezier(1,.04,.6,.14); */
-                transition-property: color, border-left;
-                transition-duration: 0.5s;
-                transition-timing-function: cubic-bezier(1,.04,.6,.14);
-                display: flex;
-                align-items: center;
-            }
-
         }
 
         #icon-text {
-            font-size: 0.5em;
+            padding: 0;
+            min-height: inherit;
+            margin: auto inherit 0 inherit !important;
+            color: white;
+            /* transition: color 0.5s cubic-bezier(1,.04,.6,.14); */
+            transition-property: color, border;
+            transition-duration: 0.4s;
+            transition-timing-function: cubic-bezier(1,.04,.6,.14);
+            display: flex;
+            align-items: center;
             text-align: right;
+
+            * {
+                display: flex;
+                align-items: center;
+            }
         }
 
         #icon:hover {
-            transform: translateY(-3em);
-
+            transform: translateY(calc(-3em));
 
             #icon-text{
                 color: black;
@@ -112,20 +116,17 @@
 
             }
         }
-
-
     </style>
     <body>
         <hr>
         <header>
             <h1 id="title">About FSN</h1>
-            <div id="icon">
+            <a id="icon" href="../">
                 <img src="../assets/icon-mini" id="icon-img" alt="fsn logo">
                 <div id="icon-text">
-                    <p style="vertical-align: middle;">Home Page</p>
+                    <p>Home Page</p>
                 </div>
-                
-            </div>
+            </a>
         </header>
         <div id="info">
             <hr>
@@ -140,7 +141,7 @@
                             check out the <a href="../calendar">calendar</a> for more specific info!
                         </li>
                         <li>
-                            if you can't make it to the meetings, i will post the slides and projects made for that week and can even hold a personal session provided a day and time
+                            if you can't make it to the meetings, i will post the slides and projects made for that week and can even hold a personal session in-person/online provided a day and time
                         </li>
                     </ul>
                 </li>
@@ -159,27 +160,28 @@
                     </ul>
                 </li>
             </ul>
+            
+
+            Requirements:
+            <ul>
+                <li>
+                    None!
+                </li>
+            </ul>
+
+            <br>
+            Optional:
+            <ul>
+                <li>donation of 200$/month
+                    <ul>
+                        <li>servers are very expensive!!!!!</li>
+                        <li>comes with steak catering service to every meeting</li>
+                    </ul>
+                </li>
+                <li>
+                    more to come...
+                </li>
+            </ul>
         </div>
-
-        Requirements
-        <ul>
-            <li>
-                None!
-            </li>
-        </ul>
-
-        <br>
-        Optional
-        <ul>
-            <li>cost: 200$/month
-                <ul>
-                    <li>servers are very expensive!!!!!</li>
-                    <li>comes with steak catering service to every meeting</li>
-                </ul>
-            </li>
-            <li>
-
-            </li>
-        </ul>
     </body>
 </html>
