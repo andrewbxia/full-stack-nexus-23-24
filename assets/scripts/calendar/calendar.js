@@ -3,6 +3,7 @@ const dateField = document.getElementById("date");
 const displayedDate = document.getElementById("input-month-year");
 export const calendarRows = document.querySelectorAll(".calendar-row");
 let eventData = await fetch(BASE_URL + "/calendar/events").then(response => response.json());
+const tzDate = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000); //funny
 
 export function getEventData(){
     return eventData;
@@ -138,7 +139,7 @@ function nextMeeting(){
     }
     else{
         eventDataCopy.sort((a, b) => (a.date > b.date) ? 1 : -1);
-        const currDate = new Date().toISOString().split('T')[0];
+        const currDate = tzDate.toISOString().split('T')[0];
         console.log(currDate);
 
         let eventDate = 0//first query in eventData
@@ -173,7 +174,7 @@ function nextMeeting(){
     }
 }
 
-dateField.value = new Date().toISOString().split('T')[0];
+dateField.value = tzDate.toISOString().split('T')[0];
 dateField.addEventListener("change", changeDayHighlight);
 dateField.addEventListener("change", changeDisplayedDate);
 
