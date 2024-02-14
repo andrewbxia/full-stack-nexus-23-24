@@ -38,7 +38,7 @@ export function buildCalendar(offset){
     console.log(firstDay.getDate());
     console.log(lastDay.getDate());
 
-    const dateString = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000).toISOString().slice(0, 10);
+    const dateString = date.toISOString().slice(0, 10);
 
     for(let day = firstDay.getDate(); day <= lastDay.getDate(); day++){
         const week = Math.floor((day + dayOffset) / 7) + 1;
