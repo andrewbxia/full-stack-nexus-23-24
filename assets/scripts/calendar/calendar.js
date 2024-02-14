@@ -161,9 +161,9 @@ function nextMeeting(){
         else{
             warningText = "Next Meeting/Event: N/A";
         }
+        document.getElementById('next-meeting-date').innerHTML = warningText;
 
         if(currDate <= eventDataCopy[eventDate].date){
-            document.getElementById('next-meeting-date').innerHTML = warningText;
 
             const eventLink = document.createElement('a');
             eventLink.href = BASE_URL + "/calendar/event/" + eventDataCopy[eventDate].id;
