@@ -9,9 +9,9 @@ function resetDataValues(){
   $("#title").val("");
   $("#description").val("");
   
-  const currDate = new Date().toISOString().slice(0, 10);
-  const timezoneOffset = new Date().getTimezoneOffset();
-  const currTime = new Date(Date.now() - timezoneOffset * 60000).toISOString().slice(11,16);
+  const tzDate =  new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000)
+  const currDate = tzDate.toISOString().slice(0, 10);
+  const currTime = tzDate.toISOString().slice(11,16);
 
   $("#date").val($("#date").val() || currDate);
   $("#timestart").val(currTime);
