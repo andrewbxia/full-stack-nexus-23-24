@@ -5,6 +5,7 @@ const path = require("path");
 const dbwrite = require("../serverscripts/legacyCalendar/createCalendarEventDB.js");
 const dbread = require("../serverscripts/legacyCalendar/readCalendarEvents.js");
 const BASE_URL = require("../BASE_URL.js");
+
 let lastEventID;
 dbread.get("SELECT LAST_VALUE(id) OVER (ORDER BY id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS lastEvent FROM events;", (err, id) => {
     if (err) {

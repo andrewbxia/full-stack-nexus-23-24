@@ -191,6 +191,7 @@
     <% if(locals.events){ 
         const id = locals.events.id;
         const BASE_URL = locals.BASE_URL;
+        const lastEventID = locals.lastEventID;
     %>
 
     <div style="display: flex; justify-content: space-between; height:100%;">
@@ -204,7 +205,7 @@
         <div id="eventContainer" display="flex">
             <p style="font-weight: bold; margin-bottom: 5px; margin-top: 30px; text-decoration: underline;">Event <%= id %>: </p>
             <h1><%= locals.events.title %></h1>
-            <h2>Located at at <%= locals.events.location %></h2>
+            <h2>Located at <%= locals.events.location %></h2>
             <p><%= locals.events.description %></p>
             <p>Date: <%= locals.events.date %></p>
             <div>

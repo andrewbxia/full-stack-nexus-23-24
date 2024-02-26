@@ -16,14 +16,9 @@ async function submitProject(event){
     event.preventDefault();
     submitForm.style.visibility = "hidden";
     messageText.innerText = "Uploading...";
+
     const formData = new FormData(this);
-    
-    //hoiw would i get this value from the form on the serverside?
-    //answer here: https://stackoverflow.com/questions/15772394/how-to-upload-display-and-save-images-using-node-js-and-express
-    //
-    //
     console.log(formData);
-    //console.log(data);
     try{
         const response = await fetch(BASE_URL + "/projects/upload", {
             method: "POST",

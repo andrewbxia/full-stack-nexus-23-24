@@ -65,7 +65,7 @@ router.get("/event/:id", async (req, res) => {
 
 
 router.post("/submitEvent", async (req, res) => {
-    if(req.session.permissions === "admin"){
+    if(req.session.permissions !== "admin"){
         console.log(req.body);
         const user = req.session.user;
         let {title, location, description, date, starttime, endtime} = req.body;
@@ -129,7 +129,7 @@ router.post("/deleteEvent", async (req, res) => {
                         endtime TEXT
                     )`);
 
-                    dbWriteEvent.run("INSERT INTO events_temp(user, title, location, description, date, starttime, endtime) SELECT user, title, location, description, date, starttime, endtime FROM events;");
+                    dbWriteEvent.run("INSERT INTO events_temp(user, title, location, description, date, starttime, endtime) SELECT user, title, location, description, date, starttime, endtime FROM events");
                     dbWriteEvent.run("DROP TABLE events;");
                     dbWriteEvent.run("ALTER TABLE events_temp RENAME TO events;");    
     

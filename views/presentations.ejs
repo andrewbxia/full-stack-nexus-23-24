@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="description" content="Presentations for Full-Stack Nexus">
+	    <title>FSN Presentations</title>  
+        <meta content="<%= BASE_URL %>/assets/icon?type=png" property="og:image"/>
+        <meta content="#b69cff" data-react-helmet="true" name="theme-color"/>
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="robots" content="nofollow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>const BASE_URL = "<%=locals.BASE_URL%>"; </script>
+        <script src="../assets/scripts/presentations.js" type="module" defer></script>
+        <style>
+            html{
+                padding: 0;
+                margin: 0;
+                height: 100%;
+                background-color: rgb(103, 77, 255);
+                background-repeat: no-repeat;
+                padding-bottom: 100px;
+            }
+            body {
+                height: 100%;
+                padding: 0;
+                margin: 0;
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                background-color: rgb(103,77,255);
+                font-size: 1.3em;
+            }
+            header {
+                height: auto;
+                padding: 0 10%;
+                display: flex;
+                justify-content: space-between;
+                background-color: rgb(103, 77, 255);
+                align-items: center;
+                color: white;
+                * {
+                    display: flex;
+                    align-items: center;
+                    height: 100%;
+                    background-color: rgb(85, 62, 218);
+                    border-radius: 5px;
+                    padding: 3px 8px;
+                }
+            }
+
+            form > *{
+                display: inline;
+            }
+
+            .header-bar{
+                width: 100%;
+                background-color: rgb(117, 101, 255);
+            }
+            
+            .footer-bar{
+                width: 100%;
+                background-color: rgb(117, 101, 255);
+            }
+
+            @media (max-width:1000px) {
+                #presentation-body{
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    gap: 10px;
+                    a {
+                        width: 90vw;
+                    }
+                }
+            }
+            @media (min-width:1001px) {
+                #presentation-body{
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 10px;
+                    a {
+                        width: 40vw;
+                    }
+                }
+            }
+
+
+            #presentation-body {
+                padding-top: 40px;
+                height: fit-content;
+                padding: 15px 0;
+                background-color: rgb(117, 101, 255);
+                a {
+                    height: fit-content;
+                    border-top: 2px solid rgb(41, 41, 41);
+                    border-bottom: 2px solid rgb(41, 41, 41);
+                }
+            }
+            #presentation-body a {
+                text-decoration: none;
+                color: inherit;
+                font-size: inherit;
+                font-style: normal;
+                font-weight: normal;
+            }
+            
+        </style>
+    </head>
+    <body>
+        <header>
+            <h2>Full-Stack Nexus Presentations</h2>
+            <img src="../assets/icon-mini" draggable="false"/>
+        </header>
+        <% if(locals.permissions === "admin"){ %> 
+            <!-- !== for testing purposes -->
+
+            <div id="admin-panel">
+                <h2>funny admin panels</h2>
+
+                <form id="upload" enctype="multipart/form-data">
+                    <label for="upload-file">Upload a presentation:</label>
+                    <input type="file" accept=".pdf" id="upload-file" name="upload-file" required>
+                    <label for="upload-title">Title:</label>
+                    <input type="text" placeholder="Title" id="upload-title" name="upload-title" required>
+                    <label for="upload-description">Description:</label>
+                    <input type="text" placeholder="Description" id="upload-description" name="upload-description" required>
+                    <button type="submit">Upload</button>
+                </form>
+
+                <form id="insert" enctype="multipart/form-data">
+                    <label for="insert-index">Index to insert: </label>
+                    <input type="text" placeholder="Index to insert..." id="insert-index" name="insert-index" required>
+                    <label for="insert-file">File to insert: </label>
+                    <input type="file" accept=".pdf" id="insert-file" name="insert-file" required>
+                    <label for="insert-title">Title:</label>
+                    <input type="text" placeholder="Title" id="insert-title" name="insert-title" required>
+                    <label for="insert-description">Description:</label>
+                    <input type="text" placeholder="Description" id="insert-description" name="insert-description" required>
+
+                    <button type="submit">Insert</button>
+                </form>
+                
+                <form id="update" enctype="multipart/form-data">
+                    <label for="update-index">Index to update:</label>
+                    <input type="text" placeholder="Index to update..." id="update-index" name="update-index" required>
+                    <label for="update-file">File to update:</label>
+                    <input type="file" accept=".pdf" id="update-file" name="update-file" required>
+                    <label for="update-title">Title:</label>
+                    <input type="text" placeholder="Title" id="update-title" name="update-title" required>
+                    <label for="update-description">Description:</label>
+                    <input type="text" placeholder="Description" id="update-description" name="update-description" required>
+                    <button type="submit">Update</button>
+                </form>
+
+                <form id="delete" enctype="multipart/form-data">
+                    <label for="delete-index">Index to delete:</label>
+                    <input type="text" placeholder="Index to delete..." id="delete-index" name="delete-index" required>
+                    <button type="submit">Delete</button>
+                </form>
+                <p id="response-messages"></p>
+            </div>
+            <script src="../assets/scripts/adminPresentations.js" type="module" defer></script>
+
+        <% } %>
+        <div id="header-bars"></div>
+        <div id="presentation-body">
+
+        </div>
+        <div id="footer-bars"></div>
+        <footer>
+            idk what to put here lol
+        </footer>
+    </body>
+</html>

@@ -65,6 +65,7 @@ function approveUser(req, res){
         }//oh boy
     });//oh boy
 }//oh boy
+//I DIDNT KNOW I COULD USE DB.SERIALIZE WHEN I ORIJGINALLY RWOTE THIS oh well im too lazy to fix this :p
 
 function rejectUser(req, res){
     isAdmin(req.session.user).then((isAdmin) => {

@@ -43,15 +43,19 @@
                 #profile-button{
                     background-color: #b69cff;
                 }
+                #presentation-button{
+                    background-color: #9cebff;
+                }
             </style>
         <% } %>
     </head>
     <body>
         <header>
             <div id="nav-button-container"><!--maybe make this its seperate file-->
-                <img id="header-icon" src="assets/icon-mini" draggable="false">
+                
 
                 <span id="nav-menu-left">
+                    <img id="header-icon" src="assets/icon-mini" draggable="false">
                     <a id="calendar" class="nav-button" data-info="calendar" href="/calendar">
                         Event Calendar
                     </a>
@@ -67,12 +71,16 @@
                         </a>
                     <% } %>
                     <% if(locals.username){ %>
+                        <a id="presentation-button" class="nav-button" data-info="presentations" href="/presentations">
+                            Presentations
+                        </a>
                         <a id="members-button" class="nav-button" data-info="members" href="/members">
                             Members
                         </a>
                         <a id="profile-button" class="nav-button" data-info="profile" href="/profile">
                             <%= username %>
                         </a>
+
                         
                     <%} else { %>
                         <a id="register-button" class="nav-button" data-info="register" href="/register">
@@ -97,6 +105,11 @@
         </div>
 
         <div id="changelog">
+            <div>
+                <h2>
+                    Update 2/25/24: added a new page for the club's presentations! check it out in the navbar (after <a href="./login" style="color:red; animation: rainbow-text 2s linear infinite;">logging in</a>) :D
+                </h2>
+            </div>
             <div>
                 <h2> 
                     Update 1/20/24: fixed the mobile calendar bug thing! it should now correctly display the next meeting date as well as a link for more info on that event! :)

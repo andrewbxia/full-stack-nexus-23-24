@@ -11,6 +11,7 @@ const puppeteer = require("puppeteer");
 const url = require("url");
 const multer = require("multer");
 const extract = require("extract-zip");
+const { get } = require("./loginRoutes.js");
 const storage = multer.diskStorage({
     // destination: function(req, file, cb) {
     //     cb(null, path.resolve(__dirname + "../../../projects"));
@@ -20,6 +21,7 @@ const storage = multer.diskStorage({
     }
 });
 const upload = multer({storage: storage});
+let directoryHierarchy;
 
 async function screenshot(url, outputPath){//make sure to use url.pathToFileUrl(path) for url
     const browser = await puppeteer.launch({
@@ -125,9 +127,14 @@ function deleteUserEmpty(filePath){
     }
 }
 
+function updateDirectoryHierarchy() {
+    directoryHierarchy = getDirectoryHierarchy(path.join(__dirname, "../../projects"));
+}
 
-////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////
+//initialize directory hierarchy cache
+updateDirectoryHierarchy();
 
 
 router.get("/", (req, res) => {
@@ -136,7 +143,7 @@ router.get("/", (req, res) => {
 });
 
 router.get("/getProjects", async (req, res) => {
-    return res.json({projects: getDirectoryHierarchy(path.resolve(__dirname + "../../../projects"))});
+    return res.json({projects: directoryHierarchy});
 });
 
 router.get("/guide", (req, res) => {
@@ -180,7 +187,9 @@ router.get("/:id/*", (req, res, next) => {
 
 
 router.post("/upload", upload.single("file"), async (req, res) => {
-    //🎉🎉🎉 rewriting this api from scratch part 3 🎉🎉🎉
+    //🎉🎉🎉 rewriting this api route from scratch part 3 🎉🎉🎉 (IT WORKS)
+    //this took so long to write
+    //orgainization hell
 
     //validate user
     if(!req.session.user) {
@@ -219,6 +228,7 @@ router.post("/upload", upload.single("file"), async (req, res) => {
     //path to zip file
     const zipPath = req.file.path;
     console.log(zipPath);
+    
     //TEMP PROJECTS DIR
     //tempProjects tempProjects
     const tempRootDir = path.join(__dirname, "../../tempProjects");
@@ -233,7 +243,7 @@ router.post("/upload", upload.single("file"), async (req, res) => {
     //projects/user
     const userDir = path.join(rootDir, req.session.user);
     //projects/user/project
-    const userProjectDir = path.join(userDir, fileName);//TODO: test entry.path and turn into directory name if the zip file is directory
+    const userProjectDir = path.join(userDir, fileName);
 
     try{
         //create and extract into temp dir
@@ -290,9 +300,10 @@ router.post("/upload", upload.single("file"), async (req, res) => {
         console.log("path: " + homePagePath)
         await screenshot(url.pathToFileURL(path.join(projectDest, homePagePath)), path.join(projectDest, "preview.png"));
         // fsExtra.moveSync(zipPath, path.join(projectDest, path.basename(zipPath)));
-        // fs.unlinkSync(zipPath);
+        // fs.unlinkSync(zipPath); //DO NOT CALL THIS, THIS IS ALREADY MOVED TO PROJECTS
         //yay
         console.log("complete");
+        updateDirectoryHierarchy();
         return res.status(200).json({message: "project uploaded successfully!"});
     }
     catch(err){
@@ -310,14 +321,13 @@ router.post("/upload", upload.single("file"), async (req, res) => {
         if(fs.existsSync(userProjectDir)) {
             fsExtra.removeSync(userProjectDir);
         }
-        deleteUserEmpty(userDir);
+
         return res.status(400).json({message: "ERROR", error: err.message});
     }
 });
 
 
 router.post("/delete", async(req, res) => {
-
     //perms checking
     if(!req.session.user) {
         return res.status(401).redirect("/login?redirect=/projects&reason=notloggedin");
@@ -361,10 +371,10 @@ router.post("/delete", async(req, res) => {
     if(!projectExists) {
         return res.status(400).json({message: "ERROR", error: "project requested for deletion does not exist"});
     }
-    fsExtra.removeSync(userProjectDir);
-    deleteUserEmpty(userDir);
-    return res.status(200).json({message: "project deleted successfully!"});
 
+    deleteUserEmpty(userDir); 
+    updateDirectoryHierarchy();
+    return res.status(200).json({message: "project deleted successfully!"});
 });
 
 module.exports = router;
