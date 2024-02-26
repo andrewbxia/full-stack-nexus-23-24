@@ -4,16 +4,7 @@ let presentationCards, randomTimeout, randomTimeoutIndex;
 export let presentations;
 
 function animateLightPurple(){
-    // if(!lpStyles.innerHTML){
-    //     lpStyles.innerHTML = `
-    //     .bg-purple-light {
-    //         animation: glow-pres-b 1.5s ease forwards;
-    //     }
-    //     `;
-    // }
-    // else{
-        
-    // }
+
     lpStyles.innerHTML = `
         .bg-purple-light {
             background-color: rgb(173, 143, 255);
@@ -25,7 +16,7 @@ function animateLightPurple(){
                 animation: glow-pres 1.5s ease forwards;
             }
         `;
-    }, 0);
+    }, 0.5);
 }
 
 function animateAllRandomAfter(presCardsIndex){
@@ -34,20 +25,15 @@ function animateAllRandomAfter(presCardsIndex){
 }
 
 function animateAllRandom(){
-    console.log("animate all random");
-    if(randomTimeout){
-        clearTimeout(randomTimeout);
-        animateAllRandomAfter(randomTimeoutIndex);
-    }
     randomTimeoutIndex = Math.floor(Math.random() * presentationCards.length);
-
     const randomPresentation = presentationCards[randomTimeoutIndex];
+    
     randomPresentation.classList.remove("animate-after");
     randomPresentation.classList.add("animate-before");
     animateLightPurple();
 
-    randomTimeout = setTimeout(() => animateAllRandomAfter(randomTimeoutIndex), 150);
-    setTimeout(animateAllRandom, Math.random() * 1500 + 700);
+    setTimeout(() => animateAllRandomAfter(randomTimeoutIndex), 150);
+    setTimeout(animateAllRandom, Math.random() * 1500 + 1000);
 }
 
 export async function loadPresentations() {
