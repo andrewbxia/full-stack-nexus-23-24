@@ -1,6 +1,6 @@
 const presentationBody = document.getElementById("presentation-body");
 const lpStyles = document.getElementById("lp-styles");
-let presentationCards, randomTimeout, randomTimeoutIndex;
+let presentationCards, randomTimeout, randomTimeoutIndex, focusIndex;
 export let presentations;
 
 function animateLightPurple(){
@@ -19,12 +19,30 @@ function animateLightPurple(){
     }, 0.5);
 }
 
-function animateAllRandomAfter(presCardsIndex){
+function animateAllAfter(presCardsIndex){
     presentationCards[presCardsIndex].classList.remove("animate-before");
     presentationCards[presCardsIndex].classList.add("animate-after");
 }
 
+// function animateAllAfterSpecific(index){
+//     presentationCards[index].classList.remove("animate-before");
+//     presentationCards[index].classList.add("animate-after");
+// }
+
+function animateSpecific(index){
+    const randomPresentation = presentationCards[index];
+    randomPresentation.classList.remove("animate-after");
+    randomPresentation.classList.add("animate-before");
+    animateLightPurple();
+
+    // setTimeout(() => animateAllAfter(index), 150);
+}
+
 function animateAllRandom(){
+    // if(randomTimeout){
+    //     clearTimeout(randomTimeout);
+    //     animateAllAfter(randomTimeoutIndex);
+    // }
     randomTimeoutIndex = Math.floor(Math.random() * presentationCards.length);
     const randomPresentation = presentationCards[randomTimeoutIndex];
     
@@ -32,7 +50,7 @@ function animateAllRandom(){
     randomPresentation.classList.add("animate-before");
     animateLightPurple();
 
-    setTimeout(() => animateAllRandomAfter(randomTimeoutIndex), 150);
+    /*randomTimeout = */setTimeout(() => animateAllAfter(randomTimeoutIndex), 150);
     setTimeout(animateAllRandom, Math.random() * 1500 + 1000);
 }
 
@@ -45,6 +63,7 @@ export async function loadPresentations() {
     for (const presentation of presentations) {
         console.log(presentation.title);
         const presentationCard = document.createElement("a");
+        presentationCard.dataset.index = presentation.id - 1;
         presentationCard.href = BASE_URL + "/presentations/" + presentation.id;
 
         const title = document.createElement("h2");
@@ -65,6 +84,20 @@ export async function loadPresentations() {
             presentationCard.classList.remove("animate-before");
             presentationCard.classList.add("animate-after");
         });
+
+        // presentationCard.addEventListener("focus", (event) => {
+        //     console.log("focus");
+        //     animateSpecific(event.target.dataset.index);
+        //     setTimeout(() => {
+        //         animateAllAfter(event.target.dataset.index);
+        //     }, 150);
+        
+        // });
+
+        // presentationCard.addEventListener("blur", (event) => {
+        //     console.log("focusout");
+        //     animateAllAfter(event.target.dataset.index);
+        // });
 
         description.appendChild(descriptionItem);
         presentationCard.appendChild(title);
