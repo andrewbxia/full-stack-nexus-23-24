@@ -1,5 +1,6 @@
 const presentationBody = document.getElementById("presentation-body");
 const lpStyles = document.getElementById("lp-styles");
+const timeoutlimit = 0.1;
 let presentationCards, randomTimeout, randomTimeoutIndex, focusIndex;
 export let presentations;
 
@@ -11,12 +12,12 @@ function animateLightPurple(){
         }
     `;
     setTimeout(() => {
-        lpStyles.innerHTML = `
-            .bg-purple-light {
-                animation: glow-pres 1.5s ease forwards;
-            }
-        `;
-    }, 0.5);
+    lpStyles.innerHTML = `
+        .bg-purple-light {
+            animation: glow-pres 1.5s ease forwards;
+        }
+    `;
+    }, timeoutlimit);
 }
 
 function animateAllAfter(presCardsIndex){
@@ -59,6 +60,29 @@ export async function loadPresentations() {
     presentations = await fetch(BASE_URL + "/presentations/getPresentations").then((response) => response.json());
 
     console.log("loading presentations ");
+
+    if(presentations.length === 0){
+        for(const text of ["No presentations yet!", "Add a presentation to get rid of this! :)"]){
+            const presentationCard = document.createElement("a");
+            const title = document.createElement("h2");
+            title.innerText = text;
+            presentationCard.appendChild(title);
+            presentationBody.appendChild(presentationCard);
+
+            presentationCard.addEventListener("mouseenter", (event) => {
+                console.log("hover");
+                presentationCard.classList.remove("animate-after");
+                presentationCard.classList.add("animate-before");
+
+                animateLightPurple();     
+            });
+            presentationCard.addEventListener("mouseleave", (event) => {
+                console.log("mouseleave");
+                presentationCard.classList.remove("animate-before");
+                presentationCard.classList.add("animate-after");
+            });
+        }
+    }
     
     for (const presentation of presentations) {
         console.log(presentation.title);
@@ -72,6 +96,10 @@ export async function loadPresentations() {
         const description = document.createElement("ul");
         const descriptionItem = document.createElement("li");
         descriptionItem.innerText = presentation.description;
+
+        description.appendChild(descriptionItem);
+        presentationCard.appendChild(title);
+        presentationCard.appendChild(description);
 
         presentationCard.addEventListener("mouseenter", (event) => {
             console.log("hover");
@@ -98,10 +126,6 @@ export async function loadPresentations() {
         //     console.log("focusout");
         //     animateAllAfter(event.target.dataset.index);
         // });
-
-        description.appendChild(descriptionItem);
-        presentationCard.appendChild(title);
-        presentationCard.appendChild(description);
 
         presentationBody.appendChild(presentationCard);
     }
