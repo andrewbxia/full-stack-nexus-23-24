@@ -4,6 +4,15 @@ const timeoutlimit = 0.1;
 let presentationCards, randomTimeout, randomTimeoutIndex, focusIndex;
 export let presentations;
 
+function delayRedirect(event){
+    event.preventDefault();
+    animateSpecific(event.target.dataset.index);
+    setTimeout(() => {
+        window.location.href = event.target.href;
+    }, 300);
+}
+
+
 function animateLightPurple(){
 
     lpStyles.innerHTML = `
@@ -46,12 +55,11 @@ function animateAllRandom(){
     // }
     randomTimeoutIndex = Math.floor(Math.random() * presentationCards.length);
     const randomPresentation = presentationCards[randomTimeoutIndex];
-    
     randomPresentation.classList.remove("animate-after");
     randomPresentation.classList.add("animate-before");
     animateLightPurple();
 
-    /*randomTimeout = */setTimeout(() => animateAllAfter(randomTimeoutIndex), 150);
+    /*randomTimeout = */setTimeout(() => animateAllAfter(randomTimeoutIndex), 180);
     setTimeout(animateAllRandom, Math.random() * 1500 + 1000);
 }
 
@@ -81,6 +89,7 @@ export async function loadPresentations() {
                 presentationCard.classList.remove("animate-before");
                 presentationCard.classList.add("animate-after");
             });
+            presentationCard.addEventListener("click", delayRedirect);
         }
     }
     
@@ -109,9 +118,14 @@ export async function loadPresentations() {
         });
         presentationCard.addEventListener("mouseleave", (event) => {
             console.log("mouseleave");
-            presentationCard.classList.remove("animate-before");
-            presentationCard.classList.add("animate-after");
+            setTimeout(() => {
+                console.log("left");
+                presentationCard.classList.remove("animate-before");
+                presentationCard.classList.add("animate-after");
+            }, 180);
         });
+
+        presentationCard.addEventListener("click", delayRedirect);
 
         // presentationCard.addEventListener("focus", (event) => {
         //     console.log("focus");
