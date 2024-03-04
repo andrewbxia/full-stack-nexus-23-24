@@ -69,6 +69,7 @@ export async function loadPresentations() {
 
     console.log("loading presentations ");
 
+    
     if(presentations.length === 0){
         for(const text of ["No presentations yet!", "Add a presentation to get rid of this! :)"]){
             const presentationCard = document.createElement("a");
@@ -89,10 +90,9 @@ export async function loadPresentations() {
                 presentationCard.classList.remove("animate-before");
                 presentationCard.classList.add("animate-after");
             });
-            presentationCard.addEventListener("click", delayRedirect);
         }
     }
-    
+
     for (const presentation of presentations) {
         console.log(presentation.title);
         const presentationCard = document.createElement("a");
@@ -119,10 +119,10 @@ export async function loadPresentations() {
         presentationCard.addEventListener("mouseleave", (event) => {
             console.log("mouseleave");
             setTimeout(() => {
-                console.log("left");
-                presentationCard.classList.remove("animate-before");
+                
                 presentationCard.classList.add("animate-after");
-            }, 180);
+                presentationCard.classList.remove("animate-before");
+            }, 30);
         });
 
         presentationCard.addEventListener("click", delayRedirect);
