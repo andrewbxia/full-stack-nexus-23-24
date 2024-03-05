@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const fs = require("fs");
 const path = require("path");
-const icons = ["stacksvgtransparent", "stacksvgslant2transparent", "stacksvgslant1transparent", "stacksvgslant1", "stacksvgslant2", "stacksvgvertical1", "stacksvgalt", "stacksvg", "codesysvg"];
+const icons = ["stackslantsvg", "stacksvgtransparent", "stacksvgslant2transparent", "stacksvgslant1transparent", "stacksvgslant1", "stacksvgslant2", "stacksvgvertical1", "stacksvgalt", "stacksvg", "codesysvg"];
 
 
 router.get("/scripts/:id(*).js", (req, res) => {
@@ -17,7 +17,7 @@ router.get("/scripts/:id(*).js", (req, res) => {
 router.get("/icon:id?", (req, res) => {
     const randIcon = icons[Math.floor(Math.random() * icons.length)];
     var fileName = path.join(__dirname, `../assets/icons${req.params.id || ""}/${randIcon}`);
-    fileName += req.query.type === "png" ? "png" : ".svg";
+    fileName += req.query.type === "png" ? ".png" : ".svg";
 
     return fs.existsSync(fileName) ? res.sendFile(fileName) : res.status(404).json({error: "eye-con file does not exist"});
 });
