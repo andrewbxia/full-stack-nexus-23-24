@@ -4,14 +4,6 @@ const timeoutlimit = 0.1;
 let presentationCards, randomTimeout, randomTimeoutIndex, focusIndex;
 export let presentations;
 
-function delayRedirect(event){
-    event.preventDefault();
-    animateSpecific(event.target.dataset.index);
-    setTimeout(() => {
-        window.location.href = event.target.href;
-    }, 300);
-}
-
 
 function animateLightPurple(){
 
@@ -124,9 +116,7 @@ export async function loadPresentations() {
                 presentationCard.classList.remove("animate-before");
             }, 30);
         });
-
-        presentationCard.addEventListener("click", delayRedirect);
-
+        
         // presentationCard.addEventListener("focus", (event) => {
         //     console.log("focus");
         //     animateSpecific(event.target.dataset.index);
