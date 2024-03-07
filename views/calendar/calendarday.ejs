@@ -83,6 +83,7 @@
                 color: #ffffff;
                 text-align: center;
                 font-family: "Cambria", "Cochin", "Georgia";
+                font-size: 1.3em;
                 height:100%;
                 padding:0;
                 margin:0;
@@ -150,6 +151,12 @@
                 font-family: inherit;
                 font-weight: bold;
             }
+            @media (max-width: 1200px) {
+                .nav-button{
+                    font-size: 3vw;
+                    width: 25vw;
+                }
+            }
             #nav-search-input{
                 border-radius: 3px;
                 border: aliceblue solid 2px;
@@ -157,11 +164,11 @@
                 color:rgb(44, 0, 202);
                 font-family:inherit;
                 font-weight:inherit;
-                transition: outline 0.5s steps(2) ;
+                font-size: inherit;
+                transition: outline 0.5s steps(2);
             }
             #nav-search-input:focus{
                 animation: border-flash 0.5s infinite steps(2), rainbow-border 2.5s infinite linear;
-              
             }
             #nav-search-wee{
                 box-shadow: none;
@@ -171,12 +178,25 @@
                 font-family:inherit;
                 font-weight:inherit;
                 animation: rainbow-text 2.5s linear infinite;
-                
+                font-size: inherit;
             }
             #nav-search-wee:hover{
                 cursor:pointer;
                 outline-color:white !important;
                 animation: border-flash 0.37s infinite steps(2);
+            }
+            #back-home-button{
+                border-radius: 10px;
+                width: fit-content;
+                font-size: 1.5em;
+                border: rgb(56, 121, 241) solid 5px;
+                text-decoration: underline;
+                margin: 5px;
+                padding: 5px 25px;
+                text-align: center;
+                min-width: fit-content;
+                color: rgb(60, 255, 70);
+                backdrop-filter: brightness(0.75);
             }
         </style>
         <% } else { %>
@@ -233,6 +253,9 @@
                     }
                 })
             </script>
+            <a href="<%= BASE_URL %>/calendar" id="back-home-button">
+                Back to main calendar
+            </a>
         </div>
         <% if(id < lastEventID){ %>
         <div>
