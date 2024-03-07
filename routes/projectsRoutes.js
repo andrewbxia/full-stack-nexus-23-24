@@ -376,9 +376,11 @@ router.post("/delete", async(req, res) => {
     if(fs.existsSync(userProjectDir)) {
         fsExtra.removeSync(userProjectDir);
         updateDirectoryHierarchy();
+        console.log("deletion " + userProjectDir + " success")
         return res.status(200).json({message: "project deleted successfully!"});
     }
     else{
+        console.log("delete " + userProjectDir + " failed")
         return res.status(400).json({message: "ERROR", error: "project requested for deletion does not exist"});
     }
 });

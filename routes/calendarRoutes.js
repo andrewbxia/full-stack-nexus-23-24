@@ -65,7 +65,7 @@ router.get("/event/:id", async (req, res) => {
 
 
 router.post("/submitEvent", async (req, res) => {
-    if(req.session.permissions !== "admin"){
+    if(req.session.permissions === "admin"){
         console.log(req.body);
         const user = req.session.user;
         let {title, location, description, date, starttime, endtime} = req.body;
