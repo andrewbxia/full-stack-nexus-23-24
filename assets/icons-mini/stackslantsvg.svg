@@ -27,7 +27,7 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="4"
-     inkscape:cx="29.25"
+     inkscape:cx="29.125"
      inkscape:cy="54.375"
      inkscape:window-width="1920"
      inkscape:window-height="1009"
@@ -45,7 +45,7 @@
        d="M 8.8422042,0 H 0.94737896 C 0.42631294,0 0,0.48947052 0,1.0877315 V 8.7018518 C 0,9.300091 0.42631294,9.7895833 0.94737896,9.7895833 H 5.6842743 8.8422042 c 0.5210657,0 0.9473791,-0.4894923 0.9473791,-1.0877315 V 1.0877315 C 9.7895833,0.48947052 9.3632699,0 8.8422042,0 Z"
        id="path5"
        sodipodi:nodetypes="ssssscssss"
-       style="stroke-width:0.338378" />
+       style="stroke-width:0.338378;fill:#000000;fill-opacity:1" />
     <g
        id="g13"
        transform="matrix(0.31579299,0,0,0.36257716,-6.2494759,-33.518633)">

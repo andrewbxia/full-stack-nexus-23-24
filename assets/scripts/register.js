@@ -32,14 +32,14 @@ async function loginUser(event){
             username.value = "";
             password.value = "";
             break;
-        case "USERALREADYEXISTS":
+        case "USERALREADYREGISTERED":
             responseText.innerText = "This person has already registered. If this is not you, please contact andrew for this uh-oh momento.";
             break;
         case "USERALREADYAPPROVED":
             responseText.innerHTML = "This person has already registered and has been approved. Please log in <a href='../login'>here</a>!";
             break;
         case "USERREJECTED":
-            responseText.innerText = "This person has already registered and has been rejected from approval. If this is not you or you thinkies this is an error, please contact andrew for this REALLY uh-oh momento.";
+            responseText.innerText = "This person has already registered and has been rejected from approval. If this is not you or you thinks this is an error, please contact andrew for this WWuH-oH momento.";
             break;
         case "USERREGISTERFAILED":
             responseText.innerText = "registration failed for some reason: " + response.error;

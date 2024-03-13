@@ -23,6 +23,7 @@ const cookieParser = require("cookie-parser");
 const startDate = new Date();
 dotenv.config({ path: path.resolve(__dirname, "../files/.env")});
 const BASE_URL = require("./BASE_URL.js");
+//session info
 let sess = {
     secret: process.env.SESSION_SECRET,
     resave: false,//resets every page load
