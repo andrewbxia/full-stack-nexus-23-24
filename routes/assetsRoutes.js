@@ -19,7 +19,7 @@ router.get("/icon:id?", (req, res) => {
     var fileName = path.join(__dirname, `../assets/icons${req.params.id || ""}/${randIcon}`);
     fileName += req.query.type === "png" ? ".png" : ".svg";
 
-    return fs.existsSync(fileName) ? res.sendFile(fileName) : res.status(404).json({error: "eye-con file does not exist"});
+    return fs.existsSync(fileName) ? res.sendFile(fileName) : res.status(404).json({error: fileName + " eye-con file does not exist"});
 });
 
 
