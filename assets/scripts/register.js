@@ -1,15 +1,23 @@
 //client side code for register page
+const responseText = document.getElementById("server-response");
+const username = document.getElementById("username");
+const Knumber = document.getElementById("Knumber");
+const password = document.getElementById("password");
 
 async function loginUser(event){
     event.preventDefault();
-    const responseText = document.getElementById("server-response");
-    const username = document.getElementById("username");
-    const password = document.getElementById("password");
-    let data = {
-        username: username.value,
-        password: password.value,
+    const registerForm = document.getElementById("register-form");
+
+    const usernameStr = username.value;
+    const KnumberStr = Knumber.value;
+    const passwordStr = password.value;
+
+    const registerFormData = {
+        username: usernameStr,
+        Knumber: KnumberStr,
+        password: passwordStr,
     };
-    data = JSON.stringify(data);
+    console.log(registerFormData);
     
     let response = await fetch("../register/registerUser", {
         method: "POST",
@@ -21,7 +29,7 @@ async function loginUser(event){
         },
         redirect: "follow",
         referrerPolicy: "no-referrer",
-        body: data,
+        body: JSON.stringify(registerFormData),
     });
     response = await response.json();
     console.log(response);
@@ -30,6 +38,7 @@ async function loginUser(event){
         case "USERREGISTERED":
             responseText.innerText = `Registration for ${username.value} successful! Please give andrew some time to stop procrastinating and approve your account. (he wont stop)`;
             username.value = "";
+            Knumber.value = "";
             password.value = "";
             break;
         case "USERALREADYREGISTERED":

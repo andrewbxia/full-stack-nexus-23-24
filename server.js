@@ -97,5 +97,5 @@ app.use((req, res) => {
     console.log("404 -> " + req.url);
 });
 app.listen(3000, () => {
-    console.log("successful start at http://localhost:3000");
+    console.log("successful start at " + BASE_URL);
 });

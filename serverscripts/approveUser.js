@@ -22,37 +22,42 @@ async function isAdmin(username){
     });
 };
 
-function approveUser(req, res){
-    isAdmin(req.session.user).then(isAdmin => {
+async function approveUser(req, res){
+    await isAdmin(req.session.user).then(isAdmin => {
         if (isAdmin) {
-            let mode, usernameLower, {username} = req.body, password, permissions = "member", joined = 0;
+            let mode, usernameLower, {username} = req.body, Knumber, password, permissions = "member", joined = 0;
             let response = {};
 
             dbregister.get("SELECT * FROM users WHERE username = ?", [username], (err, row) => {
-                if (err) {
+                if(err) {
                     console.error(err.message);
                     return res.status(500).json({ message: "ERROR", error: err.message });
-                } else if (row === undefined) {
+                }
+                else if(row === undefined) {
                     return res.status(400).json({ message: "USERNOTFOUND" });
-                } else {
+                } 
+                else {
                     mode = row.mode;
                     usernameLower = row.usernameLower;
                     username = row.username;
+                    Knumber = row.Knumber;
                     password = row.password;
 
-                    dblogin.run("INSERT INTO users (mode, usernameLower, username, password, permissions, joined) VALUES (?, ?, ?, ?, ?, ?)", [mode, usernameLower, username, password, permissions, joined], (err) => {
-                        if (err) {
+                    dblogin.run("INSERT INTO users (mode, usernameLower, username, Knumber, password, permissions, joined) VALUES (?, ?, ?, ?, ?, ?, ?)", [mode, usernameLower, username, Knumber, password, permissions, joined], (err) => {
+                        if(err) {
                             console.error("err in approving " + username + ": " + err.message);
                             response.login = { message: "ERROR", error: err.message };
-                        } else {
+                        }
+                        else {
                             console.log(username + " approved");
                             response.login = { message: "USER " + username + " APPROVED" };
 
                             dbregister.run("DELETE FROM users WHERE username = ?", [username], (err) => {
-                                if (err) {
+                                if(err) {
                                     console.error("error removing " + username + " from register db: " + err.message);
                                     response.register = { message: "ERROR", error: err.message };
-                                } else {
+                                }
+                                else {
                                     console.log(username + " removed from register db");
                                     response.register = { message: "USER " + username + " REMOVED" };
                                 }

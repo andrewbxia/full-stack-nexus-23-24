@@ -13,29 +13,24 @@ const dbregister = new sqlite3.Database("../fsnDB/userRegister.db", sqlite3.OPEN
 
 dbregister.serialize(() => {
     dbregister.run(`CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    mode TEXT NOT NULL,
-    usernameLower TEXT UNIQUE NOT NULL,
-    username TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL,
-    rejected INTEGER
-    )`);//rejected is 0 if not rejected, 1 if rejected
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        mode TEXT NOT NULL,
+        usernameLower TEXT UNIQUE NOT NULL,
+        username TEXT UNIQUE NOT NULL,
+        Knumber TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        rejected INTEGER
+        )`);//rejected is 0 if not rejected, 1 if rejected
 });
 
-async function checkExists(registerUser){
-    return await new Promise(async(resolve, reject) => {
-        
-    });
-}
-
 async function registerUserDB(req, res){
-    const {username, password} = req.body;
+    const { username, Knumber, password } = req.body;
+    console.log(username, Knumber, password)
     const usernameLower = username.toLowerCase();
     const mode = "password";
-    let exists;
     console.log("registering user " + username);
 
-    if(!username || !password){
+    if(!username || !password || !Knumber){
         return res.status(400).json({message: "UNDEFINEDCREDENTIALS"});
     }
 
@@ -43,26 +38,26 @@ async function registerUserDB(req, res){
     
     try {
         userCheck = await new Promise((resolve, reject) => {
-            dblogin.serialize(() => {
-                dblogin.get("SELECT * FROM users WHERE usernameLower = ?", [usernameLower], (err, row) => {
-                    if (err) {
-                        reject(err);
-                    }
-                    else if (row !== undefined) {
-                        reject(new Error("USERALREADYAPPROVED"));
-                    }
-                });
-                dbregister.get("SELECT * FROM users WHERE usernameLower = ?", [usernameLower], (err, row) => {
-                    if (err) {
-                        reject(err);
-                    } else if (row !== undefined) {
-                        if (row.rejected === 1) {
-                            reject(new Error("USERREJECTED"));
-                        }
-                        reject(new Error("USERALREADYREGISTERED"));
-                    } 
-                    resolve(row);
-                });
+            dblogin.get("SELECT * FROM users WHERE usernameLower = ?", [usernameLower], (err, row) => {
+                if (err) {
+                    reject(err);
+                }
+                else if (row !== undefined) {
+                    reject(new Error("USERALREADYAPPROVED"));
+                }
+                else{
+                    dbregister.get("SELECT * FROM users WHERE usernameLower = ?", [usernameLower], (err, row) => {
+                        if (err) {
+                            reject(err);
+                        } else if (row !== undefined) {
+                            if (row.rejected === 1) {
+                                reject(new Error("USERREJECTED"));
+                            }
+                            reject(new Error("USERALREADYREGISTERED"));
+                        } 
+                        resolve(row);
+                    });
+                }
             });
         });
     } catch (err) {
@@ -80,7 +75,7 @@ async function registerUserDB(req, res){
     });
 
     try{
-        dbregister.run("INSERT INTO users (mode, usernameLower, username, password, rejected) VALUES (?, ?, ?, ?, ?)", [mode, usernameLower, username, hashpassword, 0], (err) => {
+        dbregister.run("INSERT INTO users (mode, usernameLower, username, Knumber, password, rejected) VALUES (?, ?, ?, ?, ?, ?)", [mode, usernameLower, username, Knumber, hashpassword, 0], (err) => {
             if (err){
                 return res.status(500).json({message: "USERREGISTERFAILED", error: err.message});
             }

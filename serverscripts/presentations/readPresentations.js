@@ -6,7 +6,7 @@ const db = new sqlite3.Database("../fsnDB/presentations.db",sqlite3.OPEN_READONL
         return console.error(err.message);
     }
     else{
-        console.log("successful legacy connection i think");
+        console.log("successful read presentation connection i think");
     }
 });
 

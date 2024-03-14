@@ -18,6 +18,7 @@ dblogin.serialize(async() => {
         mode TEXT NOT NULL,
         usernameLower TEXT UNIQUE NOT NULL,
         username TEXT UNIQUE NOT NULL,
+        Knumber TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
         permissions TEXT,
         joined INTEGER
@@ -35,9 +36,9 @@ dblogin.serialize(async() => {
         console.log(adminArr);
         
         for (const admin in adminArr.members) {
-            const { mode, usernameLower, username, password, permissions, joined } = adminArr.members[admin];//adminArr.admins[admin] grabs the values of the objects
-            console.log(mode, usernameLower, username, password, permissions, joined);
-            await dblogin.run("INSERT OR IGNORE INTO users (mode, usernameLower, username, password, permissions, joined) VALUES (?, ?, ?, ?, ?, ?)", [mode, usernameLower, username, password, permissions, joined], (err) => {
+            const { mode, usernameLower, username, Knumber, password, permissions, joined } = adminArr.members[admin];//adminArr.admins[admin] grabs the values of the objects
+            console.log(mode, usernameLower, username, Knumber, password, permissions, joined);
+            await dblogin.run("INSERT OR IGNORE INTO users (mode, usernameLower, username, Knumber, password, permissions, joined) VALUES (?, ?, ?, ?, ?, ?, ?)", [mode, usernameLower, username, Knumber, password, permissions, joined], (err) => {
                 if (err) {
                     console.error("wuh oh" + err.message);
                 } else {
@@ -48,15 +49,17 @@ dblogin.serialize(async() => {
     });
 });
 
-async function readUserDB(username, password){
+async function readUserDB(username, Knumber, password){
     return await new Promise(async(resolve, reject) =>{
         console.log("logging in user " + username);
-        if(!username || !password){
+        if(!username || !password || !Knumber){
             resolve({message: "UNDEFINEDCREDENTIALS"});
         }
         try{
             console.log(username);
+            console.log(Knumber);
             console.log(password);
+
             await dblogin.get("SELECT * FROM users WHERE username = ?", [username], async (err, row) => {
                 if(err){
                     console.error(err.message);
@@ -68,10 +71,9 @@ async function readUserDB(username, password){
                 }
                 else{
                     console.log("user found");
-                    console.log(row.password, password)
-                    if(await argon2.verify(row.password, password)){
+                    if(await argon2.verify(row.password, password) && row.Knumber.toLowerCase() === Knumber.toLowerCase()){
                         console.log("login successful " + username);
-                        resolve({message: "SUCCESSFULLOGIN", username: username, permissions: row.permissions});
+                        resolve({message: "SUCCESSFULLOGIN", username: username, Knumber: Knumber, permissions: row.permissions});
                     }
                     else{
                         resolve({message: "UNSUCCESSFULLOGIN"});
@@ -86,20 +88,30 @@ async function readUserDB(username, password){
 
 
 async function handleLogin(req, res){
-    const {username, password} = req.body;
+    const {username, Knumber, password} = req.body;
     try{
-        const response = await readUserDB(username, password);
+        const response = await readUserDB(username, Knumber, password);
+
+        dblogin.all("SELECT * FROM users", (err, rows) => {
+            if(err){
+                console.error(err.message);
+            }
+            else{
+                console.log(rows.username + " " + rows.password);
+            }
+        });
 
         if(response.message === "SUCCESSFULLOGIN"){
             console.log(response.permissions);
             req.session.user = response.username;
+            req.session.Knumber = response.Knumber;
             req.session.permissions = response.permissions;
-            await req.session.save((err) => { // Save session with callback
+            await req.session.save((err) => { // save session with callback
                 if(err){
                     console.log('Session save error:', err);
                     return;
                 }
-                // Session saved successfully
+                // session saved successfully
                 res.status(200).json({message: response.message, username: response.username});
             });
         

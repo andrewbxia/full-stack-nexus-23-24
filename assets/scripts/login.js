@@ -3,9 +3,11 @@
 async function loginUser(event){
     event.preventDefault();
     const username = document.getElementById("username").value;
+    const Knumber = document.getElementById("Knumber").value;
     const password = document.getElementById("password").value;
     const data = {
         username: username,
+        Knumber: Knumber,
         password: password,
     };
     console.log(data);
@@ -31,19 +33,21 @@ async function loginUser(event){
     switch(response.message){
         case "SUCCESSFULLOGIN":
             username.value = "";
+            Knumber.value = "";
             password.value = "";
             responseMessage.innerText = `successfully 🪵'd in as "${response.username}"! hang tight while you are being redirected.`;
             break;
         case "UNSUCCESSFULLOGIN":
             password.value = "";
-            responseMessage.innerText = `incorrect password for "${username}"! if you feel like this is uhoh-spaghettios, contact andrew directly to change it (spaghettios included 🍝🍝🍝).`;
+            responseMessage.innerText = `incorrect password or K-number for "${username}"! if you feel like this is uhoh-spaghettios, contact andrew directly to change it (spaghettios included 🍝🍝🍝).`;
             break;
         case "USERNOTFOUND":
             username.value = "";
+            Knumber.value = "";
             responseMessage.innerText = `user "${username}" not found! either you have not registered or your registration is still pending or you miscapitalized something; this is case sensitive! meanwhile, want some spaghettios? 🍝🍝🍝`;
             break;
         case "UNDEFINEDCREDENTIALS":
-            responseMessage.innerText = "please enter a username and password! stop sending emptee requests to the server!! >:(";
+            responseMessage.innerText = "please enter a username and K-number and password! stop sending emptee requests to the server!! >:(";
             break;
         case "ERROR":
             responseMessage.innerText = "something uhoh spaghettio occurred on the server! please try again and spam andrew to fix it if it does not resolve";
