@@ -37,7 +37,7 @@ dblogin.serialize(async() => {
         
         for (const admin in adminArr.members) {
             const { mode, usernameLower, username, Knumber, password, permissions, joined } = adminArr.members[admin];//adminArr.admins[admin] grabs the values of the objects
-            console.log(mode, usernameLower, username, Knumber, password, permissions, joined);
+            console.log(username, Knumber, permissions, joined);
             await dblogin.run("INSERT OR IGNORE INTO users (mode, usernameLower, username, Knumber, password, permissions, joined) VALUES (?, ?, ?, ?, ?, ?, ?)", [mode, usernameLower, username, Knumber, password, permissions, joined], (err) => {
                 if (err) {
                     console.error("wuh oh" + err.message);
