@@ -33,8 +33,6 @@ dblogin.serialize(async() => {
 
         const adminArr = JSON.parse(data);
         
-        console.log(adminArr);
-        
         for (const admin in adminArr.members) {
             const { mode, usernameLower, username, Knumber, password, permissions, joined } = adminArr.members[admin];//adminArr.admins[admin] grabs the values of the objects
             console.log(username, Knumber, permissions, joined);
