@@ -39,6 +39,10 @@
             username.className = "user-interface-username";
             username.innerText = "Username: " + user.username;
 
+            const Knumber = document.createElement("span");
+            Knumber.className = "user-interface-Knumber";
+            Knumber.innerText = "Knumber: " + user.Knumber;
+
             const mode = document.createElement("span");
             mode.className = "user-interface-mode";
             mode.innerText = "Mode of login: " + user.mode;
@@ -60,7 +64,7 @@
             deleteButton.innerText = "Delete";
             //yawn
 
-            for(const element of [username, mode, approveButton, rejectButton, deleteButton]){
+            for(const element of [username, Knumber, mode, approveButton, rejectButton, deleteButton]){
                 userDiv.appendChild(element);
             }
 
