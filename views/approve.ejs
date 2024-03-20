@@ -47,7 +47,10 @@
             mode.className = "user-interface-mode";
             mode.innerText = "Mode of login: " + user.mode;
 
-
+            const rejected = document.createElement("span");
+            rejected.className = "user-interface-rejected";
+            rejected.innerText = "Rejected: " + user.rejected;
+            
             const approveButton = document.createElement("button");
             approveButton.dataset.mode = "approve";
             approveButton.className = "user-interface-approve-button";
