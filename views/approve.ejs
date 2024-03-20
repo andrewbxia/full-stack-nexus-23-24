@@ -87,10 +87,10 @@
                 return response.json();
             }).then((response) => {
                 for(const user of response.events){
-                    if(user.rejected !== 1){
-                        const userDiv = createUserInterface(user);
-                        users.appendChild(userDiv);
-                    }
+                    // if(user.rejected !== 1){
+                    const userDiv = createUserInterface(user);
+                    users.appendChild(userDiv);
+                    // }
                 }
             });
             const buttons = [];
