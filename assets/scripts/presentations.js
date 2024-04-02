@@ -1,4 +1,6 @@
 const presentationBody = document.getElementById("presentation-body");
+const nonmemberWarningCard = document.getElementById("non-member-warning");
+let warningCardAnimation;
 const lpStyles = document.getElementById("lp-styles");
 const timeoutlimit = 0.1;
 let presentationCards, randomTimeout, randomTimeoutIndex, focusIndex;
@@ -88,6 +90,8 @@ export async function loadPresentations() {
     for (const presentation of presentations) {
         console.log(presentation.title);
         const presentationCard = document.createElement("a");
+        presentationCard.classList.add("presentation-card");
+        presentationCard.setAttribute('draggable', false);
         presentationCard.dataset.index = presentation.id - 1;
         presentationCard.href = BASE_URL + "/presentations/" + presentation.id;
 
@@ -166,6 +170,32 @@ while(footer_bar_height > 0){
     footer_bar_height = footer_bar_height <= 10 ? footer_bar_height / 2 : footer_bar_height - 1;
 }
 
+nonmemberWarningCard.addEventListener("animationend", (event) => {
+    console.log("animation end");
+    nonmemberWarningCard.style.display = "none";
+    nonmemberWarningCard.style.animation = "";
+});
+
+
+
 await loadPresentations().then(() => {
     animateAllRandom();
+    document.querySelectorAll(".presentation-card").forEach((element) => {
+        // console.log(element);
+        element.addEventListener("click", (event) => {
+            event.preventDefault();
+            if(username){
+                window.location.href = this.href;
+            }
+            else{
+                console.log("not logged in")
+                nonmemberWarningCard.style.display = "block";
+                nonmemberWarningCard.style.animation = "";
+                setTimeout(() => {
+                    nonmemberWarningCard.style.animation = "notify 5s ease-in forwards";
+                }, 1);
+                // nonmemberWarningCard.style.animation = "notify 3.5s ease-in forwards";
+            }
+        });
+    });
 });

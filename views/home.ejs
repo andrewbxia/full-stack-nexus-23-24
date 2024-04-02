@@ -7,63 +7,23 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
         <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500&amp;display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500&amp;family=Major+Mono+Display&amp;display=swap" rel="stylesheet"> 
-        <link rel="stylesheet" type="text/css" href="<%= BASE_URL %>/assets/styles/home-0.css">  
+        <link rel="stylesheet" type="text/css" href="<%= BASE_URL %>/assets/styles/home.css">  
         <meta content="<%= BASE_URL %>/assets/icon?type=png" property="og:image"/>
         <meta content="#b69cff" data-react-helmet="true" name="theme-color"/>
         <meta name="twitter:card" content="summary_large_image">
         <meta name="robots" content="all">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style>
-            @keyframes rainbow-text{
-                0% {
-                    color: red;
-                }
-                16.67% {
-                    color: orange;
-                }
-                33.33% {
-                    color: yellow;
-                }
-                50% {
-                    color: rgb(0, 255, 0);
-                }
-                66.67% {
-                    color: rgb(0, 60, 255);
-                }
-                83.33% {
-                    color: rgb(140, 0, 255);
-                }
-                100% {
-                    color: rgb(255, 0, 242);
-                }
-            }
-            #changelog {
-                font-size: small;
-            }
-        </style>
-        <% if(locals.username){ %>
-            <style>
-                #profile-button{
-                    background-color: #b69cff;
-                }
-                #presentation-button{
-                    background-color: #9cebff;
-                }
-            </style>
-        <% } %>
     </head>
     <body>
         <header>
-            <div id="nav-button-container"><!--maybe make this its seperate file-->
-                
-
+            <div id="nav-button-container">
                 <span id="nav-menu-left">
                     <img id="header-icon" src="assets/icon-mini" draggable="false">
                     <a id="calendar" class="nav-button" data-info="calendar" href="/calendar">
                         Event Calendar
                     </a>
                     <a id="student-projects" class="nav-button" data-info="projects" href="/projects">
-                        Student-Made Projects
+                        Student Projects
                     </a>
                 </span>
 
@@ -73,10 +33,13 @@
                             Approve
                         </a>
                     <% } %>
+
+                    <!-- display for everyone -->
+                    <a id="presentation-button" class="nav-button" data-info="presentations" href="/presentations">
+                        Presentations <%if(!locals.username){%>(guest preview)<%}%>
+                    </a>
+                    
                     <% if(locals.username){ %>
-                        <a id="presentation-button" class="nav-button" data-info="presentations" href="/presentations">
-                            Presentations
-                        </a>
                         <a id="members-button" class="nav-button" data-info="members" href="/members">
                             Members
                         </a>
@@ -96,6 +59,7 @@
                             Join The Club!
                         </a>
                     <% } %>
+                    
                 </span>
             </div>
         </header>
@@ -157,5 +121,5 @@
 
     </body>
     <!-- MAEK SHORE that home.js is put after body -->
-    <script src="assets/scripts/home.js"></script>
+    <script src="assets/scripts/home.js" defer></script>
 </html>

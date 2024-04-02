@@ -8,7 +8,10 @@
         <meta name="twitter:card" content="summary_large_image">
         <meta name="robots" content="nofollow">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script>const BASE_URL = "<%=locals.BASE_URL%>"; </script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <script>const BASE_URL = "<%=locals.BASE_URL%>"; const username = "<%= locals.username %>"; </script>
         <script src="../assets/scripts/presentations.js" type="module" defer></script>
         <style>
             @keyframes glow-mini-b {
@@ -55,6 +58,24 @@
 
                 100%{
                     background-color: rgb(114, 111, 255);
+                }
+            }
+
+            @keyframes notify {
+                0% {
+                    opacity: 1;
+                }
+                20% {
+                    opacity: 0.95;
+                }
+                50% {
+                    opacity: 0.9;
+                }
+                75% {
+                    opacity: 0.8;
+                }
+                100% {
+                    opacity: 0;
                 }
             }
 
@@ -206,13 +227,32 @@
                     background-color: rgb(255, 217, 0);
                     transition: 330ms ease;
                     transition-property: top, bottom, left, right, width, height;
-                }
+            }
             #presentation-body :after{
                     top: inherit;
                     left: inherit;
                     right: 0;
                     bottom: 0;
-                }
+            }
+
+            #non-member-warning{
+                display: none;
+                position: fixed;
+                margin: 0;
+                bottom: 0;
+                left: 50%;
+                transform: translate(-50%, 0);
+                background-color: rgb(255, 230, 230);
+                color: rgb(255, 126, 126);
+                font-family: "Exo 2", sans-serif;
+                font-style: normal;
+                font-size: 1.5em;
+                min-width: fit-content;
+                padding: 0.75ch;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+                white-space: nowrap;
+            }
             
         </style>
         <style id="lp-styles">
@@ -282,6 +322,9 @@
 
         </div>
         <div id="footer-bars"></div>
+        <div id="non-member-warning">
+            to access the club's presentations, please <a href="../login">log in</a> or <a href="../register">register</a> if you haven't already!
+        </div>
         <footer>
             idk what to put here lol
         </footer>

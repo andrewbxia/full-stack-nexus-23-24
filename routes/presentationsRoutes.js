@@ -67,21 +67,21 @@ function updatePresentationsDB(){
 
 router.get("/", async(req, res) => {
     // res.render("presentations", {BASE_URL: BASE_URL, permissions: req.session.permissions});
-    if(req.session.user){
-        await checkLastPresentationId();
-        res.render("presentations", {BASE_URL: BASE_URL, permissions: req.session.permissions});
-    }
-    else{
-        console.log("no user get presentations");
-        res.status(401).redirect("login?redirect=login (or register if you haven't) to access the meeting presentations!");
-    }
+    // if(req.session.user){
+    checkLastPresentationId();
+    res.render("presentations", {BASE_URL: BASE_URL, username: req.session.username, permissions: req.session.permissions});
+    // }
+    // else{
+    //     console.log("no user get presentations");
+    //     res.status(401).redirect("login?redirect=login (or register if you haven't) to access the meeting presentations!");
+    // }
 });
 
 router.get("/getPresentations", async (req, res) => {
-    if(!req.session.user){
-        console.log("no user")
-        return res.status(401).redirect(BASE_URL + "/login?redirect=login (or register if you haven't) to access the meeting presentations");
-    }
+    // if(!req.session.user){
+    //     console.log("no user")
+    //     return res.status(401).redirect(BASE_URL + "/login?redirect=login (or register if you haven't) to access the meeting presentations");
+    // }
     dbReadPresentations.all("SELECT * FROM presentations", (err, rows) => {
         if (err) {
             return res.status(500).json({message: "ERROR", error: err.message});

@@ -14,3 +14,11 @@ function periodic(){
     serverTime.innerText = ((Date.now() - starttimems) / 3600000).toFixed(4);
     setTimeout(periodic, Math.random() * 1500);//hehehe
 }
+document.getElementById('dropdown-button').addEventListener('click', function() {
+    var dropdownMenu = document.getElementById('dropdownMenu');
+    if (dropdownMenu.style.display === 'none') {
+        dropdownMenu.style.display = 'block';
+    } else {
+        dropdownMenu.style.display = 'none';
+    }
+});
