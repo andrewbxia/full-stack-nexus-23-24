@@ -69,7 +69,7 @@ router.get("/", async(req, res) => {
     // res.render("presentations", {BASE_URL: BASE_URL, permissions: req.session.permissions});
     // if(req.session.user){
     checkLastPresentationId();
-    res.render("presentations", {BASE_URL: BASE_URL, username: req.session.username, permissions: req.session.permissions});
+    res.render("presentations", {BASE_URL: BASE_URL, username: req.session.user, permissions: req.session.permissions});
     // }
     // else{
     //     console.log("no user get presentations");
