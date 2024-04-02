@@ -185,7 +185,7 @@ await loadPresentations().then(() => {
         element.addEventListener("click", (event) => {
             event.preventDefault();
             if(username){
-                window.location.href = event.target.href;
+                window.location.href = event.target.closest("a").href;
             }
             else{
                 console.log("not logged in")
