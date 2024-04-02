@@ -247,11 +247,34 @@
                 font-family: "Exo 2", sans-serif;
                 font-style: normal;
                 font-size: 1.5em;
-                min-width: fit-content;
                 padding: 0.75ch;
                 border-top-left-radius: 10px;
                 border-top-right-radius: 10px;
-                white-space: nowrap;
+                text-align: center;
+            }
+            @media (max-width: 900px) {
+                #non-member-warning {
+                    overflow-wrap: break-word;
+                    font-size: 0.9em;
+                    min-width: 75%;
+                    max-width: 120%;
+                    max-height: 40%;
+
+                }
+            }
+
+            @media (min-width: 901px) {
+                #non-member-warning {
+                    white-space: nowrap;
+                    font-size: 1em;
+                    max-width: 90%;
+                }
+            }
+
+            @media (min-width: 1280px) {
+                #non-member-warning {
+                    font-size: 1.5em;
+                }
             }
             
         </style>
