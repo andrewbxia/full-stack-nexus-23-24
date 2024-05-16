@@ -57,7 +57,6 @@ function logSubmit(event){
       }));
 */
       resetDataValues();
-      
       addToEventData(eventPostData);
       console.log(res);
       alert("successful");

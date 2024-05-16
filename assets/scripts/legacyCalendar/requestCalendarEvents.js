@@ -77,7 +77,9 @@ export function getMonthData(dateString) {
   }
 }
 export function addToEventData(val){
+  val.id = eventData.events.length + 1;
   eventData.events.push(val);
+  console.log("added " + val.id);
   //changeDayHighlight();
 }
 
