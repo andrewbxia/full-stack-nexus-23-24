@@ -11,9 +11,13 @@ dbread.get("SELECT LAST_VALUE(id) OVER (ORDER BY id ROWS BETWEEN UNBOUNDED PRECE
     if (err) {
         console.error(err.message);
         throw err;
-    } else {
+    } else if(id){
         console.log("last legacy calendar event: " + id.lastEvent);
         lastEventID = id.lastEvent;
+    }
+    else{
+        console.log("no events in legacy calendar");
+        lastEventID = 0;
     }
 });
 
