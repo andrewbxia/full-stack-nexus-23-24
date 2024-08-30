@@ -1,4 +1,5 @@
 const { dblogin } = require("./loginUser");
+const db = require("./presentations/readPresentations");
 const { dbregister } = require("./registerUser");
 
 async function isAdmin(username){
@@ -14,7 +15,8 @@ async function isAdmin(username){
                 console.log(row.permissions);
                 if(row.permissions === "admin"){
                     resolve(true);
-                }else{
+                }
+                else{
                     resolve(false);
                 }
             }
@@ -72,7 +74,7 @@ async function approveUser(req, res){
 }//oh boy
 //I DIDNT KNOW I COULD USE DB.SERIALIZE WHEN I ORIJGINALLY RWOTE THIS oh well im too lazy to fix this :p
 
-function rejectUser(req, res){
+async function rejectUser(req, res){
     isAdmin(req.session.user).then((isAdmin) => {
         if(isAdmin){
             dbregister.run("UPDATE users SET rejected = 1 WHERE username = ?", [req.body.username], (err) => {
@@ -87,28 +89,53 @@ function rejectUser(req, res){
     })
 }
 
-function getUsers(req, res){
-    dbregister.all("SELECT * FROM users", (err, rows) => {
-        if(err){
-            console.error(err.message);
-            return res.status(500).json({error: err.message});
+async function getUsers(req, res){
+    isAdmin(req.session.user).then((isAdmin) => {
+        if(isAdmin){
+            const userjson = {};
+            dbregister.all("SELECT * FROM users", (err, rows) => {
+                if(err){
+                    console.error(err.message);
+                    return res.status(500).json({error: err.message});
+                }
+                for(const user of rows){
+                    delete user.password;
+                }
+                userjson.regusers = rows;
+                dblogin.all("SELECT * FROM users", (err, rows) => {
+                    if(err){
+                        console.error(err.message);
+                        return res.status(500).json({error: err.message});
+                    }
+                    for(const user of rows){
+                        delete user.password;
+                    }
+                    userjson.logusers = rows;
+                    return res.status(200).json(userjson);
+                });
+            });
         }
-        console.log(rows);
-        for(const user of rows){
-            delete user.password;
-        }
-        return res.status(200).json({ events: rows });
     });
 }
 
-function deleteUser(req, res){
-    dbregister.run("DELETE FROM users WHERE username = ?", [req.body.username], (err) => {
-        if(err){
-            console.error("ERROR" + err.message);
-            return res.status(500).json({message: "ERROR", error: err.message});
+async function deleteUser(req, res){
+    isAdmin(req.session.user).then((isAdmin) => {
+        if(isAdmin){
+            dbregister.run("DELETE FROM users WHERE username = ?", [req.body.username], (err) => {
+                if(err){
+                    console.error("ERROR" + err.message);
+                    return res.status(500).json({message: "ERROR", error: err.message});
+                }
+            });
+            dblogin.run("DELETE FROM users WHERE username = ?", [req.body.username], (err) => {
+                if(err){
+                    console.error("ERROR" + err.message);
+                    return res.status(500).json({message: "ERROR", error: err.message});
+                }
+                console.log("user " + req.body.username + " deleted");
+                return res.status(200).json({register: {message: "USER " + req.body.username + " DELETED"}});
+            });
         }
-        console.log("user " + req.body.username + " deleted");
-        return res.status(200).json({register: {message: "USER " + req.body.username + " DELETED"}});
     });
 }
 

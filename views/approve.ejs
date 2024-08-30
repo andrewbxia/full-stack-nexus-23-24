@@ -30,7 +30,7 @@
     </body>
     <script>
         const responseMessages = document.getElementById("response-messages");
-        function createUserInterface(user){
+        function createUserInterface(user, logged = false){
             const userDiv = document.createElement("div");
             userDiv.className = "user-interface";
             userDiv.dataset.username = user.username;
@@ -66,8 +66,13 @@
             deleteButton.className = "user-interface-delete-button";
             deleteButton.innerText = "Delete";
             //yawn
+            const appendElements = [username, Knumber, mode, deleteButton];
+            const regElements = [rejected, approveButton, rejectButton];
+            if(!logged){
+                appendElements.push(...regElements);
+            }
 
-            for(const element of [username, Knumber, mode, rejected, approveButton, rejectButton, deleteButton]){
+            for(const element of appendElements){
                 userDiv.appendChild(element);
             }
 
@@ -89,11 +94,18 @@
             }).then((response) => {
                 return response.json();
             }).then((response) => {
-                for(const user of response.events){
+                for(const user of response.regusers){
                     // if(user.rejected !== 1){
                     const userDiv = createUserInterface(user);
                     users.appendChild(userDiv);
                     // }
+                }
+                const divider = document.createElement("h1");
+                divider.innerText = "logged in users";
+                users.appendChild(divider);
+                for(const user of response.logusers){
+                    const userDiv = createUserInterface(user, true);
+                    users.appendChild(userDiv);
                 }
             });
             const buttons = [];
