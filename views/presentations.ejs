@@ -178,11 +178,11 @@
                 }
 
                 .animate-before{
-                    animation: glow-mini-b "<%= locals.funny ? 2.5: 1 %>"s ease forwards;
+                    animation: glow-mini-b <%= locals.funny ? 2.5: 1 %>s ease forwards;
                 }
 
                 .animate-after{
-                    animation: glow-mini-a "<%= locals.funny ? 2.5: 1 %>"s ease forwards;
+                    animation: glow-mini-a <%= locals.funny ? 2.5: 1 %>s ease forwards;
                 }
 
                 .animate-after:before,
