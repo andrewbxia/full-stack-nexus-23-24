@@ -6,7 +6,7 @@ const timeoutlimit = 0.1;
 let presentationCards, randomTimeout, randomTimeoutIndex, focusIndex;
 const glowHTML = `
         .bg-purple-light {
-            animation: glow-pres ${funny ? 2.5 : 1.5}s ease forwards;
+            animation: glow-pres 1.5s ease forwards;
         }
     `;
 
