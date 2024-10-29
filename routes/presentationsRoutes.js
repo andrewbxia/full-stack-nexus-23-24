@@ -94,6 +94,7 @@ router.get("/getPresentations", async (req, res) => {
 router.get("/:id", async (req, res) => {
     //send pdf file with id
     const id = req.params.id;
+    console.log(id);
     if(parseInt(id) == -1){
         res.render("presentations", {BASE_URL: BASE_URL, username: req.session.user, permissions: req.session.permissions, funny: true});
         return;
