@@ -1,3 +1,5 @@
+import { listen } from "express/lib/application";
+
 const presentationBody = document.getElementById("presentation-body");
 const nonmemberWarningCard = document.getElementById("non-member-warning");
 let warningCardAnimation;
@@ -59,8 +61,19 @@ function animateAllRandom(){
 
 export async function loadPresentations() {
     presentationBody.innerHTML = "";
-    presentations = await fetch(BASE_URL + "/presentations/getPresentations").then((response) => response.json());
+    if(funny)
+        presentations = await fetch(BASE_URL + "/presentations/getPresentations").then((response) => response.json());
+    else{
+        presentations = [];
+        for(let i = 0; i < 300; i++){
+            presentations.push({
+                title: "~~~~",
+                id: i,
+                description: "~~~~~~",
 
+            });
+        }
+    }
     console.log("loading presentations ");
 
     
@@ -94,6 +107,7 @@ export async function loadPresentations() {
         presentationCard.setAttribute('draggable', false);
         presentationCard.dataset.index = presentation.id - 1;
         presentationCard.href = BASE_URL + "/presentations/" + presentation.id;
+        if(funny) presentationCard.href = "javascript:void();";
 
         const title = document.createElement("h2");
         title.innerText = presentation.title + " - Week " + presentation.id;

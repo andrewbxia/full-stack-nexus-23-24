@@ -69,7 +69,7 @@ router.get("/", async(req, res) => {
     // res.render("presentations", {BASE_URL: BASE_URL, permissions: req.session.permissions});
     // if(req.session.user){
     checkLastPresentationId();
-    res.render("presentations", {BASE_URL: BASE_URL, username: req.session.user, permissions: req.session.permissions});
+    res.render("presentations", {BASE_URL: BASE_URL, username: req.session.user, permissions: req.session.permissions, funny: false});
     // }
     // else{
     //     console.log("no user get presentations");
@@ -93,12 +93,15 @@ router.get("/getPresentations", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
     //send pdf file with id
+    const id = req.params.id;
+    if(parseInt(id) == -1){
+        res.render("presentations", {BASE_URL: BASE_URL, username: req.session.user, permissions: req.session.permissions, funny: true})
+    }
     if(!req.session.user){
         console.log("no user get presentation id" + req.params.id);
         return res.status(401).redirect(BASE_URL + "/login?redirect=login (or register if you haven't) to access the meeting presentations");
     }
     await checkLastPresentationId();
-    const id = req.params.id;
     if(parseInt(id) != id){
         return res.status(400).send("invalid id");
     }
