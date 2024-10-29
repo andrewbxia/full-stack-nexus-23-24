@@ -107,7 +107,7 @@ export async function loadPresentations() {
         presentationCard.setAttribute('draggable', false);
         presentationCard.dataset.index = presentation.id - 1;
         presentationCard.href = BASE_URL + "/presentations/" + presentation.id;
-        if(funny) presentationCard.href = "javascript:void();";
+        if(funny) presentationCard.href = "javascript:void(0);";
 
         const title = document.createElement("h2");
         title.innerText = presentation.title + " - Week " + presentation.id;
@@ -202,6 +202,7 @@ await loadPresentations().then(() => {
                 window.location.href = event.target.closest("a").href;
             }
             else{
+                if(funny) return;
                 console.log("not logged in")
                 nonmemberWarningCard.style.display = "block";
                 nonmemberWarningCard.style.animation = "";

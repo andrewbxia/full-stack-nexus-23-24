@@ -93,7 +93,7 @@
                 margin: 0;
                 font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
                 background-color: inherit;
-                font-size: 1.3em;
+                font-size: <%= locals.funny ? 0.75: 1.3 %>em;
             }
             header {
                 height: auto;
@@ -116,12 +116,13 @@
             form > * {
                 display: inline;
             }
-
+            #presentation-body{
+                display: grid;
+                gap: <%= locals.funny ? 5 : 10 %>px;
+            }
             @media (max-width:1000px) {
                 #presentation-body{
-                    display: grid;
                     grid-template-columns: 1fr;
-                    gap: 10px;
                     a {
                         width: 90vw;
                     }
@@ -129,9 +130,7 @@
             }
             @media (min-width:1001px) {
                 #presentation-body{
-                    display: grid;
                     grid-template-columns: 1fr 1fr;
-                    gap: 10px;
                     a {
                         width: 40vw;
                     }
@@ -165,8 +164,8 @@
                 padding: 15px 0;
                 a {
                     height: fit-content;
-                    border-top: 2px solid rgb(41, 41, 41);
-                    border-bottom: 2px solid rgb(41, 41, 41);
+                    border-top: <%= locals.funny ? 1 : 2 %>px solid rgb(41, 41, 41);
+                    border-bottom: <%= locals.funny ? 1 : 2 %>px solid rgb(41, 41, 41);
                 }
                 /* border-style: solid;
                 border-color: rgb(255, 217, 0);
