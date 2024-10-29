@@ -59,7 +59,7 @@ function animateAllRandom(){
 
 export async function loadPresentations() {
     presentationBody.innerHTML = "";
-    if(funny)
+    if(!funny)
         presentations = await fetch(BASE_URL + "/presentations/getPresentations").then((response) => response.json());
     else{
         presentations = [];
@@ -179,7 +179,7 @@ while(footer_bar_height > 0){
     footerBar.style.marginTop = (headerHeight - footer_bar_height) + "px";
     footerBar.classList.add("animate-after");
     footerBars.appendChild(footerBar);
-    footer_bar_height = footer_bar_height <= 10 ? footer_bar_height / 2 : footer_bar_height - 1;
+    footer_bar_height = footer_bar_height > 10 ? footer_bar_height / 2 : footer_bar_height - 1;
 }
 
 nonmemberWarningCard.addEventListener("animationend", (event) => {
