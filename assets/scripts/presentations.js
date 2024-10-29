@@ -132,7 +132,7 @@ export async function loadPresentations() {
                 
                 presentationCard.classList.add("animate-after");
                 presentationCard.classList.remove("animate-before");
-            }, 150);
+            }, funny ? 150 : 30);
         });
         
         // presentationCard.addEventListener("focus", (event) => {
