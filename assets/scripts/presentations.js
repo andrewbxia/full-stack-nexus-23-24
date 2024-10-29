@@ -1,5 +1,3 @@
-import { listen } from "express/lib/application";
-
 const presentationBody = document.getElementById("presentation-body");
 const nonmemberWarningCard = document.getElementById("non-member-warning");
 let warningCardAnimation;
